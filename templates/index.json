@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero_jVaWmY": {
       "type": "hero",
@@ -57,6 +58,7 @@
         "text_YLPk4p",
         "button_H9gpTf"
       ],
+      "disabled": true,
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
@@ -65,6 +67,7 @@
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
         "media_type_2_mobile": "image",
+        "link": "",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -158,9 +161,9 @@
                 "label": "View all",
                 "open_in_new_tab": false,
                 "style_class": "link",
-                "width": "fit-content",
+                "width": "custom",
                 "custom_width": 100,
-                "width_mobile": "fit-content",
+                "width_mobile": "custom",
                 "custom_width_mobile": 100
               },
               "blocks": {}
@@ -261,6 +264,7 @@
           ]
         }
       },
+      "disabled": true,
       "name": "Featured collection",
       "settings": {
         "collection": "all",
@@ -281,10 +285,114 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "inicio_kxTkPd": {
+      "type": "Inicio",
+      "name": "Calm Step Landing",
+      "settings": {
+        "brand_name": "Calm Step",
+        "brand_tag": "EMS+",
+        "nav_link1": "Producto",
+        "nav_link2": "Cómo funciona",
+        "nav_link3": "Testimonios",
+        "nav_cta": "Ver mas",
+        "hero_image": "shopify://shop_images/hf_20260407_010834_8919d056-67ba-4cba-a706-c47bcf88ee2f.png",
+        "hero_badge": "Triple Therapy Technology",
+        "hero_title": "<p>El descanso que<br/>tus pies <em>llevan</em><br/><strong>meses esperando</strong></p>",
+        "hero_desc": "EMS + calor terapéutico + compresión activa. Tres terapias clínicas en un solo dispositivo portátil. 15 minutos al día, sentado, en casa.",
+        "hero_cta_text": "Comprar ahora",
+        "hero_cta_url": "",
+        "hero_cta2_text": "Ver cómo funciona",
+        "proof1_num": "3",
+        "proof1_label": "Terapias en una",
+        "proof2_num": "15'",
+        "proof2_label": "Al día",
+        "proof3_num": "30d",
+        "proof3_label": "Garantía total",
+        "hero_tag_label": "Disponible ahora",
+        "hero_tag_value": "Calm Step EMS+",
+        "hero_tag_sub": "Triple Therapy Foot Massager",
+        "ambient_image": "shopify://shop_images/hf_20260407_010834_8919d056-67ba-4cba-a706-c47bcf88ee2f.png",
+        "therapy1_icon": "⚡",
+        "therapy1_title": "Estimulación Muscular EMS",
+        "therapy1_desc": "Activa la bomba músculo-venosa de forma pasiva. Mejora el retorno circulatorio mientras estás sentado.",
+        "therapy1_tag": "Circulación activa",
+        "therapy2_icon": "🌡",
+        "therapy2_title": "Calor Terapéutico Controlado",
+        "therapy2_desc": "Vasodilatación local y liberación de tensión muscular profunda. Calor directo donde más se necesita.",
+        "therapy2_tag": "Alivio de tensión",
+        "therapy3_icon": "◎",
+        "therapy3_title": "Compresión Envolvente",
+        "therapy3_desc": "Presión uniforme que apoya el retorno venoso y reduce la sensación de pesadez e hinchazón.",
+        "therapy3_tag": "Retorno venoso",
+        "product_image": "shopify://shop_images/hf_20260407_005755_64583755-746f-4635-8479-596c7713a7fa.png",
+        "product_image2": "shopify://shop_images/6.png",
+        "product_eyebrow": "El dispositivo",
+        "product_title": "<p><strong>Calm Step</strong><br/>Triple Therapy<br/><em>Foot Massager</em></p>",
+        "product_desc": "Diseñado para quienes viven con ardor, hormigueo, entumecimiento o fatiga crónica en los pies. Sin pastillas, sin citas, sin salir de casa.",
+        "feat1_title": "Estimulación EMS integrada",
+        "feat1_sub": "Impulsos suaves que activan la circulación naturalmente",
+        "feat2_title": "3 niveles de calor ajustable",
+        "feat2_sub": "Temperatura controlada para cada tipo de sensibilidad",
+        "feat3_title": "Compresión wrap envolvente",
+        "feat3_sub": "Soporte activo para pie y tobillo",
+        "feat4_title": "Portátil, inalámbrico, USB-C",
+        "feat4_sub": "Úsalo en el sofá, en tu escritorio, en cualquier lugar",
+        "feat5_title": "Sesiones de 15–20 minutos",
+        "feat5_sub": "Efecto acumulativo con uso diario consistente",
+        "product_cta_text": "Quiero el mío",
+        "product_cta_url": "",
+        "how_eyebrow": "Cómo funciona",
+        "how_title": "<p>Simple. Pasivo.<br/><em>Efectivo cada noche.</em></p>",
+        "how_subtitle": "Sin protocolo complicado. Sin equipos de clínica. Solo tres pasos para que tu cuerpo recupere lo que le falta.",
+        "step1_image": "shopify://shop_images/6_2aa2dfcd-9742-45c5-9008-1a8b9abc1bc7.png",
+        "step1_title": "Ponte cómodo y coloca el dispositivo",
+        "step1_desc": "Siéntate en tu sillón o cama. Introduce el pie en el dispositivo Calm Step. No necesitas preparación previa.",
+        "step2_image": "shopify://shop_images/hf_20260407_011545_6f5c81eb-d190-4c63-8048-b697dc133baf.png",
+        "step2_title": "Selecciona tu nivel y enciéndelo",
+        "step2_desc": "Elige la intensidad EMS y el nivel de calor que prefieras. Empieza siempre en el nivel más bajo hasta conocer tu tolerancia.",
+        "step3_image": "shopify://shop_images/hf_20260407_010834_f405acf5-8058-429f-9aa6-485063d9b0f6.png",
+        "step3_title": "15–20 minutos. Deja que trabaje.",
+        "step3_desc": "Lee, mira televisión, descansa. La Triple Terapia actúa sola. Repite cada día para el efecto acumulativo.",
+        "testi_eyebrow": "Testimonios",
+        "testi_title": "<p>Lo que dicen quienes<br/><em>ya lo usan</em></p>",
+        "testi_subtitle": "Resultados reales de personas reales. Individuales y variables — pero el patrón es consistente.",
+        "testi1_stars": "★★★★★",
+        "testi1_quote": "\"Cuatro años con ardor nocturno. A partir de la tercera semana empecé a dormirme sin esperar que apareciera. No desapareció todo, pero bajó de intensidad y volvió el descanso.\"",
+        "testi1_name": "Silvia M., 61 años",
+        "testi1_location": "Santiago, Chile · Neuropatía idiopática",
+        "testi1_avatar": "shopify://shop_images/IMG_9363.jpg",
+        "testi2_stars": "★★★★★",
+        "testi2_quote": "\"Diabetes tipo 2 y hormigueo en los pies desde hace tres años. Mi médico me dio el visto bueno. A las dos semanas ya notaba la diferencia en las noches. Lo uso antes de dormir, todos los días.\"",
+        "testi2_name": "Héctor R., 58 años",
+        "testi2_location": "Ciudad de México · Neuropatía diabética leve",
+        "testi3_stars": "★★★★☆",
+        "testi3_quote": "\"Era completamente escéptico. Le di los 30 días de garantía. La tercera semana cambió algo. El entumecimiento bajó de intensidad y duermo mejor. Eso ya justifica todo para mí.\"",
+        "testi3_name": "Carlos V., 54 años",
+        "testi3_location": "Bogotá, Colombia · Entumecimiento bilateral",
+        "cta_eyebrow": "Calm Step EMS+",
+        "cta_title": "<p>Empieza esta noche.<br/><em>30 días para comprobarlo</em><br/>o te devolvemos todo.</p>",
+        "cta_desc": "Sin riesgo. Sin suscripciones. Sin letra pequeña. Solo la Triple Terapia que tus pies llevan esperando.",
+        "cta_button_text": "Comprar ahora →",
+        "cta_button_url": "",
+        "guarantee1": "Garantía de devolución 30 días",
+        "guarantee2": "",
+        "guarantee3": "Envío a toda Latinoamérica",
+        "guarantee4": "Pago seguro verificado",
+        "footer_link1_text": "Privacidad",
+        "footer_link1_url": "",
+        "footer_link2_text": "Términos",
+        "footer_link2_url": "",
+        "footer_link3_text": "Devoluciones",
+        "footer_link3_url": "",
+        "footer_whatsapp": "+1234567890",
+        "footer_copyright": "© 2025 Calm Step EMS+. Todos los derechos reservados."
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "product_list_fa6P9H",
+    "inicio_kxTkPd"
   ]
 }
