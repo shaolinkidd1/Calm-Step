@@ -14,7 +14,6 @@
       "blocks": {
         "media-gallery": {
           "type": "_product-media-gallery",
-          "disabled": true,
           "static": true,
           "settings": {
             "media_presentation": "grid",
@@ -44,7 +43,6 @@
         },
         "product-details": {
           "type": "_product-details",
-          "disabled": true,
           "static": true,
           "settings": {
             "width": "fill",
@@ -73,7 +71,6 @@
             "group_icgrde": {
               "type": "group",
               "name": "Header",
-              "disabled": true,
               "settings": {
                 "content_direction": "column",
                 "vertical_on_mobile": true,
@@ -168,7 +165,6 @@
             "divider_VJhene": {
               "type": "_divider",
               "name": "t:names.divider",
-              "disabled": true,
               "settings": {
                 "thickness": 1,
                 "corner_radius": "square",
@@ -180,7 +176,6 @@
             },
             "variant_picker_R3rGDr": {
               "type": "variant-picker",
-              "disabled": true,
               "settings": {
                 "variant_style": "buttons",
                 "show_swatches": false,
@@ -194,7 +189,6 @@
             },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
-              "disabled": true,
               "settings": {
                 "stacking": true,
                 "show_pickup_availability": false,
@@ -231,7 +225,6 @@
             "text_aEtTtq": {
               "type": "text",
               "name": "Product description",
-              "disabled": true,
               "settings": {
                 "text": "{{ closest.product.description }}",
                 "width": "100%",
@@ -421,6 +414,7 @@
     },
     "her_again_product_Gct4xx": {
       "type": "her-again-product",
+      "disabled": true,
       "name": "Her Again™ producto",
       "settings": {}
     }
