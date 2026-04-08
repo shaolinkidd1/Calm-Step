@@ -425,7 +425,7 @@
       "settings": {
         "cta_url": "",
         "checkout_url": "",
-        "url_tienda": "shopify://collections/frontpage",
+        "url_tienda": "https://calm-step-2.myshopify.com/",
         "url_privacidad": "",
         "url_terminos": "",
         "url_devoluciones": "",
