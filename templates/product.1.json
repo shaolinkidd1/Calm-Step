@@ -258,6 +258,7 @@
           ]
         }
       },
+      "disabled": true,
       "settings": {
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
@@ -417,11 +418,25 @@
       "disabled": true,
       "name": "Her Again™ producto",
       "settings": {}
+    },
+    "funnel_page_AdEzCk": {
+      "type": "funnel-page",
+      "name": "Calm Step Funnel",
+      "settings": {
+        "cta_url": "",
+        "checkout_url": "",
+        "url_tienda": "",
+        "url_privacidad": "",
+        "url_terminos": "",
+        "url_devoluciones": "",
+        "whatsapp_numero": "1234567890"
+      }
     }
   },
   "order": [
     "main",
     "product_recommendations_qggXJq",
-    "her_again_product_Gct4xx"
+    "her_again_product_Gct4xx",
+    "funnel_page_AdEzCk"
   ]
 }
