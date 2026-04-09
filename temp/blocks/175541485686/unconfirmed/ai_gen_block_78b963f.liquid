@@ -1,6 +1,774 @@
+{% doc %}
+  @prompt
+    necesito crear un footer especifico para esta seccion 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-footer-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    padding: {{ block.settings.padding_top }}px 20px {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-footer-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .ai-footer-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .ai-footer-column-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ai-footer-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 700;
+    margin: 0;
+    color: {{ block.settings.heading_color }};
+  }
+
+  .ai-footer-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.text_size }}px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .ai-footer-links-{{ ai_gen_id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-footer-link-{{ ai_gen_id }} {
+    color: {{ block.settings.link_color }};
+    text-decoration: none;
+    font-size: {{ block.settings.text_size }}px;
+    transition: color 0.3s ease;
+  }
+
+  .ai-footer-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-footer-social-{{ ai_gen_id }} {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .ai-footer-social-link-{{ ai_gen_id }} {
+    color: {{ block.settings.social_icon_color }};
+    transition: color 0.3s ease;
+  }
+
+  .ai-footer-social-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.social_icon_hover_color }};
+  }
+
+  .ai-footer-social-link-{{ ai_gen_id }} svg {
+    width: {{ block.settings.social_icon_size }}px;
+    height: {{ block.settings.social_icon_size }}px;
+  }
+
+  .ai-footer-newsletter-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-footer-newsletter-form-{{ ai_gen_id }} {
+    display: flex;
+    gap: 8px;
+  }
+
+  .ai-footer-newsletter-input-{{ ai_gen_id }} {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid {{ block.settings.input_border_color }};
+    border-radius: {{ block.settings.input_border_radius }}px;
+    background-color: {{ block.settings.input_background }};
+    color: {{ block.settings.input_text_color }};
+    font-size: 14px;
+  }
+
+  .ai-footer-newsletter-button-{{ ai_gen_id }} {
+    padding: 12px 24px;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-footer-newsletter-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+  }
+
+  .ai-footer-newsletter-success-{{ ai_gen_id }} {
+    color: {{ block.settings.success_color }};
+    font-size: 14px;
+  }
+
+  .ai-footer-newsletter-error-{{ ai_gen_id }} {
+    color: {{ block.settings.error_color }};
+    font-size: 14px;
+  }
+
+  .ai-footer-bottom-{{ ai_gen_id }} {
+    border-top: 1px solid {{ block.settings.divider_color }};
+    padding-top: 24px;
+    text-align: center;
+  }
+
+  .ai-footer-copyright-{{ ai_gen_id }} {
+    font-size: {{ block.settings.copyright_size }}px;
+    color: {{ block.settings.copyright_color }};
+    margin: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-footer-grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .ai-footer-newsletter-form-{{ ai_gen_id }} {
+      flex-direction: column;
+    }
+  }
+{% endstyle %}
+
+<footer-block-{{ ai_gen_id }} class="ai-footer-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-footer-container-{{ ai_gen_id }}">
+    <div class="ai-footer-grid-{{ ai_gen_id }}">
+      {% if block.settings.show_column_1 %}
+        <div class="ai-footer-column-{{ ai_gen_id }}">
+          {% if block.settings.column_1_heading != blank %}
+            <h3 class="ai-footer-heading-{{ ai_gen_id }}">{{ block.settings.column_1_heading }}</h3>
+          {% endif %}
+          {% if block.settings.column_1_text != blank %}
+            <div class="ai-footer-text-{{ ai_gen_id }}">{{ block.settings.column_1_text }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_column_2 %}
+        <div class="ai-footer-column-{{ ai_gen_id }}">
+          {% if block.settings.column_2_heading != blank %}
+            <h3 class="ai-footer-heading-{{ ai_gen_id }}">{{ block.settings.column_2_heading }}</h3>
+          {% endif %}
+          <ul class="ai-footer-links-{{ ai_gen_id }}">
+            {% if block.settings.link_1_text != blank %}
+              <li>
+                <a href="{{ block.settings.link_1_url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ block.settings.link_1_text }}
+                </a>
+              </li>
+            {% endif %}
+            {% if block.settings.link_2_text != blank %}
+              <li>
+                <a href="{{ block.settings.link_2_url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ block.settings.link_2_text }}
+                </a>
+              </li>
+            {% endif %}
+            {% if block.settings.link_3_text != blank %}
+              <li>
+                <a href="{{ block.settings.link_3_url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ block.settings.link_3_text }}
+                </a>
+              </li>
+            {% endif %}
+            {% if block.settings.link_4_text != blank %}
+              <li>
+                <a href="{{ block.settings.link_4_url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ block.settings.link_4_text }}
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_column_3 %}
+        <div class="ai-footer-column-{{ ai_gen_id }}">
+          {% if block.settings.column_3_heading != blank %}
+            <h3 class="ai-footer-heading-{{ ai_gen_id }}">{{ block.settings.column_3_heading }}</h3>
+          {% endif %}
+          <ul class="ai-footer-links-{{ ai_gen_id }}">
+            {% if block.settings.link_5_text != blank %}
+              <li>
+                <a href="{{ block.settings.link_5_url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ block.settings.link_5_text }}
+                </a>
+              </li>
+            {% endif %}
+            {% if block.settings.link_6_text != blank %}
+              <li>
+                <a href="{{ block.settings.link_6_url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ block.settings.link_6_text }}
+                </a>
+              </li>
+            {% endif %}
+            {% if block.settings.link_7_text != blank %}
+              <li>
+                <a href="{{ block.settings.link_7_url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ block.settings.link_7_text }}
+                </a>
+              </li>
+            {% endif %}
+            {% if block.settings.link_8_text != blank %}
+              <li>
+                <a href="{{ block.settings.link_8_url }}" class="ai-footer-link-{{ ai_gen_id }}">
+                  {{ block.settings.link_8_text }}
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_newsletter %}
+        <div class="ai-footer-column-{{ ai_gen_id }}">
+          {% if block.settings.newsletter_heading != blank %}
+            <h3 class="ai-footer-heading-{{ ai_gen_id }}">{{ block.settings.newsletter_heading }}</h3>
+          {% endif %}
+          <div class="ai-footer-newsletter-{{ ai_gen_id }}">
+            {% if block.settings.newsletter_text != blank %}
+              <p class="ai-footer-text-{{ ai_gen_id }}">{{ block.settings.newsletter_text }}</p>
+            {% endif %}
+            {%- form 'customer', class: 'ai-footer-newsletter-form-' | append: ai_gen_id -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <input
+                type="email"
+                name="contact[email]"
+                class="ai-footer-newsletter-input-{{ ai_gen_id }}"
+                placeholder="{{ block.settings.newsletter_placeholder }}"
+                aria-label="Email"
+                required
+                {% if form.errors %}
+                  aria-invalid="true"
+                  aria-describedby="ai-footer-newsletter-error-{{ ai_gen_id }}"
+                {% endif %}
+                {% if form.posted_successfully? %}
+                  aria-describedby="ai-footer-newsletter-success-{{ ai_gen_id }}"
+                {% endif %}
+              >
+              <button type="submit" class="ai-footer-newsletter-button-{{ ai_gen_id }}">
+                {{ block.settings.newsletter_button_text }}
+              </button>
+            {%- endform -%}
+            {%- if form.errors -%}
+              <div id="ai-footer-newsletter-error-{{ ai_gen_id }}" class="ai-footer-newsletter-error-{{ ai_gen_id }}">
+                {{ form.errors.messages.email }}
+              </div>
+            {%- endif -%}
+            {%- if form.posted_successfully? -%}
+              <div id="ai-footer-newsletter-success-{{ ai_gen_id }}" class="ai-footer-newsletter-success-{{ ai_gen_id }}">
+                {{ block.settings.newsletter_success_message }}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if block.settings.show_social %}
+      <div class="ai-footer-social-{{ ai_gen_id }}">
+        {% if block.settings.facebook_url != blank %}
+          <a href="{{ block.settings.facebook_url }}" class="ai-footer-social-link-{{ ai_gen_id }}" aria-label="Facebook" target="_blank" rel="noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+        {% endif %}
+        {% if block.settings.instagram_url != blank %}
+          <a href="{{ block.settings.instagram_url }}" class="ai-footer-social-link-{{ ai_gen_id }}" aria-label="Instagram" target="_blank" rel="noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+        {% endif %}
+        {% if block.settings.twitter_url != blank %}
+          <a href="{{ block.settings.twitter_url }}" class="ai-footer-social-link-{{ ai_gen_id }}" aria-label="Twitter" target="_blank" rel="noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-footer-bottom-{{ ai_gen_id }}">
+      <p class="ai-footer-copyright-{{ ai_gen_id }}">
+        {{ block.settings.copyright_text }}
+      </p>
+    </div>
+  </div>
+</footer-block-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FooterBlock{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        const form = this.querySelector('.ai-footer-newsletter-form-{{ ai_gen_id }}');
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            const emailInput = form.querySelector('input[type="email"]');
+            if (emailInput && !emailInput.value) {
+              e.preventDefault();
+            }
+          });
+        }
+      }
+    }
+
+    customElements.define('footer-block-{{ ai_gen_id }}', FooterBlock{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Footer personalizado",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Diseño general"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espaciado superior",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espaciado inferior",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color de texto",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Color del divisor",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Columna 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column_1",
+      "label": "Mostrar columna 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "column_1_heading",
+      "label": "Título",
+      "default": "Acerca de nosotros"
+    },
+    {
+      "type": "textarea",
+      "id": "column_1_text",
+      "label": "Texto",
+      "default": "Somos una tienda comprometida con ofrecer los mejores productos para tu bienestar."
+    },
+    {
+      "type": "header",
+      "content": "Columna 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column_2",
+      "label": "Mostrar columna 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "column_2_heading",
+      "label": "Título",
+      "default": "Enlaces rápidos"
+    },
+    {
+      "type": "text",
+      "id": "link_1_text",
+      "label": "Enlace 1 texto",
+      "default": "Inicio"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Enlace 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_2_text",
+      "label": "Enlace 2 texto",
+      "default": "Productos"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Enlace 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_3_text",
+      "label": "Enlace 3 texto",
+      "default": "Sobre nosotros"
+    },
+    {
+      "type": "url",
+      "id": "link_3_url",
+      "label": "Enlace 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_4_text",
+      "label": "Enlace 4 texto",
+      "default": "Contacto"
+    },
+    {
+      "type": "url",
+      "id": "link_4_url",
+      "label": "Enlace 4 URL"
+    },
+    {
+      "type": "header",
+      "content": "Columna 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column_3",
+      "label": "Mostrar columna 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "column_3_heading",
+      "label": "Título",
+      "default": "Ayuda"
+    },
+    {
+      "type": "text",
+      "id": "link_5_text",
+      "label": "Enlace 5 texto",
+      "default": "Envíos"
+    },
+    {
+      "type": "url",
+      "id": "link_5_url",
+      "label": "Enlace 5 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_6_text",
+      "label": "Enlace 6 texto",
+      "default": "Devoluciones"
+    },
+    {
+      "type": "url",
+      "id": "link_6_url",
+      "label": "Enlace 6 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_7_text",
+      "label": "Enlace 7 texto",
+      "default": "Política de privacidad"
+    },
+    {
+      "type": "url",
+      "id": "link_7_url",
+      "label": "Enlace 7 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_8_text",
+      "label": "Enlace 8 texto",
+      "default": "Términos y condiciones"
+    },
+    {
+      "type": "url",
+      "id": "link_8_url",
+      "label": "Enlace 8 URL"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Mostrar newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Título",
+      "default": "Suscríbete"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Texto",
+      "default": "Recibe nuestras últimas novedades y ofertas"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Placeholder del email",
+      "default": "Tu email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_text",
+      "label": "Texto del botón",
+      "default": "Suscribirse"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_success_message",
+      "label": "Mensaje de éxito",
+      "default": "¡Gracias por suscribirte!"
+    },
+    {
+      "type": "header",
+      "content": "Redes sociales"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Mostrar redes sociales",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter URL"
+    },
+    {
+      "type": "range",
+      "id": "social_icon_size",
+      "label": "Tamaño de iconos",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "social_icon_color",
+      "label": "Color de iconos",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "social_icon_hover_color",
+      "label": "Color de iconos al pasar",
+      "default": "#cccccc"
+    },
+    {
+      "type": "header",
+      "content": "Copyright"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Texto de copyright",
+      "default": "© 2026 Calm Step. Todos los derechos reservados."
+    },
+    {
+      "type": "range",
+      "id": "copyright_size",
+      "label": "Tamaño de texto",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "copyright_color",
+      "label": "Color de texto",
+      "default": "#999999"
+    },
+    {
+      "type": "header",
+      "content": "Tipografía"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Tamaño de títulos",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color de títulos",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Tamaño de texto",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Color de enlaces",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Color de enlaces al pasar",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Estilo de formulario"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Fondo del input",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Color de texto del input",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Color del borde del input",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "label": "Radio del borde del input",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Fondo del botón",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Color de texto del botón",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Fondo del botón al pasar",
+      "default": "#cccccc"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Radio del borde del botón",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "success_color",
+      "label": "Color de éxito",
+      "default": "#4caf50"
+    },
+    {
+      "type": "color",
+      "id": "error_color",
+      "label": "Color de error",
+      "default": "#f44336"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer personalizado"
+    }
+  ]
+}
 {% endschema %}
