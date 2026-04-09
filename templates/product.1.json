@@ -447,17 +447,20 @@
         "qty1_subtitle": "Para ti — empieza hoy",
         "qty1_price": "$39.980",
         "qty1_per": "c/u · CLP",
+        "qty1_variant_id": "",
         "qty2_title": "2 Unidades",
         "qty2_subtitle": "Para ti y quien más quieres",
         "qty2_price": "$54.980",
         "qty2_per": "$27.490 c/u",
         "qty2_save": "Ahorras $24.980",
         "qty2_badge": "Más popular",
+        "qty2_variant_id": "",
         "qty3_title": "Pack Familiar · 4 und.",
         "qty3_subtitle": "El mejor precio por unidad",
         "qty3_price": "$92.980",
         "qty3_per": "$23.245 c/u",
         "qty3_save": "Ahorras $66.940",
+        "qty3_variant_id": "",
         "btn_cart_text": "Agregar al carrito",
         "btn_buy_text": "Comprar ahora →",
         "pay1": "Mercado Pago",
@@ -551,12 +554,26 @@
         "whatsapp_numero": "56969193989",
         "footer_copy": "© 2025 Calm Step EMS+. Todos los derechos reservados."
       }
+    },
+    "funnel_page_gPDgWp": {
+      "type": "funnel-page",
+      "name": "Calm Step Funnel",
+      "settings": {
+        "cta_url": "",
+        "checkout_url": "",
+        "url_tienda": "",
+        "url_privacidad": "",
+        "url_terminos": "",
+        "url_devoluciones": "",
+        "whatsapp_numero": "1234567890"
+      }
     }
   },
   "order": [
     "main",
     "product_recommendations_qggXJq",
     "her_again_product_Gct4xx",
-    "calmstep_funnel_PEr7hX"
+    "calmstep_funnel_PEr7hX",
+    "funnel_page_gPDgWp"
   ]
 }
