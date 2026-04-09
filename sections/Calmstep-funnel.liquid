@@ -46,10 +46,15 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
 .nav-cart-btn svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5;}
 .nav-cart-count{position:absolute;top:4px;right:4px;width:16px;height:16px;border-radius:50%;background:var(--red);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1;}
 
-/* HERO */
+/* HERO CAROUSEL */
 .cs-hero{width:100%;aspect-ratio:1/1;overflow:hidden;position:relative;background:var(--fog);}
-.cs-hero img{width:100%;height:100%;object-fit:cover;display:block;}
-.hero-disc-badge{position:absolute;top:14px;left:14px;background:var(--red);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;padding:5px 12px;}
+.cs-carousel-track{display:flex;height:100%;transition:transform .35s cubic-bezier(.4,0,.2,1);will-change:transform;}
+.cs-carousel-slide{min-width:100%;height:100%;flex-shrink:0;}
+.cs-carousel-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+.hero-disc-badge{position:absolute;top:14px;left:14px;background:var(--red);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;padding:5px 12px;z-index:2;}
+.cs-carousel-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2;}
+.cs-carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);border:none;padding:0;cursor:pointer;transition:background .2s,transform .2s;}
+.cs-carousel-dot.active{background:#fff;transform:scale(1.3);}
 
 /* PRODUCT INFO */
 .product-info{padding:20px 16px 0;}
@@ -91,13 +96,26 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
 .qty-per{font-size:10px;color:var(--ink4);font-weight:300;}
 .qty-save-chip{font-size:9px;font-weight:700;color:var(--red);letter-spacing:.5px;}
 
+/* VARIANTS inside qty-section */
+.cs-variant-block{padding:12px 14px;background:var(--snow);border:1px solid var(--rule);border-radius:8px;margin-bottom:8px;}
+.cs-variant-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.cs-variant-selected{font-weight:600;font-size:12px;color:var(--navy);letter-spacing:0;text-transform:none;}
+.cs-variant-opts{display:flex;flex-wrap:wrap;gap:6px;}
+.cs-variant-btn{padding:6px 14px;border:1.5px solid var(--rule2);background:var(--white);color:var(--ink);font-size:12px;font-weight:500;cursor:pointer;border-radius:4px;transition:border-color .2s,background .2s,color .2s;}
+.cs-variant-btn:hover:not(.unavailable){border-color:var(--navy);}
+.cs-variant-btn.active{border-color:var(--navy);background:var(--navy);color:#fff;}
+.cs-variant-btn.unavailable{opacity:.35;cursor:not-allowed;text-decoration:line-through;}
+.cs-stock-msg{font-size:11px;font-weight:600;margin-top:8px;}
+.cs-stock-msg.low{color:var(--red);}
+.cs-stock-msg.ok{color:var(--green);}
+
 /* BUTTONS */
-.btn-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
-.btn-cart{width:100%;padding:16px;border:2px solid var(--navy);background:var(--white);color:var(--navy);font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-wrap{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.btn-cart{width:100%;padding:14px;border:2px solid var(--navy);background:var(--white);color:var(--navy);font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
 .btn-cart:hover,.btn-cart.loading{background:var(--navy);color:#fff;}
-.btn-buy{width:100%;padding:16px;border:none;background:var(--navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;}
+.btn-buy{width:100%;padding:14px;border:none;background:var(--navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;}
 .btn-buy:hover{background:var(--navy2);transform:translateY(-1px);}
-.btn-feedback{font-size:11px;color:var(--green);font-weight:600;text-align:center;min-height:18px;transition:opacity .3s;}
+.btn-feedback{font-size:11px;color:var(--green);font-weight:600;text-align:center;min-height:16px;transition:opacity .3s;}
 
 /* PAYMENT */
 .pay-row{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:10px 0 16px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:20px;}
@@ -217,15 +235,41 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
   </button>
 </nav>
 
-<!-- HERO -->
-<div class="cs-hero">
-  {%- if section.settings.hero_image -%}
-    <img src="{{ section.settings.hero_image | img_url: 'master' }}" alt="{{ section.settings.hero_image.alt | default: section.settings.product_name }}" loading="eager">
-  {%- else -%}
-    <img src="{{ 'cs-hero-product.png' | asset_url }}" alt="{{ section.settings.product_name }}" loading="eager">
+<!-- HERO CAROUSEL -->
+{%- assign hero_images = '' | split: ',' -%}
+{%- for i in (1..6) -%}
+  {%- assign img_key = 'hero_image' -%}
+  {%- if i > 1 -%}{%- assign img_key = 'hero_image_' | append: i -%}{%- endif -%}
+  {%- if section.settings[img_key] != blank -%}
+    {%- assign hero_images = hero_images | push: img_key -%}
   {%- endif -%}
+{%- endfor -%}
+
+<div class="cs-hero" id="cs-hero-carousel">
+  <div class="cs-carousel-track" id="cs-carousel-track">
+    {%- if hero_images.size > 0 -%}
+      {%- for img_key in hero_images -%}
+        <div class="cs-carousel-slide">
+          <img src="{{ section.settings[img_key] | img_url: 'master' }}"
+               alt="{{ section.settings[img_key].alt | default: section.settings.product_name }}"
+               loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="cs-carousel-slide">
+        <img src="{{ 'cs-hero-product.png' | asset_url }}" alt="{{ section.settings.product_name }}" loading="eager">
+      </div>
+    {%- endif -%}
+  </div>
   {%- if section.settings.hero_badge != blank -%}
     <span class="hero-disc-badge">{{ section.settings.hero_badge }}</span>
+  {%- endif -%}
+  {%- if hero_images.size > 1 -%}
+    <div class="cs-carousel-dots" id="cs-carousel-dots">
+      {%- for img_key in hero_images -%}
+        <button class="cs-carousel-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}" onclick="csCarouselGoTo({{ forloop.index0 }})"></button>
+      {%- endfor -%}
+    </div>
   {%- endif -%}
 </div>
 
@@ -253,14 +297,44 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
     </div>
   </div>
 
-  <!-- QUANTITY CARDS -->
+  <!-- QUANTITY + VARIANTS INTEGRADOS -->
   <div class="qty-section">
     <div class="qty-label">{{ section.settings.qty_label }}</div>
+
+    {%- if product != blank and product.options_with_values.size > 0 -%}
+      {%- for option in product.options_with_values -%}
+      <div class="cs-variant-block">
+        <div class="cs-variant-label">
+          {{ option.name }}&nbsp;
+          <span class="cs-variant-selected" id="cs-opt-val-{{ forloop.index0 }}">{{ option.values.first }}</span>
+        </div>
+        <div class="cs-variant-opts" data-option-index="{{ forloop.index0 }}">
+          {%- for value in option.values -%}
+            {%- assign opt_idx = forloop.parentloop.index0 -%}
+            {%- comment -%}Check availability for this option value{%- endcomment -%}
+            {%- assign value_available = false -%}
+            {%- for variant in product.variants -%}
+              {%- if variant.options[opt_idx] == value and variant.available -%}
+                {%- assign value_available = true -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <button class="cs-variant-btn{% if forloop.first %} active{% endif %}{% unless value_available %} unavailable{% endunless %}"
+                    data-value="{{ value }}"
+                    data-option="{{ opt_idx }}"
+                    data-available="{{ value_available }}"
+                    onclick="csSelectOption(this)">{{ value }}</button>
+          {%- endfor -%}
+        </div>
+        <div class="cs-stock-msg" id="cs-stock-msg-{{ forloop.index0 }}"></div>
+      </div>
+      {%- endfor -%}
+    {%- endif -%}
+
     <div class="qty-grid">
 
       {%- if section.settings.qty1_title != blank -%}
       <div class="qty-card selected"
-           data-variant-id="{{ variant_1.id }}"
+           data-qty="1"
            data-price="{{ section.settings.qty1_price }}"
            onclick="csSelectQty(this)">
         <div class="qty-radio"></div>
@@ -277,7 +351,7 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
 
       {%- if section.settings.qty2_title != blank -%}
       <div class="qty-card popular"
-           data-variant-id="{{ variant_2.id }}"
+           data-qty="2"
            data-price="{{ section.settings.qty2_price }}"
            onclick="csSelectQty(this)">
         {%- if section.settings.qty2_badge != blank -%}
@@ -300,7 +374,7 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
 
       {%- if section.settings.qty3_title != blank -%}
       <div class="qty-card"
-           data-variant-id="{{ variant_3.id }}"
+           data-qty="4"
            data-price="{{ section.settings.qty3_price }}"
            onclick="csSelectQty(this)">
         <div class="qty-radio"></div>
@@ -507,9 +581,12 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
     <span class="lp-footer-logo-sub">{{ section.settings.logo_sub }}</span>
   </div>
   <ul class="lp-links">
-    {%- if section.settings.url_privacidad != blank -%}<li><a href="{{ section.settings.url_privacidad }}">Privacidad</a></li>{%- endif -%}
-    {%- if section.settings.url_terminos != blank -%}<li><a href="{{ section.settings.url_terminos }}">Términos</a></li>{%- endif -%}
-    {%- if section.settings.url_devoluciones != blank -%}<li><a href="{{ section.settings.url_devoluciones }}">Devoluciones</a></li>{%- endif -%}
+    {%- if section.settings.footer_menu != blank -%}
+      {%- assign footer_nav = linklists[section.settings.footer_menu] -%}
+      {%- for link in footer_nav.links -%}
+        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+      {%- endfor -%}
+    {%- endif -%}
     {%- if section.settings.whatsapp_numero != blank -%}
     <li>
       <a href="https://wa.me/{{ section.settings.whatsapp_numero }}" target="_blank">
@@ -541,13 +618,133 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
     if(el) el.textContent = h+':'+m+':'+s;
   }, 1000);
 
+  // ── VARIANTS + QTY INTEGRADOS ──
+  var _productVariants = {{ product.variants | json | default: '[]' }};
+  var _selectedOptions = _productVariants.length > 0 ? _productVariants[0].options.slice() : [];
+  var _selectedQty = 1;
+  var _variantId = _productVariants.length > 0 ? _productVariants[0].id : null;
+
+  function csFormatPrice(cents){
+    return '$' + Math.round(cents/100).toLocaleString('es-CL');
+  }
+
+  function csFindVariant(options){
+    for(var i = 0; i < _productVariants.length; i++){
+      var v = _productVariants[i];
+      var match = true;
+      for(var j = 0; j < options.length; j++){
+        if(v.options[j] !== options[j]){ match = false; break; }
+      }
+      if(match) return v;
+    }
+    return null;
+  }
+
+  function csUpdateStock(variant){
+    // Show stock message
+    var msgs = document.querySelectorAll('.cs-stock-msg');
+    msgs.forEach(function(el){ el.textContent = ''; });
+    if(!variant) return;
+    var msg = document.getElementById('cs-stock-msg-0');
+    if(!msg) return;
+    if(!variant.available){
+      msg.textContent = '✕ Sin stock';
+      msg.className = 'cs-stock-msg low';
+    } else if(variant.inventory_quantity > 0 && variant.inventory_quantity <= 5){
+      msg.textContent = '⚡ Solo quedan ' + variant.inventory_quantity + ' unidades';
+      msg.className = 'cs-stock-msg low';
+    } else if(variant.available){
+      msg.textContent = '✓ En stock';
+      msg.className = 'cs-stock-msg ok';
+    }
+  }
+
+  function csUpdateButtons(variant){
+    var cartBtn = document.getElementById('cs-btn-cart');
+    var buyBtn = document.getElementById('cs-btn-buy');
+    var sbBuy = document.getElementById('cs-sb-buy-btn');
+    var sbCart = document.getElementById('cs-sb-cart-btn');
+    var unavailable = !variant || !variant.available;
+    [cartBtn, sbCart].forEach(function(b){
+      if(!b) return;
+      b.disabled = unavailable;
+      b.style.opacity = unavailable ? '0.4' : '';
+    });
+    [buyBtn, sbBuy].forEach(function(b){
+      if(!b) return;
+      b.disabled = unavailable;
+      b.style.opacity = unavailable ? '0.4' : '';
+    });
+  }
+
+  function csApplyVariant(){
+    var variant = csFindVariant(_selectedOptions);
+    if(variant){
+      _variantId = variant.id;
+      // Update price
+      if(variant.price){
+        var priceEl = document.getElementById('cs-price-display');
+        var stickyEl = document.getElementById('cs-sticky-price');
+        var f = csFormatPrice(variant.price);
+        if(priceEl) priceEl.textContent = f;
+        if(stickyEl) stickyEl.textContent = f;
+      }
+      csUpdateStock(variant);
+      csUpdateButtons(variant);
+      // Update unavailable state of other option buttons
+      csUpdateOptionAvailability();
+    } else {
+      csUpdateStock(null);
+      csUpdateButtons(null);
+    }
+  }
+
+  function csUpdateOptionAvailability(){
+    document.querySelectorAll('.cs-variant-opts').forEach(function(group){
+      var optIdx = parseInt(group.getAttribute('data-option-index'));
+      group.querySelectorAll('.cs-variant-btn').forEach(function(btn){
+        var val = btn.getAttribute('data-value');
+        // Check if any variant with this value and current other options is available
+        var testOptions = _selectedOptions.slice();
+        testOptions[optIdx] = val;
+        var v = csFindVariant(testOptions);
+        if(!v || !v.available){
+          btn.classList.add('unavailable');
+        } else {
+          btn.classList.remove('unavailable');
+        }
+      });
+    });
+  }
+
+  window.csSelectOption = function(btn){
+    if(btn.classList.contains('unavailable')) return;
+    var optionIndex = parseInt(btn.getAttribute('data-option'));
+    var value = btn.getAttribute('data-value');
+    _selectedOptions[optionIndex] = value;
+
+    // Update active button
+    btn.closest('.cs-variant-opts').querySelectorAll('.cs-variant-btn').forEach(function(b){
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+
+    // Update label
+    var labelVal = document.getElementById('cs-opt-val-' + optionIndex);
+    if(labelVal) labelVal.textContent = value;
+
+    csApplyVariant();
+  };
+
+  // Init on load
+  csApplyVariant();
+
   // ── QTY SELECT ──
   window.csSelectQty = function(el){
     document.querySelectorAll('.qty-card').forEach(function(c){ c.classList.remove('selected'); });
     el.classList.add('selected');
+    _selectedQty = parseInt(el.getAttribute('data-qty')) || 1;
     var price = el.getAttribute('data-price');
-    var vid = el.getAttribute('data-variant-id');
-    if(vid && vid !== 'null') _variantId = vid;
     var priceEl = document.getElementById('cs-price-display');
     var stickyEl = document.getElementById('cs-sticky-price');
     if(priceEl && price) priceEl.textContent = price;
@@ -579,7 +776,7 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
     fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ id: _variantId, quantity: 1 })
+      body: JSON.stringify({ id: _variantId, quantity: _selectedQty })
     })
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -607,7 +804,7 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
       window.location.href = '/checkout';
       return;
     }
-    window.location.href = '/cart/' + _variantId + ':1';
+    window.location.href = '/cart/' + _variantId + ':' + _selectedQty;
   }
 
   // ── BIND BUTTONS ──
@@ -627,6 +824,44 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
   window.csFaq = function(el){
     el.parentElement.classList.toggle('open');
   };
+
+  // ── HERO CAROUSEL ──
+  (function(){
+    var track = document.getElementById('cs-carousel-track');
+    if(!track) return;
+    var slides = track.querySelectorAll('.cs-carousel-slide');
+    var total = slides.length;
+    if(total < 2) return;
+    var current = 0;
+
+    function goTo(idx){
+      current = (idx + total) % total;
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+      document.querySelectorAll('.cs-carousel-dot').forEach(function(d, i){
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    window.csCarouselGoTo = goTo;
+
+    // Auto-advance every 4s
+    var autoTimer = setInterval(function(){ goTo(current + 1); }, 4000);
+
+    // Touch / swipe
+    var startX = 0;
+    var hero = document.getElementById('cs-hero-carousel');
+    hero.addEventListener('touchstart', function(e){
+      startX = e.touches[0].clientX;
+      clearInterval(autoTimer);
+    }, {passive: true});
+    hero.addEventListener('touchend', function(e){
+      var dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 40){
+        goTo(dx < 0 ? current + 1 : current - 1);
+      }
+      autoTimer = setInterval(function(){ goTo(current + 1); }, 4000);
+    }, {passive: true});
+  })();
 })();
 </script>
 
@@ -660,7 +895,12 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
       "type": "header",
       "content": "🖼 Imagen hero"
     },
-    { "type": "image_picker", "id": "hero_image", "label": "Imagen principal del producto" },
+    { "type": "image_picker", "id": "hero_image", "label": "Imagen del producto 1 (principal)" },
+    { "type": "image_picker", "id": "hero_image_2", "label": "Imagen del producto 2" },
+    { "type": "image_picker", "id": "hero_image_3", "label": "Imagen del producto 3" },
+    { "type": "image_picker", "id": "hero_image_4", "label": "Imagen del producto 4" },
+    { "type": "image_picker", "id": "hero_image_5", "label": "Imagen del producto 5" },
+    { "type": "image_picker", "id": "hero_image_6", "label": "Imagen del producto 6" },
     { "type": "text", "id": "hero_badge", "label": "Badge sobre la imagen (ej: -25% HOY)", "default": "-25% HOY" },
     {
       "type": "header",
@@ -829,9 +1069,12 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
       "type": "header",
       "content": "🔗 Footer y contacto"
     },
-    { "type": "url", "id": "url_privacidad", "label": "Privacidad" },
-    { "type": "url", "id": "url_terminos", "label": "Términos" },
-    { "type": "url", "id": "url_devoluciones", "label": "Devoluciones" },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Menú del footer",
+      "info": "Crea un menú en Admin → Navegación y selecciónalo aquí. Agrega todas las páginas que quieras (Privacidad, Términos, Devoluciones, etc.)"
+    },
     { "type": "text", "id": "whatsapp_numero", "label": "WhatsApp (solo números, sin +)", "default": "1234567890" },
     { "type": "text", "id": "footer_copy", "label": "Copyright", "default": "© 2025 Calm Step EMS+. Todos los derechos reservados." }
   ],
