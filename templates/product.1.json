@@ -430,6 +430,8 @@
         "logo_sub": "EMS+",
         "url_tienda": "",
         "hero_image": "shopify://shop_images/hf_20260407_010834_19ebd8ef-9da2-4dd8-807f-578a5476bc3b.png",
+        "hero_image_2": "shopify://shop_images/Almohadilla_termica_con_panel_digital.png",
+        "hero_image_3": "shopify://shop_images/Almohadilla_calefactora_con_panel_digital_0cb1485a-9353-46a4-a1d0-eaecec209b82.png",
         "hero_badge": "-25% HOY",
         "product_eyebrow": "Triple Therapy Technology",
         "product_name": "Calm Step EMS+",
@@ -545,9 +547,7 @@
         "faq5_a": "Envío gratis a todo Chile. Despacho en 24-48 horas hábiles con número de seguimiento. Entrega estimada: 9 - 15 días hábiles según región.",
         "faq6_q": "",
         "faq6_a": "",
-        "url_privacidad": "",
-        "url_terminos": "",
-        "url_devoluciones": "",
+        "footer_menu": "",
         "whatsapp_numero": "56969193989",
         "footer_copy": "© 2025 Calm Step EMS+. Todos los derechos reservados."
       }
