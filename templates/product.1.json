@@ -550,13 +550,14 @@
         "faq5_a": "Envío gratis a todo Chile. Despacho en 24-48 horas hábiles con número de seguimiento. Entrega estimada: 9 - 15 días hábiles según región.",
         "faq6_q": "",
         "faq6_a": "",
-        "footer_menu": "",
+        "footer_menu": "footer",
         "whatsapp_numero": "56969193989",
         "footer_copy": "© 2025 Calm Step EMS+. Todos los derechos reservados."
       }
     },
     "funnel_page_gPDgWp": {
       "type": "funnel-page",
+      "disabled": true,
       "name": "Calm Step Funnel",
       "settings": {
         "cta_url": "",
