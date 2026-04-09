@@ -1,0 +1,559 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-information",
+      "blocks": {
+        "media-gallery": {
+          "type": "_product-media-gallery",
+          "static": true,
+          "settings": {
+            "media_presentation": "grid",
+            "media_columns": "two",
+            "image_gap": 4,
+            "large_first_image": false,
+            "icons_style": "none",
+            "slideshow_controls_style": "counter",
+            "slideshow_mobile_controls_style": "dots",
+            "thumbnail_position": "right",
+            "thumbnail_width": 44,
+            "thumbnail_radius": 0,
+            "aspect_ratio": "adapt",
+            "constrain_to_viewport": true,
+            "media_fit": "contain",
+            "media_radius": 0,
+            "extend_media": false,
+            "zoom": true,
+            "video_loop": false,
+            "hide_variants": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "product-details": {
+          "type": "_product-details",
+          "static": true,
+          "settings": {
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "details_position": "flex-start",
+            "gap": 28,
+            "sticky_details_desktop": true,
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-1",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_icgrde": {
+              "type": "group",
+              "name": "Header",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_xrnftG": {
+                  "type": "text",
+                  "name": "Product title",
+                  "settings": {
+                    "text": "<h1>{{ closest.product.title }}</h1>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "h3",
+                    "font": "var(--font-primary--family)",
+                    "font_size": "",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "price_tVjtKg": {
+                  "type": "price",
+                  "settings": {
+                    "show_sale_price_first": true,
+                    "show_installments": false,
+                    "show_tax_info": false,
+                    "type_preset": "paragraph",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "color": "var(--color-foreground)",
+                    "padding-block-start": 4,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_xrnftG",
+                "price_tVjtKg"
+              ]
+            },
+            "divider_VJhene": {
+              "type": "_divider",
+              "name": "t:names.divider",
+              "settings": {
+                "thickness": 1,
+                "corner_radius": "square",
+                "width_percent": 100,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "variant_picker_R3rGDr": {
+              "type": "variant-picker",
+              "settings": {
+                "variant_style": "buttons",
+                "show_swatches": false,
+                "alignment": "left",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "buy_buttons_eYQEYi": {
+              "type": "buy-buttons",
+              "settings": {
+                "stacking": true,
+                "show_pickup_availability": false,
+                "gift_card_form": true,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "quantity": {
+                  "type": "quantity",
+                  "static": true,
+                  "settings": {},
+                  "blocks": {}
+                },
+                "add-to-cart": {
+                  "type": "add-to-cart",
+                  "static": true,
+                  "settings": {
+                    "style_class": "button"
+                  },
+                  "blocks": {}
+                },
+                "accelerated-checkout": {
+                  "type": "accelerated-checkout",
+                  "static": true,
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": []
+            },
+            "text_aEtTtq": {
+              "type": "text",
+              "name": "Product description",
+              "settings": {
+                "text": "{{ closest.product.description }}",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "group_icgrde",
+            "divider_VJhene",
+            "variant_picker_R3rGDr",
+            "buy_buttons_eYQEYi",
+            "text_aEtTtq"
+          ]
+        }
+      },
+      "disabled": true,
+      "settings": {
+        "content_width": "content-center-aligned",
+        "desktop_media_position": "left",
+        "equal_columns": false,
+        "limit_details_width": false,
+        "gap": 48,
+        "enable_sticky_add_to_cart": true,
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "product_recommendations_qggXJq": {
+      "type": "product-recommendations",
+      "blocks": {
+        "text_cbcgyb": {
+          "type": "text",
+          "name": "t:names.header",
+          "settings": {
+            "text": "<h3>You may also like </h3>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h4",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 8,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery_DNizbJ": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_M7MJkb": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_gLWgA6": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_gallery_DNizbJ",
+            "product_title_M7MJkb",
+            "price_gLWgA6"
+          ]
+        }
+      },
+      "block_order": [
+        "text_cbcgyb"
+      ],
+      "disabled": true,
+      "name": "t:names.product_recommendations",
+      "settings": {
+        "product": "{{ closest.product }}",
+        "recommendation_type": "related",
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "max_products": 4,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 12,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 28,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "her_again_product_Gct4xx": {
+      "type": "her-again-product",
+      "disabled": true,
+      "name": "Her Again™ producto",
+      "settings": {}
+    },
+    "calmstep_funnel_njwQUW": {
+      "type": "Calmstep-funnel",
+      "name": "Calm Step Funnel",
+      "settings": {
+        "product": "electric-heat-and-vibration-ankle-wrist-massager-hot-compress-therapy-ankle-massage-heated-wrap-support-brace-foot-protector",
+        "urgency_text": "Oferta limitada · 25% descuento + envío gratis",
+        "timer_start": "23:47:12",
+        "logo_text": "Calm Step",
+        "logo_sub": "EMS+",
+        "url_tienda": "",
+        "hero_badge": "-25% HOY",
+        "product_eyebrow": "Triple Therapy Technology",
+        "product_name": "Calm Step EMS+",
+        "product_subtitle": "Alivio real para tus pies",
+        "review_score": "4.8",
+        "review_count": "+1.200 clientes",
+        "price_was": "Antes $53.307 CLP",
+        "price_now": "$39.980",
+        "price_badge": "-25%",
+        "shipping_text": "Envío gratis a todo Chile",
+        "qty_label": "Elige tu cantidad",
+        "qty1_title": "1 Unidad",
+        "qty1_subtitle": "Para ti — empieza hoy",
+        "qty1_price": "$39.980",
+        "qty1_per": "c/u · CLP",
+        "qty2_title": "2 Unidades",
+        "qty2_subtitle": "Para ti y quien más quieres",
+        "qty2_price": "$54.980",
+        "qty2_per": "$27.490 c/u",
+        "qty2_save": "Ahorras $24.980",
+        "qty2_badge": "Más popular",
+        "qty3_title": "Pack Familiar · 4 und.",
+        "qty3_subtitle": "El mejor precio por unidad",
+        "qty3_price": "$92.980",
+        "qty3_per": "$23.245 c/u",
+        "qty3_save": "Ahorras $66.940",
+        "btn_cart_text": "Agregar al carrito",
+        "btn_buy_text": "Comprar ahora →",
+        "pay1": "Mercado Pago",
+        "pay2": "Apple Pay",
+        "pay3": "G Pay",
+        "pay4": "VISA",
+        "pay5": "Mastercard",
+        "trust1_title": "30 días",
+        "trust1_sub": "Garantía total",
+        "trust2_title": "Envío gratis",
+        "trust2_sub": "Todo Chile",
+        "trust3_title": "100% seguro",
+        "trust3_sub": "Pago protegido",
+        "prob_eyebrow": "¿Te identificas?",
+        "prob_title": "Los síntomas quenadie elimina del todo",
+        "prob1_icon": "🔥",
+        "prob1_title": "Ardor nocturno que aparece al acostarte",
+        "prob1_sub": "Cuando el cuerpo se calma, el dolor toma el control.",
+        "prob2_icon": "⚡",
+        "prob2_title": "Hormigueo y entumecimiento sin explicación",
+        "prob2_sub": "Tu médico lo llama neuropatía. Tú lo vives cada noche.",
+        "prob3_icon": "🪨",
+        "prob3_title": "Los primeros pasos de la mañana son tortura",
+        "prob3_sub": "Calculas cada movimiento antes de salir de la cama.",
+        "prob4_icon": "😤",
+        "prob4_title": "Ya probaste de todo y dura solo 10 minutos",
+        "prob4_sub": "Cremas, sales, plantillas. Alivio temporal. Problema permanente.",
+        "how_eyebrow": "Cómo funciona",
+        "how_title": "Triple terapia queataca las 3 causas",
+        "how_intro": "Las soluciones parciales solo atacan una causa. Calm Step EMS+ ataca las tres simultáneamente.",
+        "mech1_chip": "EMS · Circulación",
+        "mech1_title": "⚡ Estimulación Muscular",
+        "mech1_body": "Activa la bomba músculo-venosa de forma pasiva. Mejora el retorno circulatorio mientras estás sentado.",
+        "mech2_chip": "Calor · Tensión",
+        "mech2_title": "🌡 Calor Terapéutico",
+        "mech2_body": "Vasodilatación local y liberación de tensión muscular profunda. Calor directo donde más se necesita.",
+        "mech3_chip": "Compresión · Retorno",
+        "mech3_title": "◎ Compresión Activa",
+        "mech3_body": "Presión uniforme que apoya el retorno venoso y reduce la sensación de pesadez e hinchazón.",
+        "life_eyebrow": "En uso real",
+        "life_title": "15 minutos al día.Sentado. En casa.",
+        "life_cap1": "",
+        "life_cap2": "Paso 1 — Colócatelo cómodamente",
+        "life_cap3": "Paso 2 — Elige tu nivel y relájate",
+        "rev_eyebrow": "Reseñas de clientes",
+        "rev_title": "Lo que dicenquienes lo viven",
+        "rev1_name": "Silvia M. — Santiago",
+        "rev1_stars": "★★★★★",
+        "rev1_date": "Marzo 2025",
+        "rev1_text": "Cuatro años con ardor nocturno. A la tercera semana de uso empecé a dormirme antes de que apareciera el ardor. No desapareció todo, pero bajó muchísimo y volvió el descanso. Esto cambió mi vida.",
+        "rev2_name": "Héctor R. — Concepción",
+        "rev2_stars": "★★★★★",
+        "rev2_date": "Febrero 2025",
+        "rev2_text": "Diabetes tipo 2 y hormigueo en los pies desde hace tres años. Con el visto bueno de mi médico lo probé y en dos semanas ya notaba diferencia en las noches. Ahora es parte de mi rutina diaria.",
+        "rev3_name": "Carlos V. — Viña del Mar",
+        "rev3_stars": "★★★★☆",
+        "rev3_date": "Enero 2025",
+        "rev3_text": "Era completamente escéptico. Le di los 30 días de garantía. A la tercera semana algo cambió. El entumecimiento bajó de intensidad y sobre todo duermo mucho mejor. Eso ya justifica todo.",
+        "rev4_name": "Patricia G. — Temuco",
+        "rev4_stars": "★★★★★",
+        "rev4_date": "Enero 2025",
+        "rev4_text": "Enfermera de turno, 10 horas de pie al día. Llegaba a casa con los tobillos hinchados y ese dolor sordo constante. Desde que lo uso, la hinchazón baja notablemente. 20 minutos antes de dormir y listo.",
+        "rev5_name": "Jorge F. — Antofagasta",
+        "rev5_stars": "★★★★★",
+        "rev5_date": "Diciembre 2024",
+        "rev5_text": "Compré el pack familiar para que mi mamá también lo probara. Los dos notamos diferencia. Mi mamá tiene 67 años y llevaba años quejándose del entumecimiento. Ahora duerme sin interrupciones.",
+        "guar_eyebrow": "Sin riesgo",
+        "guar_icon": "🛡",
+        "guar_title": "Garantía total 30 días",
+        "guar_text": "Si en 30 días no notas diferencia, te devolvemos el 100% de tu dinero. Sin preguntas, sin formularios, sin letra pequeña.",
+        "guar_chip1": "30 días devolución",
+        "guar_chip2": "Sin suscripciones",
+        "guar_chip3": "Envío gratis",
+        "faq_eyebrow": "Preguntas frecuentes",
+        "faq_title": "Todo lo que necesitassaber",
+        "faq1_q": "¿Cuánto tarda en hacer efecto?",
+        "faq1_a": "La mayoría reporta cambios desde la 2ª o 3ª semana de uso diario. El alivio de cada sesión se siente desde el principio; el efecto acumulativo se construye con consistencia.",
+        "faq2_q": "¿Puedo usarlo si tengo diabetes?",
+        "faq2_a": "Si tienes pérdida de sensibilidad en los pies, consulta a tu médico antes de usar. Para diabetes sin pérdida de sensibilidad, muchos usuarios lo usan sin problemas comenzando en el nivel más bajo.",
+        "faq3_q": "¿Cuánto tiempo dura cada sesión?",
+        "faq3_a": "Sesiones de 15 a 20 minutos diarios. Puedes usarlo viendo televisión, leyendo o descansando — es completamente inalámbrico y portátil.",
+        "faq4_q": "¿Cómo funciona la garantía?",
+        "faq4_a": "Tienes 30 días desde que recibes el producto. Contáctanos por WhatsApp, coordinamos la devolución y te reembolsamos el 100%. Sin preguntas.",
+        "faq5_q": "¿Cuánto demora el envío?",
+        "faq5_a": "Envío gratis a todo Chile. Despacho en 24-48 horas hábiles con número de seguimiento. Entrega estimada: 3 a 5 días hábiles según región.",
+        "faq6_q": "",
+        "faq6_a": "",
+        "url_privacidad": "",
+        "url_terminos": "",
+        "url_devoluciones": "",
+        "whatsapp_numero": "1234567890",
+        "footer_copy": "© 2025 Calm Step EMS+. Todos los derechos reservados."
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product_recommendations_qggXJq",
+    "her_again_product_Gct4xx",
+    "calmstep_funnel_njwQUW"
+  ]
+}
