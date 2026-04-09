@@ -4,7 +4,7 @@
 :root{
   --ink:#0d0d0b;--ink2:#252520;--ink3:#4a4a44;--ink4:#8a8a82;--ink5:#b8b8b0;
   --white:#fff;--snow:#f9f8f6;--fog:#f3f1ed;--fog2:#e8e5de;--rule:#dedad2;--rule2:#c8c4ba;
-  --navy:#0f1f35;--navy2:#1a3050;
+  --nav{y:#0f1f35;--navy2:#1a3050;
   --gold:#b09060;--gold2:#c8aa78;
   --green:#1a7a3a;
   --red:#c0392b;
@@ -55,6 +55,11 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
 .cs-carousel-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2;}
 .cs-carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);border:none;padding:0;cursor:pointer;transition:background .2s,transform .2s;}
 .cs-carousel-dot.active{background:#fff;transform:scale(1.3);}
+.cs-carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.75);border:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;transition:background .2s;}
+.cs-carousel-arrow:hover{background:#fff;}
+.cs-carousel-arrow svg{width:16px;height:16px;stroke:var(--ink);fill:none;stroke-width:2.5;}
+.cs-carousel-arrow.prev{left:10px;}
+.cs-carousel-arrow.next{right:10px;}
 
 /* PRODUCT INFO */
 .product-info{padding:20px 16px 0;}
@@ -110,7 +115,7 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
 .cs-stock-msg.ok{color:var(--green);}
 
 /* BUTTONS */
-.btn-wrap{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.btn-wrap{display:flex;flex-direction:column;gap:2px;margin-bottom:14px;}
 .btn-cart{width:100%;padding:14px;border:2px solid var(--navy);background:var(--white);color:var(--navy);font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
 .btn-cart:hover,.btn-cart.loading{background:var(--navy);color:#fff;}
 .btn-buy{width:100%;padding:14px;border:none;background:var(--navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;}
@@ -265,6 +270,12 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
     <span class="hero-disc-badge">{{ section.settings.hero_badge }}</span>
   {%- endif -%}
   {%- if hero_images.size > 1 -%}
+    <button class="cs-carousel-arrow prev" onclick="csCarouselGoTo(window._csCarouselIdx - 1)" aria-label="Anterior">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="cs-carousel-arrow next" onclick="csCarouselGoTo(window._csCarouselIdx + 1)" aria-label="Siguiente">
+      <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
     <div class="cs-carousel-dots" id="cs-carousel-dots">
       {%- for img_key in hero_images -%}
         <button class="cs-carousel-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}" onclick="csCarouselGoTo({{ forloop.index0 }})"></button>
@@ -336,6 +347,7 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
       <div class="qty-card selected"
            data-qty="1"
            data-price="{{ section.settings.qty1_price }}"
+           data-variant-id="{{ section.settings.qty1_variant_id }}"
            onclick="csSelectQty(this)">
         <div class="qty-radio"></div>
         <div class="qty-info">
@@ -353,6 +365,7 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
       <div class="qty-card popular"
            data-qty="2"
            data-price="{{ section.settings.qty2_price }}"
+           data-variant-id="{{ section.settings.qty2_variant_id }}"
            onclick="csSelectQty(this)">
         {%- if section.settings.qty2_badge != blank -%}
           <div class="qty-badge">{{ section.settings.qty2_badge }}</div>
@@ -376,6 +389,7 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
       <div class="qty-card"
            data-qty="4"
            data-price="{{ section.settings.qty3_price }}"
+           data-variant-id="{{ section.settings.qty3_variant_id }}"
            onclick="csSelectQty(this)">
         <div class="qty-radio"></div>
         <div class="qty-info">
@@ -401,10 +415,10 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
       <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
       {{ section.settings.btn_cart_text }}
     </button>
-    <div class="btn-feedback" id="cs-cart-feedback"></div>
     <button class="btn-buy" id="cs-btn-buy">
       {{ section.settings.btn_buy_text }}
     </button>
+    <div class="btn-feedback" id="cs-cart-feedback"></div>
   </div>
 
   <!-- PAYMENT -->
@@ -740,10 +754,17 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
   csApplyVariant();
 
   // ── QTY SELECT ──
+  // _bundleVariantId: si la opción de qty tiene su propia variante de bundle en Shopify,
+  // se usa esa variante con quantity=1 para respetar el precio del pack.
+  // Si no tiene variante de bundle, se usa la variante seleccionada × cantidad.
+  var _bundleVariantId = null;
+
   window.csSelectQty = function(el){
     document.querySelectorAll('.qty-card').forEach(function(c){ c.classList.remove('selected'); });
     el.classList.add('selected');
     _selectedQty = parseInt(el.getAttribute('data-qty')) || 1;
+    var bundleVid = el.getAttribute('data-variant-id');
+    _bundleVariantId = (bundleVid && bundleVid !== '') ? parseInt(bundleVid) : null;
     var price = el.getAttribute('data-price');
     var priceEl = document.getElementById('cs-price-display');
     var stickyEl = document.getElementById('cs-sticky-price');
@@ -764,7 +785,11 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
 
   // ── ADD TO CART ──
   function addToCart(){
-    if(!_variantId || _variantId === 'null'){
+    // Si hay variante de bundle, la mandamos con qty=1 (el precio ya está en la variante).
+    // Si no, mandamos la variante seleccionada con la cantidad elegida.
+    var cartId = _bundleVariantId || _variantId;
+    var cartQty = _bundleVariantId ? 1 : _selectedQty;
+    if(!cartId || cartId === 'null'){
       window.location.href = '/cart';
       return;
     }
@@ -776,7 +801,7 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
     fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ id: _variantId, quantity: _selectedQty })
+      body: JSON.stringify({ id: cartId, quantity: cartQty })
     })
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -800,11 +825,13 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
 
   // ── BUY NOW ──
   function goCheckout(){
-    if(!_variantId || _variantId === 'null'){
+    var cartId = _bundleVariantId || _variantId;
+    var cartQty = _bundleVariantId ? 1 : _selectedQty;
+    if(!cartId || cartId === 'null'){
       window.location.href = '/checkout';
       return;
     }
-    window.location.href = '/cart/' + _variantId + ':' + _selectedQty;
+    window.location.href = '/cart/' + cartId + ':' + cartQty;
   }
 
   // ── BIND BUTTONS ──
@@ -833,9 +860,11 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
     var total = slides.length;
     if(total < 2) return;
     var current = 0;
+    window._csCarouselIdx = 0;
 
     function goTo(idx){
       current = (idx + total) % total;
+      window._csCarouselIdx = current;
       track.style.transform = 'translateX(-' + (current * 100) + '%)';
       document.querySelectorAll('.cs-carousel-dot').forEach(function(d, i){
         d.classList.toggle('active', i === current);
@@ -926,19 +955,22 @@ body{background:var(--white);color:var(--ink);font-family:'Mulish',sans-serif;fo
     { "type": "text", "id": "qty_label", "label": "Etiqueta selector", "default": "Elige tu cantidad" },
     { "type": "text", "id": "qty1_title", "label": "Opción 1 — Título", "default": "1 Unidad" },
     { "type": "text", "id": "qty1_subtitle", "label": "Opción 1 — Subtítulo", "default": "Para ti — empieza hoy" },
-    { "type": "text", "id": "qty1_price", "label": "Opción 1 — Precio", "default": "$39.980" },
+    { "type": "text", "id": "qty1_price", "label": "Opción 1 — Precio (visual)", "default": "$39.980" },
     { "type": "text", "id": "qty1_per", "label": "Opción 1 — Precio por unidad", "default": "c/u · CLP" },
+    { "type": "text", "id": "qty1_variant_id", "label": "Opción 1 — ID de variante Shopify", "info": "Copia el ID numérico de la variante desde Admin → Productos → [Producto] → variante. Ej: 44123456789" },
     { "type": "text", "id": "qty2_title", "label": "Opción 2 — Título", "default": "2 Unidades" },
     { "type": "text", "id": "qty2_subtitle", "label": "Opción 2 — Subtítulo", "default": "Para ti y quien más quieres" },
-    { "type": "text", "id": "qty2_price", "label": "Opción 2 — Precio", "default": "$54.980" },
+    { "type": "text", "id": "qty2_price", "label": "Opción 2 — Precio (visual)", "default": "$54.980" },
     { "type": "text", "id": "qty2_per", "label": "Opción 2 — Precio por unidad", "default": "$27.490 c/u" },
     { "type": "text", "id": "qty2_save", "label": "Opción 2 — Ahorro", "default": "Ahorras $24.980" },
     { "type": "text", "id": "qty2_badge", "label": "Opción 2 — Badge (ej: Más popular)", "default": "Más popular" },
+    { "type": "text", "id": "qty2_variant_id", "label": "Opción 2 — ID de variante Shopify (pack 2)", "info": "Variante con el precio del pack ya configurado en Shopify. Ej: 44123456790" },
     { "type": "text", "id": "qty3_title", "label": "Opción 3 — Título", "default": "Pack Familiar · 4 und." },
     { "type": "text", "id": "qty3_subtitle", "label": "Opción 3 — Subtítulo", "default": "El mejor precio por unidad" },
-    { "type": "text", "id": "qty3_price", "label": "Opción 3 — Precio", "default": "$92.980" },
+    { "type": "text", "id": "qty3_price", "label": "Opción 3 — Precio (visual)", "default": "$92.980" },
     { "type": "text", "id": "qty3_per", "label": "Opción 3 — Precio por unidad", "default": "$23.245 c/u" },
     { "type": "text", "id": "qty3_save", "label": "Opción 3 — Ahorro", "default": "Ahorras $66.940" },
+    { "type": "text", "id": "qty3_variant_id", "label": "Opción 3 — ID de variante Shopify (pack 4)", "info": "Variante con el precio del pack ya configurado en Shopify. Ej: 44123456791" },
     {
       "type": "header",
       "content": "🛒 Botones"
