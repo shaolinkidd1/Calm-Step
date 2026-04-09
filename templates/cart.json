@@ -18,7 +18,7 @@
           "settings": {
             "title": "Carrito",
             "show_count": true,
-            "type_preset": "h3",
+            "type_preset": "h4",
             "alignment": "left",
             "padding-block-start": 22,
             "padding-block-end": 0,
