@@ -568,6 +568,19 @@
         "url_devoluciones": "",
         "whatsapp_numero": "1234567890"
       }
+    },
+    "funnel_page_EQee3t": {
+      "type": "funnel-page",
+      "name": "Calm Step Funnel",
+      "settings": {
+        "cta_url": "",
+        "checkout_url": "",
+        "url_tienda": "",
+        "url_privacidad": "",
+        "url_terminos": "",
+        "url_devoluciones": "",
+        "whatsapp_numero": "1234567890"
+      }
     }
   },
   "order": [
@@ -575,6 +588,7 @@
     "product_recommendations_qggXJq",
     "her_again_product_Gct4xx",
     "calmstep_funnel_PEr7hX",
-    "funnel_page_gPDgWp"
+    "funnel_page_gPDgWp",
+    "funnel_page_EQee3t"
   ]
 }
