@@ -1,0 +1,671 @@
+{%- assign sr = section.id -%}
+
+<style>
+#slrev-{{ sr }} {
+  --lavender: #C8B8E8;
+  --lavender-light: #E8DFF5;
+  --lavender-bg: #EDE6F7;
+  --black: #0A0A0A;
+  --white: #FFFFFF;
+  --gray-light: #F5F3F0;
+  --gray-mid: #888;
+  --gray-dark: #333;
+  --border: #E0DCE8;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
+  color: var(--black);
+}
+#slrev-{{ sr }} .sl-reviews-section { border-top: 1px solid var(--border); max-width: 1200px; margin: 0 auto; padding: 50px 40px; }
+#slrev-{{ sr }} .sl-stars { color: #F5A623; font-size: 16px; letter-spacing: 2px; }
+#slrev-{{ sr }} .sl-rating-line { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+#slrev-{{ sr }} .sl-rating-line-label { font-size: 13px; width: 20px; }
+#slrev-{{ sr }} .sl-rating-bar-wrap { flex: 1; height: 6px; background: var(--gray-light); border-radius: 3px; overflow: hidden; }
+#slrev-{{ sr }} .sl-rating-bar { height: 100%; background: var(--black); border-radius: 3px; }
+#slrev-{{ sr }} .sl-rating-line-count { font-size: 12px; color: var(--gray-mid); width: 30px; text-align: right; }
+#slrev-{{ sr }} .sl-review-card { display: grid; grid-template-columns: 180px 1fr auto; gap: 30px; padding: 32px 0; border-bottom: 1px solid var(--border); align-items: start; }
+#slrev-{{ sr }} .sl-reviewer-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+#slrev-{{ sr }} .sl-reviewer-badge { font-size: 11px; color: var(--gray-mid); margin-bottom: 10px; }
+#slrev-{{ sr }} .sl-review-product-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 6px; }
+#slrev-{{ sr }} .sl-review-age { font-size: 12px; color: var(--gray-mid); }
+#slrev-{{ sr }} .sl-review-stars { color: #F5A623; font-size: 13px; margin-bottom: 8px; }
+#slrev-{{ sr }} .sl-review-date { font-size: 12px; color: var(--gray-mid); margin-bottom: 10px; }
+#slrev-{{ sr }} .sl-review-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+#slrev-{{ sr }} .sl-review-body { font-size: 13px; line-height: 1.7; color: var(--gray-dark); }
+#slrev-{{ sr }} .sl-read-more { font-size: 12px; font-weight: 600; color: var(--gray-mid); cursor: pointer; margin-top: 6px; display: block; }
+#slrev-{{ sr }} .sl-review-helpful { font-size: 12px; color: var(--gray-mid); display: flex; gap: 8px; align-items: center; margin-top: 14px; }
+#slrev-{{ sr }} .sl-helpful-btn { padding: 4px 10px; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; background: var(--white); font-size: 11px; }
+#slrev-{{ sr }} .sl-review-photos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+#slrev-{{ sr }} .sl-review-photo { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; background: var(--gray-light); }
+#slrev-{{ sr }} .sl-brand-response { display: flex; gap: 14px; margin-top: 16px; padding: 16px; background: var(--gray-light); border-radius: 4px; }
+#slrev-{{ sr }} .sl-brand-avatar { width: 32px; height: 32px; background: var(--lavender); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+#slrev-{{ sr }} .sl-brand-response-text { font-size: 12px; line-height: 1.6; color: var(--gray-dark); }
+#slrev-{{ sr }} .sl-brand-response-name { font-weight: 600; margin-bottom: 4px; font-size: 12px; }
+#slrev-{{ sr }} .sl-featured-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--gray-mid); margin-top: 12px; }
+#slrev-{{ sr }} .sl-featured-tag::before { content: '«'; font-size: 14px; }
+
+@media (max-width: 768px) {
+  #slrev-{{ sr }} .sl-reviews-section { padding: 36px 16px; }
+  #slrev-{{ sr }} .sl-review-card { grid-template-columns: 1fr; gap: 10px; }
+  #slrev-{{ sr }} .sl-review-photos-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+<div id="slrev-{{ sr }}">
+  <div class="sl-reviews-section">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:30px;margin-bottom:20px">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:1">{{ section.settings.recommend_pct | default: '88%' }}</span>
+        </div>
+        <div style="font-size:13px;color:var(--gray-dark);margin-bottom:12px">recomendarían este producto</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="sl-stars">★★★★½</span>
+          <span style="font-size:13px;color:var(--gray-mid)">{{ section.settings.review_score | default: '4.5' }} · Basado en {{ section.settings.review_count | default: '1.223' }} reseñas*</span>
+        </div>
+      </div>
+      <div style="min-width:220px">
+        <div class="sl-rating-line"><span class="sl-rating-line-label">5</span><div class="sl-rating-bar-wrap"><div class="sl-rating-bar" style="width:80%"></div></div><span class="sl-rating-line-count">985</span></div>
+        <div class="sl-rating-line"><span class="sl-rating-line-label">4</span><div class="sl-rating-bar-wrap"><div class="sl-rating-bar" style="width:7%"></div></div><span class="sl-rating-line-count">91</span></div>
+        <div class="sl-rating-line"><span class="sl-rating-line-label">3</span><div class="sl-rating-bar-wrap"><div class="sl-rating-bar" style="width:3%"></div></div><span class="sl-rating-line-count">40</span></div>
+        <div class="sl-rating-line"><span class="sl-rating-line-label">2</span><div class="sl-rating-bar-wrap"><div class="sl-rating-bar" style="width:3%"></div></div><span class="sl-rating-line-count">39</span></div>
+        <div class="sl-rating-line"><span class="sl-rating-line-label">1</span><div class="sl-rating-bar-wrap"><div class="sl-rating-bar" style="width:5%"></div></div><span class="sl-rating-line-count">68</span></div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;color:var(--gray-mid);margin-bottom:30px;line-height:1.5">*¡Mismo producto, nuevo packaging! Desde su lanzamiento original, el packaging se ha actualizado, pero la fórmula reseñada es la misma.</div>
+    <div style="display:flex;gap:16px;margin-bottom:30px;border-bottom:1px solid var(--border);padding-bottom:16px">
+      <span style="font-size:14px;font-weight:600;border-bottom:2px solid var(--black);padding-bottom:2px">Reseñas ({{ section.settings.review_count | default: '1.223' }})</span>
+    </div>
+
+    <!-- Review 1 -->
+    <div class="sl-review-card">
+      <div>
+        <div class="sl-reviewer-name">Charlene</div>
+        <div class="sl-reviewer-badge">Compradora Verificada</div>
+        <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+        <div class="sl-review-age">Rango de edad: 46–64</div>
+      </div>
+      <div>
+        <div class="sl-review-stars">★★★★★</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="sl-review-title">¡Realmente funciona!</div>
+          <div class="sl-review-date">7 meses atrás</div>
+        </div>
+        <div class="sl-review-body">No soy principiante, soy una experta en acné. Lo he sufrido toda mi vida y después de la menopausia empeoró. Sé que es hormonal. Cuando probé este producto tenía la plena expectativa de que sería otro fracaso en una larga lista de fracasos. Pero maldición si no funciona. No sé qué brujería hay en esto...</div>
+        <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 45</button> <button class="sl-helpful-btn">👎 0</button></div>
+        <div class="sl-featured-tag">Destacada</div>
+        <div class="sl-brand-response">
+          <div class="sl-brand-avatar">SF</div>
+          <div>
+            <div class="sl-brand-response-name">{{ section.settings.product_name | default: 'SKINFLOW' }}</div>
+            <div class="sl-brand-response-text">Hola! MUCHAS GRACIAS por tomarte el tiempo de compartir tu experiencia. Estamos muy felices de que estés amando tus resultados. Siempre en tu esquina, El equipo SF</div>
+          </div>
+        </div>
+      </div>
+      {%- if section.settings.rev_1_photo_1 != blank or section.settings.rev_1_photo_2 != blank -%}
+      <div class="sl-review-photos-grid">
+        {%- if section.settings.rev_1_photo_1 != blank -%}
+          <img class="sl-review-photo" src="{{ section.settings.rev_1_photo_1 | image_url: width: 200 }}" loading="eager" alt="">
+        {%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}
+        {%- if section.settings.rev_1_photo_2 != blank -%}
+          <img class="sl-review-photo" src="{{ section.settings.rev_1_photo_2 | image_url: width: 200 }}" loading="eager" alt="">
+        {%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}
+      </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Review 2 -->
+    <div class="sl-review-card">
+      <div>
+        <div class="sl-reviewer-name">Lucía</div>
+        <div class="sl-reviewer-badge">Compradora Verificada</div>
+        <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+        <div class="sl-review-age">Rango de edad: 18–24</div>
+      </div>
+      <div>
+        <div class="sl-review-stars">★★★★★</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="sl-review-title">Mi salvavidas</div>
+          <div class="sl-review-date">8 meses atrás</div>
+        </div>
+        <div class="sl-review-body">He hecho todo lo que puedes imaginar para deshacerme de mi acné desde que tenía 10 años. Ahora tengo 22. SKINFLOW no fue la cura total. Pero fue el complemento que me faltaba — junto con identificar mis desencadenantes alimenticios y revisar mis productos.</div>
+        <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 103</button> <button class="sl-helpful-btn">👎 3</button></div>
+        <div class="sl-featured-tag">Destacada</div>
+      </div>
+      {%- if section.settings.rev_2_photo_1 != blank or section.settings.rev_2_photo_2 != blank -%}
+      <div class="sl-review-photos-grid">
+        {%- if section.settings.rev_2_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_2_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}
+        {%- if section.settings.rev_2_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_2_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}
+      </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Review 3 -->
+    <div class="sl-review-card">
+      <div>
+        <div class="sl-reviewer-name">Mayka L.</div>
+        <div class="sl-reviewer-badge">Compradora Verificada</div>
+        <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+        <div class="sl-review-age">Rango de edad: 25–35</div>
+      </div>
+      <div>
+        <div class="sl-review-stars">★★★★★</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="sl-review-title">¡¡¡¡¡Funciona!!!!!</div>
+          <div class="sl-review-date">9 meses atrás</div>
+        </div>
+        <div class="sl-review-body">He sufrido de acné hormonal por 14 años. Probé millones de cosas, fui a dermatólogos, tomé medicamentos recetados y nada me quitó el acné hasta que llegué a este producto. Llevo aproximadamente tres meses usándolo y mi piel cambió drásticamente. Soy una usuaria permanente.</div>
+        <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 39</button> <button class="sl-helpful-btn">👎 4</button></div>
+        <div class="sl-featured-tag">Destacada</div>
+      </div>
+      {%- if section.settings.rev_3_photo_1 != blank or section.settings.rev_3_photo_2 != blank -%}
+      <div class="sl-review-photos-grid">
+        {%- if section.settings.rev_3_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_3_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}
+        {%- if section.settings.rev_3_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_3_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}
+      </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Review 4 -->
+    <div class="sl-review-card">
+      <div>
+        <div class="sl-reviewer-name">Ashley T.</div>
+        <div class="sl-reviewer-badge">Compradora Verificada</div>
+        <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+        <div class="sl-review-age">Rango de edad: 36–45</div>
+      </div>
+      <div>
+        <div class="sl-review-stars">★★★★★</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="sl-review-title">¡Cambió las reglas del juego!</div>
+          <div class="sl-review-date">5 días atrás</div>
+        </div>
+        <div class="sl-review-body">Esto ha sido un cambio absoluto de reglas del juego para mi cara. Nada había funcionado antes. Me voy a suscribir todos los meses.</div>
+        <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 0</button> <button class="sl-helpful-btn">👎 0</button></div>
+      </div>
+      {%- if section.settings.rev_4_photo_1 != blank or section.settings.rev_4_photo_2 != blank -%}
+      <div class="sl-review-photos-grid">
+        {%- if section.settings.rev_4_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_4_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}
+        {%- if section.settings.rev_4_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_4_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}
+      </div>
+      {%- else -%}<div></div>{%- endif -%}
+    </div>
+
+    <!-- BATCH 2 — hidden until first click -->
+    <div id="slrev-b2-{{ sr }}" style="display:none">
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Valentina R.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 25–35</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">Fin al acné de ciclo</div>
+            <div class="sl-review-date">4 meses atrás</div>
+          </div>
+          <div class="sl-review-body">Llevaba años con brotes cada vez que me bajaba la regla. Probé anticonceptivos, antibióticos tópicos, ácido salicílico... nada atacaba el tema de raíz. Con SKINFLOW mis brotes bajaron un 80% aprox. Tercer mes y mi dermatóloga me preguntó qué había hecho diferente. Eso lo dice todo po.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 28</button> <button class="sl-helpful-btn">👎 1</button></div>
+        </div>
+        {%- if section.settings.rev_5_photo_1 != blank or section.settings.rev_5_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_5_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_5_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_5_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_5_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Camila F.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 18–24</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">No lo podía creer</div>
+            <div class="sl-review-date">3 meses atrás</div>
+          </div>
+          <div class="sl-review-body">Tenía súper bajas expectativas porque ya había probado de todo. Pero mi mamá me lo regaló y decidí darle una oportunidad. Al mes y medio noté que los granos de la quijada —los hormonales clásicos— ya no aparecían. Ahora voy en el cuarto mes y mi piel está lo mejor que ha estado en años. Mil gracias.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 67</button> <button class="sl-helpful-btn">👎 2</button></div>
+        </div>
+        {%- if section.settings.rev_6_photo_1 != blank or section.settings.rev_6_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_6_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_6_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_6_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_6_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Francisca M.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 36–45</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">Perfecta para el acné post-anticonceptivos</div>
+            <div class="sl-review-date">5 meses atrás</div>
+          </div>
+          <div class="sl-review-body">Dejé las pastillas anticonceptivas después de 8 años y me vino una explosión de acné hormonal horrible. Una amiga me recomendó SKINFLOW y en 6 semanas empezó a calmarse. Ahora llevo 4 meses y mi piel está increíble. Es lo único que me ayudó en esa transición tan difícil.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 44</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_7_photo_1 != blank or section.settings.rev_7_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_7_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_7_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_7_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_7_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Isidora K.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 18–24</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">Wena compra, lo recomiendo</div>
+            <div class="sl-review-date">2 meses atrás</div>
+          </div>
+          <div class="sl-review-body">Compré medio escéptica porque es suplemento y no crema. Pero tiene sentido que si el acné es hormonal hay que atacarlo desde adentro. El primer mes no pasó mucho, pero el segundo me di cuenta que ya no me despertaba con granos nuevos. Ahora en el tercero mi piel está lisa. Seguiré comprando.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 19</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_8_photo_1 != blank or section.settings.rev_8_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_8_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_8_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_8_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_8_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Patricia G.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 46–64</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">Nunca pensé que a mi edad tendría acné</div>
+            <div class="sl-review-date">6 meses atrás</div>
+          </div>
+          <div class="sl-review-body">Entré a la perimenopausia y de la nada me salieron brotes que no tuve ni de joven. Mi dermatóloga me recomendó medicamentos fuertes pero quería probar algo más natural primero. Con SKINFLOW en 8 semanas mis brotes bajaron notablemente. Muy agradecida con este producto.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 31</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_9_photo_1 != blank or section.settings.rev_9_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_9_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_9_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_9_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_9_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+    </div>
+
+    <!-- BATCH 3 — hidden until second click -->
+    <div id="slrev-b3-{{ sr }}" style="display:none">
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Daniela S.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 25–35</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">El mejor producto que he comprado el último año</div>
+            <div class="sl-review-date">7 meses atrás</div>
+          </div>
+          <div class="sl-review-body">Llevo 5 años lidiando con acné quístico en la quijada y mejillas. Gasté fortunas en tratamientos. SKINFLOW no es magia pero sí es consistente: con 2 cápsulas al día y paciencia el resultado llega. Mi piel nunca había estado así de tranquila. Vale cada peso.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 52</button> <button class="sl-helpful-btn">👎 1</button></div>
+        </div>
+        {%- if section.settings.rev_10_photo_1 != blank or section.settings.rev_10_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_10_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_10_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_10_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_10_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Sofía A.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 18–24</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">Funcionó cuando nada más funcionó</div>
+            <div class="sl-review-date">3 meses atrás</div>
+          </div>
+          <div class="sl-review-body">Me lo recomendaron en un foro y pensé que era propaganda pero estaba desesperada. Dos meses de uso y los brotes hormonales de mi quijada desaparecieron casi del todo. Sigo con mi rutina de skincare normal pero esto marcó la diferencia. Súper recomendado.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 38</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_11_photo_1 != blank or section.settings.rev_11_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_11_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_11_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_11_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_11_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Antonia V.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 25–35</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">Perfecta para el acné por estrés</div>
+            <div class="sl-review-date">4 meses atrás</div>
+          </div>
+          <div class="sl-review-body">Trabajo en una empresa muy exigente y cada vez que me estresaba me llenaba de granos en la frente y quijada. Empecé SKINFLOW en octubre y para diciembre —el mes más caótico del año— mi piel estaba sorprendentemente bien. Claramente ayuda con la parte del cortisol. Gran producto.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 24</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_12_photo_1 != blank or section.settings.rev_12_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_12_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_12_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_12_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_12_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Macarena O.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 36–45</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">Cumplo 3 meses y esto es real</div>
+            <div class="sl-review-date">1 mes atrás</div>
+          </div>
+          <div class="sl-review-body">Los primeros días no pasa nada, hay que tener paciencia. Al mes y medio noté una mejoría real. Ahora voy en tres meses y mi piel está más pareja, menos inflamada, y los granitos hormonales prácticamente desaparecieron. Lo recomiendo con los ojos cerrados.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 41</button> <button class="sl-helpful-btn">👎 2</button></div>
+        </div>
+        {%- if section.settings.rev_13_photo_1 != blank or section.settings.rev_13_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_13_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_13_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_13_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_13_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div>
+          <div class="sl-reviewer-name">Renata P.</div>
+          <div class="sl-reviewer-badge">Compradora Verificada</div>
+          <div class="sl-review-product-tag">{{ section.settings.product_name | default: 'SKINFLOW®' }} Suplemento<br>Acné Hormonal</div>
+          <div class="sl-review-age">Rango de edad: 25–35</div>
+        </div>
+        <div>
+          <div class="sl-review-stars">★★★★☆</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="sl-review-title">Resultados reales, hay que ser constante</div>
+            <div class="sl-review-date">2 meses atrás</div>
+          </div>
+          <div class="sl-review-body">Soy muy escéptica con los suplementos pero este tiene ingredientes con respaldo real. Lo tomé junto con mi dermatóloga y me dijo que los resultados eran consistentes con lo esperado. Dos meses y mi piel hormonal mejoró mucho, especialmente las semanas previas al período. Le bajo una estrella porque hay que ser muy constante — si te olvidas días seguidos se nota.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 17</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_14_photo_1 != blank or section.settings.rev_14_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_14_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_14_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_14_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_14_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+    </div>
+
+    <!-- BATCH 4 -->
+    <div id="slrev-b4-{{ sr }}" style="display:none">
+      {%- assign _pn = section.settings.product_name | default: 'SKINFLOW®' -%}
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Javiera C.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 18–24</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Me lo recomendó mi nutricionista</div><div class="sl-review-date">5 meses atrás</div></div>
+          <div class="sl-review-body">Mi nutricionista me explicó que el acné hormonal tiene mucho que ver con el intestino y el hígado. Me recomendó SKINFLOW porque ataca esas dos cosas. Empecé a los 20 años con brotes constantes en la quijada y frente. Dos meses después de tomarlo, mis brotes se redujeron un montón. Lo sigo tomando y lo recomiendo a todas mis amigas.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 33</button> <button class="sl-helpful-btn">👎 1</button></div>
+        </div>
+        {%- if section.settings.rev_15_photo_1 != blank or section.settings.rev_15_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_15_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_15_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_15_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_15_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Constanza B.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 25–35</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Acné post-parto: solucionado</div><div class="sl-review-date">6 meses atrás</div></div>
+          <div class="sl-review-body">Después de tener a mi hijo me salió un acné horrible que nunca había tenido. Mi ginecóloga me dijo que era el desajuste hormonal post-parto. Probé cremas, cambié mi rutina y nada. Una amiga me habló de SKINFLOW y lo probé. En 6 semanas ya se notaba la diferencia. Hoy mi piel está tranquila y yo feliz. Ojalá lo hubiera encontrado antes.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 57</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_16_photo_1 != blank or section.settings.rev_16_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_16_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_16_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_16_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_16_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Catalina H.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 36–45</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Llevaba 3 años buscando solución</div><div class="sl-review-date">4 meses atrás</div></div>
+          <div class="sl-review-body">Tres años probando de todo sin resultado. Retinoides, antibióticos, cambios de dieta. Algo siempre faltaba. SKINFLOW lo encontré por Instagram y con el escepticismo a mil lo compré igual. Mes y medio y ya notaba mejoría real. Hoy mis colegas me preguntan qué hice diferente. El secreto es la constancia y este producto.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 46</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_17_photo_1 != blank or section.settings.rev_17_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_17_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_17_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_17_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_17_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Gabriela T.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 25–35</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">No sabía que necesitaba esto</div><div class="sl-review-date">3 meses atrás</div></div>
+          <div class="sl-review-body">Toda mi vida con acné en el mentón y nunca nadie me habló del componente hormonal. Pensé que era solo piel grasa. Una amiga me hizo el click y empecé a investigar. SKINFLOW ataca exactamente eso. Primer mes de adaptación, segundo mes ya empezaron los cambios. Ahora mi quijada está limpia por primera vez desde los 14 años. Fue altiro la diferencia.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 22</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_18_photo_1 != blank or section.settings.rev_18_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_18_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_18_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_18_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_18_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Beatriz N.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 46–64</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Mi hija me lo recomendó y tenía razón</div><div class="sl-review-date">2 meses atrás</div></div>
+          <div class="sl-review-body">Tengo 52 años y nunca imaginé que iba a tener acné. Con los cambios hormonales de la menopausia me aparecieron brotes que no sé de dónde salieron. Mi hija lleva meses usando SKINFLOW y me lo recomendó. Pensé que era para jóvenes pero no — funciona igual para adultas. Dos meses y mis brotes casi desaparecieron. Le estoy muy agradecida a mi hija por la recomendación.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 35</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_19_photo_1 != blank or section.settings.rev_19_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_19_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_19_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_19_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_19_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+    </div>
+
+    <!-- BATCH 5 -->
+    <div id="slrev-b5-{{ sr }}" style="display:none">
+      {%- assign _pn = section.settings.product_name | default: 'SKINFLOW®' -%}
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Andrea M.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 25–35</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Con mi rutina de skincare, la combinación perfecta</div><div class="sl-review-date">7 meses atrás</div></div>
+          <div class="sl-review-body">Ya tenía una buena rutina de skincare pero algo seguía fallando: los brotes del ciclo siempre aparecían. Empecé SKINFLOW y en el segundo mes casi no tuve brotes premenstruales. La combinación de atacar desde adentro y cuidar desde afuera es la clave. Ahora mi piel está en el mejor momento de mi vida adulta.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 48</button> <button class="sl-helpful-btn">👎 1</button></div>
+        </div>
+        {%- if section.settings.rev_20_photo_1 != blank or section.settings.rev_20_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_20_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_20_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_20_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_20_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Pilar V.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 36–45</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">El acné del mentón ya no existe en mi vida</div><div class="sl-review-date">5 meses atrás</div></div>
+          <div class="sl-review-body">Granos profundos en el mentón, los más dolorosos y difíciles de tratar. Los tenía desde los 25 años y ya me había resignado. SKINFLOW me lo recomendó una amiga que tiene PCOS y le funcionó increíble. A mí también: a los dos meses mis brotes en el mentón bajaron dramáticamente. Hoy sin granos en esa zona por primera vez en 15 años. Gracias.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 61</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_21_photo_1 != blank or section.settings.rev_21_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_21_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_21_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_21_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_21_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Fernanda R.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 18–24</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Estudiando y sin granitos, al fin</div><div class="sl-review-date">3 meses atrás</div></div>
+          <div class="sl-review-body">Estoy en tercer año de universidad y el estrés de los exámenes me reventaba la piel siempre. Finales, brotes. Presentaciones, brotes. Descubrí SKINFLOW y lo empecé a tomar de forma constante. Este semestre fue el más exigente y también el que menos brotes tuve. No sé si es placebo pero tampoco me importa, el resultado está ahí.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 29</button> <button class="sl-helpful-btn">👎 2</button></div>
+        </div>
+        {%- if section.settings.rev_22_photo_1 != blank or section.settings.rev_22_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_22_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_22_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_22_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_22_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Karina L.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 36–45</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Lo compré para mi hija y lo terminé usando yo también</div><div class="sl-review-date">4 meses atrás</div></div>
+          <div class="sl-review-body">Mi hija de 19 tenía acné hormonal complicado. Le compré SKINFLOW y en dos meses su piel mejoró notablemente. En eso me di cuenta que yo también tenía brotes que atribuía al estrés laboral. Me animé a tomarlo y en 6 semanas mi piel también mejoró. Ahora las dos lo tomamos juntas. Un gran descubrimiento para toda la familia.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 73</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_23_photo_1 != blank or section.settings.rev_23_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_23_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_23_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_23_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_23_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Magdalena A.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 25–35</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Primera vez que un suplemento me hace efecto real</div><div class="sl-review-date">2 meses atrás</div></div>
+          <div class="sl-review-body">He probado colágeno, zinc, vitamina C, omega-3... nada impactaba mi piel. SKINFLOW es el primero que siento que realmente hace algo. A partir de la semana 5 empecé a notar que mis granos hormonales ya no aparecían con tanta fuerza. Ahora el ciclo pasa y prácticamente sin brotes. Convencida al cien.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 44</button> <button class="sl-helpful-btn">👎 1</button></div>
+        </div>
+        {%- if section.settings.rev_24_photo_1 != blank or section.settings.rev_24_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_24_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_24_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_24_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_24_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+    </div>
+
+    <!-- BATCH 6 -->
+    <div id="slrev-b6-{{ sr }}" style="display:none">
+      {%- assign _pn = section.settings.product_name | default: 'SKINFLOW®' -%}
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Javiera P.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 25–35</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Con SOP esto ayuda muchísimo</div><div class="sl-review-date">8 meses atrás</div></div>
+          <div class="sl-review-body">Tengo SOP diagnosticado y el acné era uno de mis síntomas más difíciles de controlar. Mi endocrinóloga me dijo que podía complementar con algo natural y SKINFLOW me lo recomendó una amiga con el mismo diagnóstico. Los ingredientes tienen sentido para el SOP: DIM, cúrcuma, diente de león. A los 2 meses mi piel mejoró visiblemente. No reemplaza el tratamiento pero lo complementa muy bien.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 89</button> <button class="sl-helpful-btn">👎 2</button></div>
+        </div>
+        {%- if section.settings.rev_25_photo_1 != blank or section.settings.rev_25_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_25_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_25_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_25_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_25_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Rocío G.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 18–24</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Pensé que era solo para adultas y no</div><div class="sl-review-date">4 meses atrás</div></div>
+          <div class="sl-review-body">Tengo 21 años y al principio pensé que el acné hormonal era cosa de mujeres más grandes. Pero resulta que el desbalance hormonal ocurre a cualquier edad. Empecé SKINFLOW recomendada por mi dermatóloga y en 7 semanas mis brotes de ciclo bajaron un montón. Ahora lo recomiendo a todas mis compañeras de universidad. Ojala lo hubiera sabido antes.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 37</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_26_photo_1 != blank or section.settings.rev_26_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_26_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_26_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_26_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_26_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Lorena F.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 36–45</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Natural y efectivo, exactamente lo que buscaba</div><div class="sl-review-date">6 meses atrás</div></div>
+          <div class="sl-review-body">No quería seguir tomando medicamentos con efectos secundarios. Buscaba algo natural con base científica real y SKINFLOW cumplió. Investigué sus ingredientes antes de comprarlo y tienen mucho respaldo. Resultado a las 8 semanas: piel más calmada, menos inflamación y brotes mínimos. Por fin una solución que va en línea con cómo quiero cuidar mi cuerpo.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 53</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_27_photo_1 != blank or section.settings.rev_27_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_27_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_27_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_27_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_27_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Pía C.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 25–35</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Mi piel antes del período ya no explota</div><div class="sl-review-date">3 meses atrás</div></div>
+          <div class="sl-review-body">Antes de mi período era predecible: 5–7 días antes aparecían granos en la quijada y frente, sin falta. Era mi ciclo hormonal clásico. Con SKINFLOW ese patrón se rompió. Primer ciclo tomándolo: algunos brotes igual. Segundo ciclo: casi nada. Tercer ciclo: mi piel pasó intacta. No puedo creerlo todavía. Feliz y agradecida.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 66</button> <button class="sl-helpful-btn">👎 1</button></div>
+        </div>
+        {%- if section.settings.rev_28_photo_1 != blank or section.settings.rev_28_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_28_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_28_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#BBA8D5"></div>{%- endif -%}{%- if section.settings.rev_28_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_28_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+      <div class="sl-review-card">
+        <div><div class="sl-reviewer-name">Isabel M.</div><div class="sl-reviewer-badge">Compradora Verificada</div><div class="sl-review-product-tag">{{ _pn }} Suplemento<br>Acné Hormonal</div><div class="sl-review-age">Rango de edad: 46–64</div></div>
+        <div>
+          <div class="sl-review-stars">★★★★★</div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="sl-review-title">Mi ginecóloga lo aprobó</div><div class="sl-review-date">5 meses atrás</div></div>
+          <div class="sl-review-body">Antes de comprarlo lo consulté con mi ginecóloga. Revisó los ingredientes y me dijo que estaban bien para mi situación. Empecé con los cambios hormonales de los 50 y el acné volvió después de décadas. Dos meses con SKINFLOW y mi piel está mucho más calmada. Lo valioso es que no interfiere con nada y tiene ingredientes naturales serios. Muy contenta con el resultado.</div>
+          <div class="sl-review-helpful">¿Te fue útil? <button class="sl-helpful-btn">👍 42</button> <button class="sl-helpful-btn">👎 0</button></div>
+        </div>
+        {%- if section.settings.rev_29_photo_1 != blank or section.settings.rev_29_photo_2 != blank -%}<div class="sl-review-photos-grid">{%- if section.settings.rev_29_photo_1 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_29_photo_1 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#D4C5E8"></div>{%- endif -%}{%- if section.settings.rev_29_photo_2 != blank -%}<img class="sl-review-photo" src="{{ section.settings.rev_29_photo_2 | image_url: width: 200 }}" loading="eager" alt="">{%- else -%}<div class="sl-review-photo" style="background:#C8B8E8"></div>{%- endif -%}</div>{%- else -%}<div></div>{%- endif -%}
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:30px" id="slrev-btn-wrap-{{ sr }}">
+      <button onclick="slrShowMore_{{ sr }}()" style="padding:14px 40px;border:1.5px solid var(--black);background:var(--black);color:var(--white);font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;border-radius:3px">{{ section.settings.reviews_btn_label | default: 'Ver más reseñas' }}</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var sr = '{{ sr }}';
+  var step = 0;
+  window['slrShowMore_' + sr] = function() {
+    step++;
+    var batch = document.getElementById('slrev-b' + (step + 1) + '-' + sr);
+    if (batch) batch.style.display = 'block';
+    if (step >= 5) document.getElementById('slrev-btn-wrap-' + sr).style.display = 'none';
+  };
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SILUNE Reseñas",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "product_name", "label": "Nombre del producto", "default": "SKINFLOW®" },
+    { "type": "text", "id": "recommend_pct", "label": "% que recomendaría", "default": "88%" },
+    { "type": "text", "id": "review_score", "label": "Puntaje (ej: 4.5)", "default": "4.5" },
+    { "type": "text", "id": "review_count", "label": "Total de reseñas", "default": "1.223" },
+    { "type": "text", "id": "reviews_btn_label", "label": "Texto del botón Ver más", "default": "Ver más reseñas" },
+    { "type": "url",  "id": "reviews_btn_url",   "label": "URL del botón Ver más" },
+
+    { "type": "header", "content": "Fotos — Reseña 1 (Charlene)" },
+    { "type": "image_picker", "id": "rev_1_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_1_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 2 (Lucía)" },
+    { "type": "image_picker", "id": "rev_2_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_2_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 3 (Mayka L.)" },
+    { "type": "image_picker", "id": "rev_3_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_3_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 4 (Ashley T.)" },
+    { "type": "image_picker", "id": "rev_4_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_4_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 5 (Valentina R.)" },
+    { "type": "image_picker", "id": "rev_5_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_5_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 6 (Camila F.)" },
+    { "type": "image_picker", "id": "rev_6_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_6_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 7 (Francisca M.)" },
+    { "type": "image_picker", "id": "rev_7_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_7_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 8 (Isidora K.)" },
+    { "type": "image_picker", "id": "rev_8_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_8_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 9 (Patricia G.)" },
+    { "type": "image_picker", "id": "rev_9_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_9_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 10 (Daniela S.)" },
+    { "type": "image_picker", "id": "rev_10_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_10_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 11 (Sofía A.)" },
+    { "type": "image_picker", "id": "rev_11_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_11_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 12 (Antonia V.)" },
+    { "type": "image_picker", "id": "rev_12_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_12_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 13 (Macarena O.)" },
+    { "type": "image_picker", "id": "rev_13_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_13_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 14 (Renata P.)" },
+    { "type": "image_picker", "id": "rev_14_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_14_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 15 (Javiera C.)" },
+    { "type": "image_picker", "id": "rev_15_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_15_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 16 (Constanza B.)" },
+    { "type": "image_picker", "id": "rev_16_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_16_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 17 (Catalina H.)" },
+    { "type": "image_picker", "id": "rev_17_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_17_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 18 (Gabriela T.)" },
+    { "type": "image_picker", "id": "rev_18_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_18_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 19 (Beatriz N.)" },
+    { "type": "image_picker", "id": "rev_19_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_19_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 20 (Andrea M.)" },
+    { "type": "image_picker", "id": "rev_20_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_20_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 21 (Pilar V.)" },
+    { "type": "image_picker", "id": "rev_21_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_21_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 22 (Fernanda R.)" },
+    { "type": "image_picker", "id": "rev_22_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_22_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 23 (Karina L.)" },
+    { "type": "image_picker", "id": "rev_23_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_23_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 24 (Magdalena A.)" },
+    { "type": "image_picker", "id": "rev_24_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_24_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 25 (Javiera P.)" },
+    { "type": "image_picker", "id": "rev_25_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_25_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 26 (Rocío G.)" },
+    { "type": "image_picker", "id": "rev_26_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_26_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 27 (Lorena F.)" },
+    { "type": "image_picker", "id": "rev_27_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_27_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 28 (Pía C.)" },
+    { "type": "image_picker", "id": "rev_28_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_28_photo_2", "label": "Foto 2" },
+    { "type": "header", "content": "Fotos — Reseña 29 (Isabel M.)" },
+    { "type": "image_picker", "id": "rev_29_photo_1", "label": "Foto 1" },
+    { "type": "image_picker", "id": "rev_29_photo_2", "label": "Foto 2" }
+  ],
+  "presets": [
+    { "name": "SILUNE Reseñas" }
+  ]
+}
+{% endschema %}

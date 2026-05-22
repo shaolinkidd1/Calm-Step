@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "calmstep-landing-v2",
+      "type": "calmstep-funnel",
       "settings": {}
     }
   },

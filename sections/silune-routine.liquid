@@ -1,0 +1,292 @@
+{%- assign sr = section.id -%}
+
+<style>
+#slrtn-{{ sr }} {
+  border-top: 1px solid #e8e4df;
+  padding: 50px 40px;
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  background: #fff;
+  box-sizing: border-box;
+}
+#slrtn-{{ sr }} *, #slrtn-{{ sr }} *::before, #slrtn-{{ sr }} *::after { box-sizing: border-box; }
+
+#slrtn-{{ sr }} .slrtn-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+#slrtn-{{ sr }} .slrtn-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  flex: 1;
+  margin: 0;
+}
+#slrtn-{{ sr }} .slrtn-nav {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e8e4df;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #fff;
+  font-size: 16px;
+  transition: background 0.15s;
+}
+#slrtn-{{ sr }} .slrtn-nav:hover { background: #f5f3f0; }
+
+#slrtn-{{ sr }} .slrtn-track-wrap { overflow: hidden; }
+#slrtn-{{ sr }} .slrtn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid #e8e4df;
+  transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+#slrtn-{{ sr }} .slrtn-card {
+  padding: 30px;
+  border-right: 1px solid #e8e4df;
+  display: flex;
+  flex-direction: column;
+}
+#slrtn-{{ sr }} .slrtn-card:last-child { border-right: none; }
+#slrtn-{{ sr }} .slrtn-card-img {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f3f0;
+  margin-bottom: 20px;
+  border-radius: 2px;
+}
+#slrtn-{{ sr }} .slrtn-card-img img { height: 75%; object-fit: contain; }
+#slrtn-{{ sr }} .slrtn-card-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; color: #1a1a1a; }
+#slrtn-{{ sr }} .slrtn-card-sub { font-size: 13px; color: #888; margin-bottom: 8px; }
+#slrtn-{{ sr }} .slrtn-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  background: #EDE8F5;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+}
+#slrtn-{{ sr }} .slrtn-price-row {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #e8e4df;
+}
+#slrtn-{{ sr }} .slrtn-price { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+#slrtn-{{ sr }} .slrtn-add-btn {
+  font-size: 13px;
+  font-weight: 600;
+  background: none;
+  border: 1.5px solid #1a1a1a;
+  padding: 8px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  color: #1a1a1a;
+}
+#slrtn-{{ sr }} .slrtn-add-btn:hover { background: #1a1a1a; color: #fff; }
+#slrtn-{{ sr }} .slrtn-add-btn:disabled { opacity: 0.6; cursor: default; }
+
+@media (max-width: 768px) {
+  #slrtn-{{ sr }} { padding: 50px 20px; }
+  #slrtn-{{ sr }} .slrtn-grid {
+    grid-template-columns: 1fr;
+    border: none;
+  }
+  #slrtn-{{ sr }} .slrtn-card {
+    border-right: none;
+    border-bottom: 1px solid #e8e4df;
+    min-width: 100%;
+  }
+  #slrtn-{{ sr }} .slrtn-card:last-child { border-bottom: none; }
+  #slrtn-{{ sr }} .slrtn-track-wrap { overflow: hidden; touch-action: pan-y; }
+}
+</style>
+
+<div id="slrtn-{{ sr }}">
+  <div class="slrtn-header">
+    <button class="slrtn-nav" id="slrtn-prev-{{ sr }}" aria-label="Anterior">&#8249;</button>
+    <p class="slrtn-title">{{ section.settings.section_title | default: 'Completa tu Rutina' }}</p>
+    <button class="slrtn-nav" id="slrtn-next-{{ sr }}" aria-label="Siguiente">&#8250;</button>
+  </div>
+
+  <div class="slrtn-track-wrap" id="slrtn-wrap-{{ sr }}">
+    <div class="slrtn-grid" id="slrtn-grid-{{ sr }}">
+      {%- for block in section.blocks -%}
+        <div class="slrtn-card" {{ block.shopify_attributes }}>
+          <div>
+            <div class="slrtn-card-name">{{ block.settings.name | default: 'Producto' }}</div>
+            <div class="slrtn-card-sub">{{ block.settings.sub }}</div>
+            {%- if block.settings.badge != blank -%}
+              <div class="slrtn-badge">{{ block.settings.badge }}</div>
+            {%- endif -%}
+          </div>
+          <div class="slrtn-card-img">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy', style: 'height:75%;object-fit:contain;' }}
+            {%- else -%}
+              <div style="width:80px;height:110px;background:linear-gradient(145deg,#E8DFF5,#C8B8E8);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:0.08em;color:rgba(0,0,0,0.4);text-align:center;padding:8px">{{ block.settings.name | upcase | truncate: 10, '' }}</div>
+            {%- endif -%}
+          </div>
+          <div class="slrtn-price-row">
+            <button class="slrtn-add-btn"
+              data-variant="{{ block.settings.variant_id }}"
+              data-url="{{ block.settings.product_url }}"
+              id="slrtn-btn-{{ sr }}-{{ forloop.index }}">Agregar al Carro</button>
+            <span class="slrtn-price">{{ block.settings.price | default: '' }}</span>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var sr = '{{ sr }}';
+  var grid = document.getElementById('slrtn-grid-' + sr);
+  var wrap = document.getElementById('slrtn-wrap-' + sr);
+  var btnPrev = document.getElementById('slrtn-prev-' + sr);
+  var btnNext = document.getElementById('slrtn-next-' + sr);
+  if (!grid || !wrap) return;
+
+  // Mobile carousel — only active below 768px
+  var offset = 0;
+  var cards = grid.querySelectorAll('.slrtn-card');
+  var total = cards.length;
+
+  function isMobile() { return window.innerWidth <= 768; }
+
+  function slide(dir) {
+    if (!isMobile()) return;
+    var max = (total - 1) * 100;
+    offset = Math.max(0, Math.min(offset + dir * 100, max));
+    grid.style.transform = 'translateX(-' + offset + '%)';
+  }
+
+  btnPrev.addEventListener('click', function() { slide(-1); });
+  btnNext.addEventListener('click', function() { slide(1); });
+
+  // Touch swipe (mobile)
+  var txStart = null;
+  wrap.addEventListener('touchstart', function(e) { txStart = e.touches[0].clientX; }, { passive: true });
+  wrap.addEventListener('touchend', function(e) {
+    if (txStart === null) return;
+    var dx = e.changedTouches[0].clientX - txStart;
+    txStart = null;
+    if (Math.abs(dx) < 30) return;
+    slide(dx < 0 ? 1 : -1);
+  }, { passive: true });
+
+  // Add to cart
+  var addBtns = grid.querySelectorAll('.slrtn-add-btn');
+  addBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var vid = (btn.dataset.variant || '').trim();
+      var url = (btn.dataset.url || '').trim();
+      var orig = btn.textContent;
+      if (vid !== '') {
+        btn.disabled = true;
+        btn.textContent = 'Agregando…';
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: parseInt(vid, 10), quantity: 1 })
+        })
+        .then(function(r) { if (!r.ok) throw r; return r.json(); })
+        .then(function() {
+          btn.textContent = '✓ Agregado';
+          btn.style.background = '#1a1a1a';
+          btn.style.color = '#fff';
+          setTimeout(function() {
+            btn.textContent = orig;
+            btn.style.background = '';
+            btn.style.color = '';
+            btn.disabled = false;
+          }, 2000);
+        })
+        .catch(function() {
+          if (url) window.location.href = url;
+          else { btn.textContent = orig; btn.disabled = false; }
+        });
+      } else if (url) {
+        window.location.href = url;
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SILUNE Rutina",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "section_title", "label": "Título de sección", "default": "Completa tu Rutina" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Producto",
+      "settings": [
+        { "type": "image_picker", "id": "image",      "label": "Imagen del producto" },
+        { "type": "text",         "id": "name",        "label": "Nombre",      "default": "HYDRAFLOW" },
+        { "type": "text",         "id": "sub",         "label": "Subtítulo",   "default": "Hidratante de Células Madre Vegetales" },
+        { "type": "text",         "id": "badge",       "label": "Badge (dejar vacío para ocultar)" },
+        { "type": "text",         "id": "price",       "label": "Precio",      "default": "$28.990" },
+        { "type": "text",         "id": "variant_id",  "label": "Variant ID Shopify" },
+        { "type": "url",          "id": "product_url", "label": "URL del producto (fallback)" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "SILUNE Rutina",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "name": "HYDRAFLOW",
+            "sub": "Hidratante de Células Madre Vegetales",
+            "badge": "Nuevo Tamaño Mini",
+            "price": "$28.990"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "name": "BRIGHTFLOW",
+            "sub": "Tónico Iluminador Avanzado",
+            "price": "$22.990"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "name": "SKINSPRAY",
+            "sub": "Mist Hidratante + Purificante",
+            "badge": "Nuevo Tamaño Mini",
+            "price": "$22.990"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

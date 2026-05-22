@@ -1,0 +1,1423 @@
+{%- assign lm = section.id -%}
+{%- assign lm_slides = section.blocks | where: "type", "slide" -%}
+{%- assign lm_packs  = section.blocks | where: "type", "pack" -%}
+{%- assign lm_feats  = section.blocks | where: "type", "feature" -%}
+{%- assign lm_steps  = section.blocks | where: "type", "step" -%}
+{%- assign lm_accs   = section.blocks | where: "type", "accordion" -%}
+{%- assign lm_revs   = section.blocks | where: "type", "review" -%}
+{%- assign lm_cfcards = section.blocks | where: "type", "cf_card" -%}
+{%- assign lm_fc1    = section.blocks | where: "type", "footer_link_col1" -%}
+{%- assign lm_fc2    = section.blocks | where: "type", "footer_link_col2" -%}
+{%- assign lm_total  = lm_slides | size -%}
+{%- if lm_total == 0 -%}{%- assign lm_total = 5 -%}{%- endif -%}
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+<style>
+#lume-pg-{{ lm }} {
+  --gold:        {{ section.settings.color_gold }};
+  --gold-light:  {{ section.settings.color_gold_light }};
+  --gold-faint:  {{ section.settings.color_gold_faint }};
+  --gold-dark:   {{ section.settings.color_gold_dark }};
+  --ink:         {{ section.settings.color_ink }};
+  --ink-soft:    {{ section.settings.color_ink_soft }};
+  --cream:       {{ section.settings.color_cream }};
+  --cream-mid:   {{ section.settings.color_cream_mid }};
+  --cream-dark:  {{ section.settings.color_cream_dark }};
+  --warm-white:  {{ section.settings.color_warm_white }};
+  --text:        {{ section.settings.color_text }};
+  --text-mid:    {{ section.settings.color_text_mid }};
+  --text-light:  {{ section.settings.color_text_light }};
+  --border:      rgba(0,0,0,0.07);
+  --border-warm: rgba(184,150,90,0.22);
+  --green:       {{ section.settings.color_green }};
+  --green-bg:    {{ section.settings.color_green_bg }};
+  --sticky-bg:       {{ section.settings.sticky_bg }};
+  --sticky-fg:       {{ section.settings.sticky_text_color }};
+  --sticky-btn-bg:   {{ section.settings.sticky_btn_color }};
+  --sticky-btn-fg:   {{ section.settings.sticky_btn_text_color }};
+  --btn-radius:      {{ section.settings.btn_radius }}px;
+  --tv-bg:           {{ section.settings.tv_bg_color }};
+  --tv-fg:           {{ section.settings.tv_text_color }};
+  --cf-bg:           {{ section.settings.cf_bg_color }};
+  --ann-bg:          {{ section.settings.ann_bg_color }};
+  --ann-fg:          {{ section.settings.ann_text_color }};
+  --ann-icon:        {{ section.settings.ann_icon_color }};
+}
+#lume-pg-{{ lm }}, #lume-pg-{{ lm }} *, #lume-pg-{{ lm }} *::before, #lume-pg-{{ lm }} *::after { box-sizing: border-box; }
+#lume-pg-{{ lm }} { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+/* ANN BAR */
+#lume-pg-{{ lm }} .lm-ann { background: var(--ann-bg); height: 34px; overflow: hidden; position: relative; }
+#lume-pg-{{ lm }} .lm-ann-track { display: flex; flex-direction: column; transition: transform 0.55s cubic-bezier(0.4,0,0.2,1); }
+#lume-pg-{{ lm }} .lm-ann-slide { height: 34px; display: flex; align-items: center; justify-content: center; gap: 0.55rem; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in srgb, var(--ann-fg) 55%, transparent); flex-shrink: 0; padding: 0 1rem; white-space: nowrap; }
+#lume-pg-{{ lm }} .lm-ann-slide svg { flex-shrink: 0; color: var(--ann-icon); }
+#lume-pg-{{ lm }} .lm-ann-slide strong { color: var(--ann-fg); font-weight: 400; }
+#lume-pg-{{ lm }} .lm-ann-timer { font-variant-numeric: tabular-nums; color: var(--ann-fg); font-weight: 500; letter-spacing: 0.14em; font-size: 0.66rem; background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.18); padding: 0.1rem 0.45rem; }
+/* HEADER */
+#lume-pg-{{ lm }} .lm-header { background: var(--warm-white); border-bottom: 1px solid var(--border); position: relative; }
+#lume-pg-{{ lm }} .lm-header-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0.7rem 1.2rem; }
+#lume-pg-{{ lm }} .lm-header-left  { display: flex; align-items: center; justify-content: flex-start; }
+#lume-pg-{{ lm }} .lm-header-center{ display: flex; align-items: center; justify-content: center; }
+#lume-pg-{{ lm }} .lm-header-right { display: flex; align-items: center; justify-content: flex-end; gap: 1.1rem; }
+#lume-pg-{{ lm }} .lm-logo img { height: {{ section.settings.logo_height }}px; object-fit: contain; display: block; }
+#lume-pg-{{ lm }} .lm-logo-ph { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: var(--ink); letter-spacing: 0.12em; }
+#lume-pg-{{ lm }} .lm-hbtn { background: none; border: none; cursor: pointer; padding: 0; color: var(--ink); display: flex; align-items: center; position: relative; }
+#lume-pg-{{ lm }} .lm-cart-dot { position: absolute; top: -3px; right: -4px; width: 14px; height: 14px; background: var(--gold); color: var(--ink); border-radius: 50%; font-size: 0.5rem; font-weight: 600; display: none; align-items: center; justify-content: center; }
+/* HAMBURGER DRAWER */
+#lume-pg-{{ lm }} .lm-drawer { position: fixed; top: 0; left: 0; width: 270px; height: 100vh; background: var(--warm-white); border-right: 1px solid var(--border); transform: translateX(-100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); z-index: 10000; overflow-y: auto; }
+#lume-pg-{{ lm }} .lm-drawer.open { transform: translateX(0); }
+#lume-pg-{{ lm }} .lm-drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); }
+#lume-pg-{{ lm }} .lm-drawer-title { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); font-weight: 400; }
+#lume-pg-{{ lm }} .lm-drawer-close { background: none; border: none; cursor: pointer; color: var(--text-mid); padding: 0; display: flex; align-items: center; }
+#lume-pg-{{ lm }} .lm-drawer-inner { padding: 0.4rem 0 1rem; }
+#lume-pg-{{ lm }} .lm-drawer-link { display: block; padding: 0.85rem 1.4rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid); text-decoration: none; font-weight: 300; border-bottom: 1px solid var(--border); transition: color 0.2s, background 0.2s; }
+#lume-pg-{{ lm }} .lm-drawer-link:last-child { border-bottom: none; }
+#lume-pg-{{ lm }} .lm-drawer-link:hover { color: var(--ink); background: var(--cream); }
+#lume-pg-{{ lm }} .lm-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.38); display: none; }
+#lume-pg-{{ lm }} .lm-overlay.show { display: block; }
+/* PAGE NAV */
+#lume-pg-{{ lm }} .lm-header-nav { display: flex; border-top: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; background: var(--warm-white); }
+#lume-pg-{{ lm }} .lm-header-nav::-webkit-scrollbar { display: none; }
+#lume-pg-{{ lm }} .lm-hn-link { padding: 0.55rem 1rem; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 400; color: var(--text-light); text-decoration: none; white-space: nowrap; border-bottom: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
+#lume-pg-{{ lm }} .lm-hn-link.active { color: var(--ink); border-bottom-color: var(--gold); }
+/* BREADCRUMB */
+#lume-pg-{{ lm }} .lm-breadcrumb { padding: 0.55rem 1.2rem; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--text-light); display: flex; align-items: center; gap: 0.4rem; background: var(--cream); border-bottom: 1px solid var(--border); }
+#lume-pg-{{ lm }} .lm-breadcrumb a { color: var(--text-light); text-decoration: none; }
+#lume-pg-{{ lm }} .lm-breadcrumb span { color: var(--text-mid); }
+/* CAROUSEL */
+#lume-pg-{{ lm }} .lm-carousel { position: relative; background: var(--cream-mid); overflow: hidden; touch-action: pan-y; }
+#lume-pg-{{ lm }} .lm-car-track { display: flex; transition: transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94); will-change: transform; }
+#lume-pg-{{ lm }} .lm-slide { flex: 0 0 100%; }
+#lume-pg-{{ lm }} .lm-slide img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+#lume-pg-{{ lm }} .lm-slide-ph { width: 100%; aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; background: var(--cream-mid); }
+#lume-pg-{{ lm }} .lm-slide-ph p { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-light); text-align: center; line-height: 2; margin: 0; padding: 0; }
+#lume-pg-{{ lm }} .lm-counter { position: absolute; bottom: 0.9rem; right: 1rem; background: rgba(20,18,16,0.55); backdrop-filter: blur(8px); color: rgba(255,255,255,0.75); font-size: 0.58rem; letter-spacing: 0.12em; padding: 0.25rem 0.55rem; }
+#lume-pg-{{ lm }} .lm-cprev, #lume-pg-{{ lm }} .lm-cnext { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0.4rem; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.55)); color: #fff; }
+#lume-pg-{{ lm }} .lm-cprev { left: 0.6rem; }
+#lume-pg-{{ lm }} .lm-cnext { right: 0.6rem; }
+#lume-pg-{{ lm }} .lm-cprev svg, #lume-pg-{{ lm }} .lm-cnext svg { width: 22px; height: 22px; }
+/* THUMBS */
+#lume-pg-{{ lm }} .lm-thumbs { display: flex; gap: 5px; padding: 0.65rem 1.2rem; background: var(--warm-white); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+#lume-pg-{{ lm }} .lm-thumbs::-webkit-scrollbar { display: none; }
+#lume-pg-{{ lm }} .lm-thumb { width: 54px; height: 54px; flex-shrink: 0; border: 1.5px solid transparent; overflow: hidden; cursor: pointer; background: var(--cream-mid); display: flex; align-items: center; justify-content: center; transition: border-color 0.2s; }
+#lume-pg-{{ lm }} .lm-thumb.on { border-color: var(--gold); }
+#lume-pg-{{ lm }} .lm-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#lume-pg-{{ lm }} .lm-thumb-ph { font-size: 0.48rem; color: var(--text-light); text-align: center; line-height: 1.5; }
+/* INFO */
+#lume-pg-{{ lm }} .lm-info { background: var(--warm-white); padding: 1.4rem 1.2rem 0.6rem; }
+#lume-pg-{{ lm }} .lm-info-brand { font-size: 0.56rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); font-weight: 400; margin-bottom: 0.7rem; display: flex; align-items: center; gap: 0.6rem; }
+#lume-pg-{{ lm }} .lm-info-brand::before, #lume-pg-{{ lm }} .lm-info-brand::after { content: ''; flex: 1; height: 0.5px; background: var(--border-warm); max-width: 28px; }
+#lume-pg-{{ lm }} .lm-info-name { font-family: 'Cormorant Garamond', serif; font-size: 2.05rem; font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 0.25rem; letter-spacing: 0.01em; }
+#lume-pg-{{ lm }} .lm-info-name em { font-style: italic; font-weight: 400; color: var(--gold-dark); display: block; font-size: 1.55rem; letter-spacing: 0.04em; }
+#lume-pg-{{ lm }} .lm-info-subtitle { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-light); font-weight: 300; margin-bottom: 0.7rem; }
+#lume-pg-{{ lm }} .lm-rating-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+#lume-pg-{{ lm }} .lm-stars { color: var(--gold); font-size: 0.7rem; letter-spacing: 0.06em; }
+#lume-pg-{{ lm }} .lm-r-num { font-size: 0.72rem; font-weight: 500; color: var(--ink); }
+#lume-pg-{{ lm }} .lm-r-cnt { font-size: 0.68rem; color: var(--text-mid); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+#lume-pg-{{ lm }} .lm-price-wrap { display: flex; align-items: baseline; gap: 0.7rem; padding: 0.75rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 0.9rem; }
+#lume-pg-{{ lm }} .lm-price-now { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 400; color: var(--ink); line-height: 1; }
+#lume-pg-{{ lm }} .lm-price-was { font-size: 0.8rem; color: var(--text-light); text-decoration: line-through; }
+#lume-pg-{{ lm }} .lm-price-tag { margin-left: auto; background: #FFF0E6; color: #A03A10; font-size: 0.6rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.22rem 0.5rem; }
+#lume-pg-{{ lm }} .lm-info-desc { font-size: 0.82rem; line-height: 1.75; color: var(--text-mid); font-weight: 300; margin-bottom: 0.6rem; }
+/* DIVIDER */
+#lume-pg-{{ lm }} .lm-divider { height: 8px; background: var(--cream-mid); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+/* PACKS */
+#lume-pg-{{ lm }} .lm-packs-wrap { background: var(--warm-white); padding: 1.3rem 1.2rem 0.6rem; }
+#lume-pg-{{ lm }} .lm-section-label { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-light); font-weight: 400; margin-bottom: 0.9rem; }
+#lume-pg-{{ lm }} .lm-packs { display: flex; flex-direction: column; gap: 0.55rem; }
+#lume-pg-{{ lm }} .lm-pack { position: relative; padding: 1rem 1rem 1rem 2.75rem; border: 1px solid var(--border); cursor: pointer; background: var(--warm-white); transition: border-color 0.18s, background 0.18s; }
+#lume-pg-{{ lm }} .lm-pack:hover { border-color: var(--border-warm); }
+#lume-pg-{{ lm }} .lm-pack.on { border-color: var(--gold); background: var(--cream); }
+#lume-pg-{{ lm }} .lm-p-badge { position: absolute; top: 0; right: 0; font-size: 0.5rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.2rem 0.55rem; }
+#lume-pg-{{ lm }} .lm-p-badge.popular { background: var(--gold); color: var(--ink); }
+#lume-pg-{{ lm }} .lm-p-badge.best { background: var(--ink); color: var(--gold-light); }
+#lume-pg-{{ lm }} .lm-p-radio { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--cream-dark); display: flex; align-items: center; justify-content: center; transition: border-color 0.18s; flex-shrink: 0; }
+#lume-pg-{{ lm }} .lm-pack.on .lm-p-radio { border-color: var(--gold); }
+#lume-pg-{{ lm }} .lm-p-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); opacity: 0; transition: opacity 0.18s; }
+#lume-pg-{{ lm }} .lm-pack.on .lm-p-dot { opacity: 1; }
+#lume-pg-{{ lm }} .lm-p-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.2rem; }
+#lume-pg-{{ lm }} .lm-p-name { font-size: 0.85rem; font-weight: 500; color: var(--ink); }
+#lume-pg-{{ lm }} .lm-p-prices { text-align: right; }
+#lume-pg-{{ lm }} .lm-p-price { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 400; color: var(--ink); line-height: 1; }
+#lume-pg-{{ lm }} .lm-p-unit { font-size: 0.6rem; color: var(--text-light); margin-top: 0.1rem; }
+#lume-pg-{{ lm }} .lm-p-old { font-size: 0.58rem; color: var(--text-light); text-decoration: line-through; }
+#lume-pg-{{ lm }} .lm-p-desc { font-size: 0.72rem; color: var(--text-mid); font-weight: 300; margin: 0; padding: 0; }
+#lume-pg-{{ lm }} .lm-p-save { display: inline-block; margin-top: 0.35rem; background: var(--green-bg); color: var(--green); font-size: 0.56rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.45rem; }
+#lume-pg-{{ lm }} .lm-p-img { width: 56px; height: 56px; object-fit: cover; flex-shrink: 0; border-radius: 3px; margin-left: 0.9rem; }
+/* ORDER BAR */
+#lume-pg-{{ lm }} .lm-order-bar { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 1rem 1.2rem; background: var(--cream-mid); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+#lume-pg-{{ lm }} .lm-ob-img { width: 52px; height: 52px; object-fit: cover; border-radius: 4px; flex-shrink: 0; display: none; }
+#lume-pg-{{ lm }} .lm-ob-img[src]:not([src=""]) { display: block; }
+#lume-pg-{{ lm }} .lm-ob-left { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; min-width: 0; }
+#lume-pg-{{ lm }} .lm-ob-title { font-size: 0.78rem; font-weight: 500; color: var(--ink); }
+#lume-pg-{{ lm }} .lm-ob-sub { font-size: 0.65rem; color: var(--text-mid); font-weight: 300; }
+#lume-pg-{{ lm }} .lm-ob-save { font-size: 0.62rem; color: var(--green); font-weight: 500; }
+#lume-pg-{{ lm }} .lm-ob-price { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 400; color: var(--ink); line-height: 1; text-align: right; }
+/* CTA */
+#lume-pg-{{ lm }} .lm-cta-wrap { padding: 1rem 1.2rem 1.1rem; background: var(--warm-white); display: flex; flex-direction: column; gap: 0.55rem; border-bottom: 1px solid var(--border); }
+#lume-pg-{{ lm }} .lm-btn-cart { width: 100%; background: var(--ink); color: var(--gold-light); border: none; padding: 0.95rem 1rem; font-family: 'Jost', sans-serif; font-size: 0.72rem; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; border-radius: var(--btn-radius); }
+#lume-pg-{{ lm }} .lm-btn-cart:active { background: var(--ink-soft); }
+#lume-pg-{{ lm }} .lm-btn-now { width: 100%; background: var(--gold); color: var(--ink); border: none; padding: 0.95rem 1rem; font-family: 'Jost', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; border-radius: var(--btn-radius); }
+#lume-pg-{{ lm }} .lm-btn-now:active { background: var(--gold-light); }
+#lume-pg-{{ lm }} .lm-sticky-btn { border-radius: var(--btn-radius); }
+#lume-pg-{{ lm }} .lm-cta-trust { display: flex; justify-content: center; align-items: center; gap: 1.5rem; padding-top: 0.2rem; }
+#lume-pg-{{ lm }} .lm-ct-item { display: flex; align-items: center; gap: 0.3rem; font-size: 0.58rem; color: var(--text-light); letter-spacing: 0.06em; }
+/* STICKY ATC */
+#lume-pg-{{ lm }} .lm-sticky-atc { position: fixed; bottom: 0; left: 0; right: 0; background: var(--sticky-bg); z-index: 5000; transform: translateY(110%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); padding: 0.8rem 1.2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: 0 -2px 16px rgba(0,0,0,0.18); }
+#lume-pg-{{ lm }} .lm-sticky-atc.show { transform: translateY(0); }
+#lume-pg-{{ lm }} .lm-sticky-info { display: flex; flex-direction: column; gap: 0.12rem; flex: 1; min-width: 0; overflow: hidden; }
+#lume-pg-{{ lm }} .lm-sticky-name { font-size: 0.68rem; font-weight: 500; color: var(--sticky-fg); letter-spacing: 0.05em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.75; }
+#lume-pg-{{ lm }} .lm-sticky-price { font-size: 1.2rem; font-weight: 400; color: var(--sticky-fg); font-family: 'Cormorant Garamond', serif; line-height: 1; }
+#lume-pg-{{ lm }} .lm-sticky-btn { background: var(--sticky-btn-bg); color: var(--sticky-btn-fg); border: none; padding: 0.85rem 1.4rem; font-family: 'Jost', sans-serif; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; flex-shrink: 0; white-space: nowrap; transition: opacity 0.2s; }
+#lume-pg-{{ lm }} .lm-sticky-btn:active { opacity: 0.85; }
+/* FEATURES */
+#lume-pg-{{ lm }} .lm-features { background: var(--warm-white); }
+#lume-pg-{{ lm }} .lm-feat { display: flex; align-items: flex-start; gap: 1rem; padding: 0.95rem 1.2rem; border-bottom: 1px solid var(--border); }
+#lume-pg-{{ lm }} .lm-feat-ico { width: 28px; height: 28px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+#lume-pg-{{ lm }} .lm-feat-text strong { display: block; font-size: 0.8rem; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
+#lume-pg-{{ lm }} .lm-feat-text span { font-size: 0.72rem; color: var(--text-mid); font-weight: 300; line-height: 1.5; }
+/* TABS */
+#lume-pg-{{ lm }} .lm-tabs-wrap { background: var(--warm-white); }
+#lume-pg-{{ lm }} .lm-tabs { display: flex; border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+#lume-pg-{{ lm }} .lm-tabs::-webkit-scrollbar { display: none; }
+#lume-pg-{{ lm }} .lm-tab-btn { flex: 1; padding: 0.8rem 0.5rem; font-family: 'Jost', sans-serif; font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 400; color: var(--text-light); background: none; border: none; border-bottom: 1.5px solid transparent; cursor: pointer; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+#lume-pg-{{ lm }} .lm-tab-btn.on { color: var(--ink); border-bottom-color: var(--gold); }
+#lume-pg-{{ lm }} .lm-tab-panel { display: none; padding: 1.25rem 1.2rem; }
+#lume-pg-{{ lm }} .lm-tab-panel.on { display: block; }
+#lume-pg-{{ lm }} .lm-tab-body { font-size: 0.8rem; line-height: 1.85; color: var(--text-mid); font-weight: 300; }
+#lume-pg-{{ lm }} .lm-tab-body p { margin: 0 0 0.65rem; padding: 0; }
+#lume-pg-{{ lm }} .lm-tab-body p:last-child { margin-bottom: 0; }
+#lume-pg-{{ lm }} .lm-tab-body strong { color: var(--ink); font-weight: 500; }
+/* STEPS */
+#lume-pg-{{ lm }} .lm-steps { display: flex; flex-direction: column; }
+#lume-pg-{{ lm }} .lm-step-item { display: flex; gap: 0.9rem; align-items: flex-start; padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+#lume-pg-{{ lm }} .lm-step-item:last-child { border-bottom: none; }
+#lume-pg-{{ lm }} .lm-step-n { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; color: var(--gold); line-height: 1; min-width: 1.4rem; }
+#lume-pg-{{ lm }} .lm-step-t strong { display: block; font-size: 0.8rem; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
+#lume-pg-{{ lm }} .lm-step-t p { font-size: 0.75rem; color: var(--text-mid); font-weight: 300; line-height: 1.55; margin: 0; padding: 0; }
+/* ACCORDION */
+#lume-pg-{{ lm }} .lm-acc { margin-top: 0.75rem; }
+#lume-pg-{{ lm }} .lm-acc-item { border-top: 1px solid var(--border); }
+#lume-pg-{{ lm }} .lm-acc-head { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 0; cursor: pointer; }
+#lume-pg-{{ lm }} .lm-acc-title { font-size: 0.8rem; font-weight: 500; color: var(--ink); }
+#lume-pg-{{ lm }} .lm-acc-arr { font-size: 0.65rem; color: var(--gold); transition: transform 0.25s; }
+#lume-pg-{{ lm }} .lm-acc-item.open .lm-acc-arr { transform: rotate(180deg); }
+#lume-pg-{{ lm }} .lm-acc-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+#lume-pg-{{ lm }} .lm-acc-item.open .lm-acc-body { max-height: 500px; }
+#lume-pg-{{ lm }} .lm-acc-inner { padding-bottom: 0.85rem; font-size: 0.78rem; line-height: 1.75; color: var(--text-mid); font-weight: 300; }
+#lume-pg-{{ lm }} .lm-acc-inner p { margin: 0 0 0.5rem; padding: 0; }
+#lume-pg-{{ lm }} .lm-acc-inner p:last-child { margin-bottom: 0; }
+/* GUARANTEE */
+#lume-pg-{{ lm }} .lm-guarantee { display: flex; gap: 1rem; align-items: flex-start; padding: 1.2rem; background: var(--cream-mid); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+#lume-pg-{{ lm }} .lm-g-ico { flex-shrink: 0; margin-top: 2px; }
+#lume-pg-{{ lm }} .lm-g-title { font-size: 0.8rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
+#lume-pg-{{ lm }} .lm-g-text { font-size: 0.74rem; line-height: 1.6; color: var(--text-mid); font-weight: 300; margin: 0; padding: 0; }
+/* REVIEWS */
+#lume-pg-{{ lm }} .lm-reviews-wrap { background: var(--warm-white); }
+#lume-pg-{{ lm }} .lm-rv-header { display: flex; align-items: center; gap: 1.25rem; padding: 1.2rem; border-bottom: 1px solid var(--border); background: var(--cream); }
+#lume-pg-{{ lm }} .lm-rv-big { font-family: 'Cormorant Garamond', serif; font-size: 3.2rem; font-weight: 300; color: var(--ink); line-height: 1; flex-shrink: 0; }
+#lume-pg-{{ lm }} .lm-rv-right { flex: 1; }
+#lume-pg-{{ lm }} .lm-rv-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 0.2rem; }
+#lume-pg-{{ lm }} .lm-rv-count { font-size: 0.62rem; color: var(--text-mid); margin-bottom: 0.5rem; letter-spacing: 0.06em; }
+#lume-pg-{{ lm }} .lm-rv-bars { display: flex; flex-direction: column; gap: 0.25rem; }
+#lume-pg-{{ lm }} .lm-rv-bar-r { display: flex; align-items: center; gap: 0.4rem; }
+#lume-pg-{{ lm }} .lm-rv-bar-n { font-size: 0.58rem; color: var(--text-light); min-width: 0.6rem; text-align: right; }
+#lume-pg-{{ lm }} .lm-rv-bar-bg { flex: 1; height: 2px; background: var(--cream-dark); }
+#lume-pg-{{ lm }} .lm-rv-bar-fill { height: 100%; background: var(--gold); }
+#lume-pg-{{ lm }} .lm-review { padding: 1.1rem 1.2rem; border-bottom: 1px solid var(--border); }
+#lume-pg-{{ lm }} .lm-rv-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.3rem; }
+#lume-pg-{{ lm }} .lm-rv-name { font-size: 0.78rem; font-weight: 500; color: var(--ink); }
+#lume-pg-{{ lm }} .lm-rv-date { font-size: 0.6rem; color: var(--text-light); }
+#lume-pg-{{ lm }} .lm-rv-stars-s { color: var(--gold); font-size: 0.65rem; margin-bottom: 0.5rem; }
+#lume-pg-{{ lm }} .lm-rv-text { font-family: 'Cormorant Garamond', serif; font-size: 0.98rem; font-style: italic; line-height: 1.55; color: var(--ink); margin: 0; padding: 0; }
+#lume-pg-{{ lm }} .lm-rv-verified { display: flex; align-items: center; gap: 0.3rem; margin-top: 0.55rem; font-size: 0.58rem; color: var(--green); letter-spacing: 0.06em; }
+#lume-pg-{{ lm }} .lm-rv-imgs { display: flex; gap: 6px; margin-top: 0.65rem; overflow-x: auto; scrollbar-width: none; }
+#lume-pg-{{ lm }} .lm-rv-imgs::-webkit-scrollbar { display: none; }
+#lume-pg-{{ lm }} .lm-rv-img { width: 76px; height: 76px; object-fit: cover; flex-shrink: 0; border-radius: 4px; }
+/* TIKTOK VIDEOS */
+#lume-pg-{{ lm }} .lm-tv-wrap { background: var(--tv-bg); overflow: hidden; }
+#lume-pg-{{ lm }} .lm-tv-head { padding: 1.1rem 1.2rem 0.6rem; }
+#lume-pg-{{ lm }} .lm-tv-title { color: var(--tv-fg); font-size: 1rem; font-weight: 700; margin: 0 0 0.15rem; letter-spacing: -0.01em; }
+#lume-pg-{{ lm }} .lm-tv-subtitle { color: var(--tv-fg); opacity: 0.5; font-size: 0.7rem; margin: 0; font-weight: 400; }
+#lume-pg-{{ lm }} .lm-tv-carousel { position: relative; touch-action: pan-y; overflow: hidden; }
+#lume-pg-{{ lm }} .lm-tv-track { display: flex; transition: transform 0.38s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
+#lume-pg-{{ lm }} .lm-tv-item { flex: 0 0 {{ section.settings.tv_card_width }}%; padding: 0 {{ section.settings.tv_card_gap }}px; }
+#lume-pg-{{ lm }} .lm-tv-card { position: relative; border-radius: {{ section.settings.tv_card_radius }}px; overflow: hidden; background: #111; cursor: pointer; }
+#lume-pg-{{ lm }} .lm-tv-aspect { position: relative; padding-bottom: 177.78%; }
+#lume-pg-{{ lm }} .lm-tv-video,#lume-pg-{{ lm }} .lm-tv-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+#lume-pg-{{ lm }} .lm-tv-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.08) 55%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 0.9rem; pointer-events: none; }
+#lume-pg-{{ lm }} .lm-tv-user { color: rgba(255,255,255,0.75); font-size: 0.65rem; font-weight: 600; margin: 0 0 0.2rem; letter-spacing: 0.03em; }
+#lume-pg-{{ lm }} .lm-tv-caption { color: #fff; font-size: 0.75rem; line-height: 1.4; margin: 0; font-weight: 400; }
+#lume-pg-{{ lm }} .lm-tv-play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(255,255,255,0.9); opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+#lume-pg-{{ lm }} .lm-tv-item.paused .lm-tv-play-icon { opacity: 1; }
+#lume-pg-{{ lm }} .lm-tv-mute { position: absolute; top: 0.7rem; right: 0.7rem; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; z-index: 10; pointer-events: all; transition: background 0.2s; }
+#lume-pg-{{ lm }} .lm-tv-mute:active { background: rgba(0,0,0,0.75); }
+#lume-pg-{{ lm }} .lm-tv-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 2.5px; background: rgba(255,255,255,0.2); }
+#lume-pg-{{ lm }} .lm-tv-bar { height: 100%; background: rgba(255,255,255,0.85); width: 0%; }
+#lume-pg-{{ lm }} .lm-tv-dots { display: flex; justify-content: center; align-items: center; gap: 6px; padding: 0.75rem 0 0.5rem; }
+#lume-pg-{{ lm }} .lm-tv-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tv-fg); opacity: 0.25; cursor: pointer; transition: opacity 0.2s, transform 0.2s; border: none; padding: 0; }
+#lume-pg-{{ lm }} .lm-tv-dot.on { opacity: 1; transform: scale(1.3); }
+/* CLIENTAS FELICES */
+#lume-pg-{{ lm }} .lm-cf-wrap { background: var(--cf-bg); }
+#lume-pg-{{ lm }} .lm-cf-top { text-align: center; padding: 2.4rem 1.5rem 1.8rem; }
+#lume-pg-{{ lm }} .lm-cf-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.55); border: 1px solid rgba(184,150,90,0.28); border-radius: 50px; padding: 0.28rem 0.9rem; font-size: 0.6rem; color: var(--text-mid); margin-bottom: 0.85rem; letter-spacing: 0.03em; }
+#lume-pg-{{ lm }} .lm-cf-badge-stars { color: #E9B84A; font-size: 0.68rem; }
+#lume-pg-{{ lm }} .lm-cf-heading { font-size: clamp(2rem, 5.5vw, 3.4rem); font-weight: 800; line-height: 1.05; margin: 0; letter-spacing: -0.02em; }
+#lume-pg-{{ lm }} .lm-cf-heading-dark { color: var(--ink); }
+#lume-pg-{{ lm }} .lm-cf-heading-gold { color: #E9B84A; }
+#lume-pg-{{ lm }} .lm-cf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+#lume-pg-{{ lm }} .lm-cf-card { display: flex; flex-direction: column; }
+#lume-pg-{{ lm }} .lm-cf-img-wrap { overflow: hidden; }
+#lume-pg-{{ lm }} .lm-cf-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+#lume-pg-{{ lm }} .lm-cf-img-ph { width: 100%; aspect-ratio: 3/4; background: var(--cream-dark); display: block; }
+#lume-pg-{{ lm }} .lm-cf-body { padding: 0.9rem 0.9rem 1.4rem; flex: 1; display: flex; flex-direction: column; gap: 0.4rem; background: var(--cf-bg); }
+#lume-pg-{{ lm }} .lm-cf-card-stars { color: #E9B84A; font-size: 0.8rem; letter-spacing: 0.06em; }
+#lume-pg-{{ lm }} .lm-cf-meta { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; row-gap: 0.3rem; }
+#lume-pg-{{ lm }} .lm-cf-name { font-size: 0.72rem; font-weight: 600; color: var(--ink); }
+#lume-pg-{{ lm }} .lm-cf-vf { display: inline-flex; align-items: center; gap: 0.22rem; font-size: 0.58rem; color: var(--text-mid); background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.1); border-radius: 3px; padding: 0.08rem 0.38rem; white-space: nowrap; }
+#lume-pg-{{ lm }} .lm-cf-vf-dot { width: 5px; height: 5px; border-radius: 50%; background: #E05D2C; flex-shrink: 0; }
+#lume-pg-{{ lm }} .lm-cf-text { font-size: 0.76rem; line-height: 1.65; color: var(--text-mid); margin: 0.1rem 0 0; }
+@media (max-width: 767px) {
+  #lume-pg-{{ lm }} .lm-cf-grid { grid-template-columns: repeat(4, 76vw); overflow-x: auto; scrollbar-width: none; padding-bottom: 6px; }
+  #lume-pg-{{ lm }} .lm-cf-grid::-webkit-scrollbar { display: none; }
+  #lume-pg-{{ lm }} .lm-cf-top { padding: 1.8rem 1.2rem 1.3rem; }
+}
+/* FOOTER */
+#lume-pg-{{ lm }} .lm-footer { background: var(--ink); border-top: 3px solid var(--gold-dark); }
+#lume-pg-{{ lm }} .lm-ft-top { padding: 2rem 1.2rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+#lume-pg-{{ lm }} .lm-ft-logo img { height: {{ section.settings.footer_logo_height }}px; object-fit: contain; display: block; margin-bottom: 0.6rem; }
+#lume-pg-{{ lm }} .lm-ft-logo-ph { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: rgba(253,251,248,0.3); letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+#lume-pg-{{ lm }} .lm-ft-tag { font-size: 0.7rem; color: rgba(253,251,248,0.8); font-weight: 300; line-height: 1.7; max-width: 240px; margin-bottom: 1.25rem; }
+#lume-pg-{{ lm }} .lm-ft-social { display: flex; gap: 0.55rem; }
+#lume-pg-{{ lm }} .lm-ft-soc { width: 32px; height: 32px; border: 0.5px solid rgba(184,150,90,0.2); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: border-color 0.2s; }
+#lume-pg-{{ lm }} .lm-ft-soc:hover { border-color: var(--gold); }
+#lume-pg-{{ lm }} .lm-ft-cols { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid rgba(255,255,255,0.06); }
+#lume-pg-{{ lm }} .lm-ft-col { padding: 1.2rem; }
+#lume-pg-{{ lm }} .lm-ft-col:first-child { border-right: 1px solid rgba(255,255,255,0.06); }
+#lume-pg-{{ lm }} .lm-ft-col-title { font-size: 0.55rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); font-weight: 400; margin-bottom: 0.9rem; }
+#lume-pg-{{ lm }} .lm-ft-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; padding: 0; margin: 0; }
+#lume-pg-{{ lm }} .lm-ft-links a { font-size: 0.74rem; color: rgba(253,251,248,0.9); text-decoration: none; font-weight: 300; transition: color 0.2s; }
+#lume-pg-{{ lm }} .lm-ft-links a:hover { color: rgba(184,150,90,0.7); }
+#lume-pg-{{ lm }} .lm-ft-payments { padding: 1rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+#lume-pg-{{ lm }} .lm-ft-pay-title { font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(253,251,248,0.8); margin-bottom: 0.65rem; }
+#lume-pg-{{ lm }} .lm-ft-pay-methods { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+#lume-pg-{{ lm }} .lm-pay-chip { padding: 0.22rem 0.55rem; border: 0.5px solid rgba(255,255,255,0.08); font-size: 0.6rem; color: rgba(253,251,248,0.25); font-weight: 300; letter-spacing: 0.06em; }
+#lume-pg-{{ lm }} .lm-ft-bottom { padding: 0.9rem 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+#lume-pg-{{ lm }} .lm-ft-copy { font-size: 0.6rem; color: rgba(253,251,248,0.7); font-weight: 300; margin: 0; padding: 0; }
+#lume-pg-{{ lm }} .lm-ft-legal { display: flex; gap: 1rem; flex-wrap: wrap; }
+#lume-pg-{{ lm }} .lm-ft-legal a { font-size: 0.6rem; color: rgba(253,251,248,0.7); text-decoration: none; }
+/* TOAST */
+#lume-pg-{{ lm }} .lm-toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(8px); background: var(--ink); color: var(--gold-light); padding: 0.65rem 1.5rem; font-size: 0.7rem; letter-spacing: 0.1em; border-left: 2px solid var(--gold); opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; white-space: nowrap; z-index: 9999; }
+#lume-pg-{{ lm }} .lm-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* ANIMATIONS */
+@keyframes lm-up-{{ lm }} { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+#lume-pg-{{ lm }} .lm-info      { animation: lm-up-{{ lm }} 0.45s 0.05s ease both; }
+#lume-pg-{{ lm }} .lm-packs-wrap{ animation: lm-up-{{ lm }} 0.45s 0.1s  ease both; }
+#lume-pg-{{ lm }} .lm-order-bar { animation: lm-up-{{ lm }} 0.45s 0.12s ease both; }
+#lume-pg-{{ lm }} .lm-cta-wrap  { animation: lm-up-{{ lm }} 0.45s 0.15s ease both; }
+</style>
+
+<div id="lume-pg-{{ lm }}">
+
+  <!-- ANN BAR -->
+  <div class="lm-ann">
+    <div class="lm-ann-track" id="lm-ann-{{ lm }}">
+      <div class="lm-ann-slide">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        {{ section.settings.ann1_text }}
+      </div>
+      <div class="lm-ann-slide">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        {{ section.settings.ann2_text }}
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="lm-header">
+    <div class="lm-header-inner">
+      <!-- LEFT: hamburger -->
+      <div class="lm-header-left">
+        <button class="lm-hbtn" id="lm-ham-{{ lm }}" aria-label="Categorías">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+      <!-- CENTER: logo -->
+      <div class="lm-header-center">
+        <a class="lm-logo" href="{{ section.settings.logo_url | default: shop.url }}">
+          {%- if section.settings.logo != blank -%}
+            <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}">
+          {%- else -%}
+            <span class="lm-logo-ph">{{ section.settings.logo_text }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+      <!-- RIGHT: search + cart -->
+      <div class="lm-header-right">
+        <button class="lm-hbtn" onclick="window.location.href='{{ routes.search_url }}'">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="lm-hbtn" onclick="window.location.href='{{ routes.cart_url }}'">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="lm-cart-dot" id="lm-cdot-{{ lm }}"></span>
+        </button>
+      </div>
+    </div>
+    <!-- CATEGORIES DRAWER (fixed sidebar) -->
+    <div class="lm-drawer" id="lm-drawer-{{ lm }}">
+      <div class="lm-drawer-head">
+        <span class="lm-drawer-title">Menú</span>
+        <button class="lm-drawer-close" id="lm-drw-close-{{ lm }}" aria-label="Cerrar menú">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="lm-drawer-inner">
+        {%- if section.settings.header_menu != blank -%}
+          {%- for link in linklists[section.settings.header_menu].links -%}
+            <a class="lm-drawer-link" href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          <a class="lm-drawer-link" href="{{ shop.url }}">Inicio</a>
+          <a class="lm-drawer-link" href="{{ shop.url }}/collections/all">Todos los productos</a>
+        {%- endif -%}
+      </div>
+    </div>
+    <nav class="lm-header-nav">
+      <a class="lm-hn-link" href="#lm-prod-{{ lm }}">{{ section.settings.nav1 }}</a>
+      <a class="lm-hn-link" href="#lm-uso-{{ lm }}">{{ section.settings.nav2 }}</a>
+      <a class="lm-hn-link" href="#lm-res-{{ lm }}">{{ section.settings.nav3 }}</a>
+      <a class="lm-hn-link" href="#lm-rev-{{ lm }}">{{ section.settings.nav4 }}</a>
+      <a class="lm-hn-link" href="#lm-buy-{{ lm }}">{{ section.settings.nav5 }}</a>
+    </nav>
+  </div>
+  <!-- OVERLAY (cierra drawer al hacer clic afuera) -->
+  <div class="lm-overlay" id="lm-overlay-{{ lm }}"></div>
+
+  <!-- BREADCRUMB -->
+  <div class="lm-breadcrumb">
+    <a href="{{ section.settings.bc_home_url | default: shop.url }}">{{ section.settings.bc_home }}</a> ›
+    <a href="{{ shop.url }}/collections/all">{{ section.settings.bc_cat }}</a> ›
+    <span>{{ section.settings.bc_product }}</span>
+  </div>
+
+  <!-- CAROUSEL -->
+  <div class="lm-carousel" id="lm-car-{{ lm }}">
+    <div class="lm-car-track" id="lm-track-{{ lm }}">
+      {%- if lm_slides.size > 0 -%}
+        {%- for block in lm_slides -%}
+          <div class="lm-slide" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 1080 }}" alt="Slide {{ forloop.index }}" loading="{{ forloop.first | iif: 'eager', 'lazy' }}">
+            {%- else -%}
+              <div class="lm-slide-ph">
+                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#C4BAB0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <p>Imagen {{ forloop.index }} · 430 × 440 px</p>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..5) -%}
+          <div class="lm-slide">
+            <div class="lm-slide-ph">
+              <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#C4BAB0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p>Foto {{ i }} · 430 × 440 px</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+    <button class="lm-cprev" id="lm-prev-{{ lm }}">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="lm-cnext" id="lm-next-{{ lm }}">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="lm-counter" id="lm-ctr-{{ lm }}">1 / {{ lm_total }}</div>
+  </div>
+
+  <!-- THUMBNAILS -->
+  <div class="lm-thumbs" id="lm-thumbs-{{ lm }}">
+    {%- if lm_slides.size > 0 -%}
+      {%- for block in lm_slides -%}
+        <div class="lm-thumb{% if forloop.first %} on{% endif %}" data-idx="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 108 }}" alt="">
+          {%- else -%}
+            <div class="lm-thumb-ph">{{ forloop.index }}</div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..5) -%}
+        <div class="lm-thumb{% if forloop.first %} on{% endif %}" data-idx="{{ forloop.index0 }}">
+          <div class="lm-thumb-ph">{{ i }}</div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+
+  <!-- INFO -->
+  <div class="lm-info" id="lm-prod-{{ lm }}">
+    <p class="lm-info-brand">{{ section.settings.brand_text }}</p>
+    <h1 class="lm-info-name">
+      {{ section.settings.product_name }}
+      <em>{{ section.settings.product_name_em }}</em>
+    </h1>
+    <p class="lm-info-subtitle">{{ section.settings.product_subtitle }}</p>
+    <div class="lm-rating-row">
+      <span class="lm-stars">★★★★★</span>
+      <span class="lm-r-num">{{ section.settings.rating_num }}</span>
+      <span class="lm-r-cnt">{{ section.settings.rating_count }}</span>
+    </div>
+    <div class="lm-price-wrap">
+      <span class="lm-price-now" id="lm-pmain-{{ lm }}"></span>
+      <span class="lm-price-was" id="lm-pwas-{{ lm }}"  style="display:none"></span>
+      <span class="lm-price-tag" id="lm-ptag-{{ lm }}"  style="display:none"></span>
+    </div>
+    <p class="lm-info-desc">{{ section.settings.product_desc }}</p>
+  </div>
+
+  <div class="lm-divider"></div>
+
+  <!-- PACKS -->
+  <div class="lm-packs-wrap" id="lm-buy-{{ lm }}">
+    <p class="lm-section-label">{{ section.settings.packs_label }}</p>
+    <div class="lm-packs">
+      {%- if lm_packs.size > 0 -%}
+        {%- for block in lm_packs -%}
+          <div class="lm-pack{% if block.settings.selected %} on{% endif %}"
+               data-price="{{ block.settings.price_raw }}"
+               data-was="{{ block.settings.old_price_raw }}"
+               data-save="{{ block.settings.save_text }}"
+               data-qty="{{ block.settings.qty_label }}"
+               data-name="{{ block.settings.name | escape }}"
+               data-variant="{{ block.settings.variant_id }}"
+               data-img="{%- if block.settings.pack_image != blank -%}{{ block.settings.pack_image | image_url: width: 120 }}{%- endif -%}"
+               {{ block.shopify_attributes }}>
+            {%- if block.settings.badge != "none" -%}
+              <span class="lm-p-badge {{ block.settings.badge }}">
+                {%- if block.settings.badge_label != blank -%}
+                  {{ block.settings.badge_label }}
+                {%- elsif block.settings.badge == "popular" -%}
+                  {{ section.settings.badge_popular_text }}
+                {%- else -%}
+                  {{ section.settings.badge_best_text }}
+                {%- endif -%}
+              </span>
+            {%- endif -%}
+            <div class="lm-p-radio"><div class="lm-p-dot"></div></div>
+            <div class="lm-p-row">
+              <span class="lm-p-name">{{ block.settings.name }}</span>
+              <div class="lm-p-prices">
+                <div class="lm-p-price">{{ block.settings.price_display }}</div>
+                {%- if block.settings.unit_text != blank -%}<div class="lm-p-unit">{{ block.settings.unit_text }}</div>{%- endif -%}
+                {%- if block.settings.old_price_display != blank -%}<div class="lm-p-old">{{ block.settings.old_price_display }}</div>{%- endif -%}
+              </div>
+              {%- if block.settings.pack_image != blank -%}
+                <img class="lm-p-img" src="{{ block.settings.pack_image | image_url: width: 120 }}" alt="{{ block.settings.name }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            {%- if block.settings.desc != blank -%}<p class="lm-p-desc">{{ block.settings.desc }}</p>{%- endif -%}
+            {%- if block.settings.save_text != blank -%}<span class="lm-p-save">{{ block.settings.save_text }}</span>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <p style="font-size:0.8rem;color:var(--text-light);padding:1rem 0;">Agrega bloques "Pack" desde el editor del customizador.</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- ORDER BAR -->
+  <div class="lm-order-bar">
+    <img class="lm-ob-img" id="lm-obimg-{{ lm }}" src="" alt="" loading="lazy">
+    <div class="lm-ob-left">
+      <span class="lm-ob-title" id="lm-obtitle-{{ lm }}"></span>
+      <span class="lm-ob-sub">{{ section.settings.ob_sub }}</span>
+      <span class="lm-ob-save"  id="lm-obsave-{{ lm }}"></span>
+    </div>
+    <div class="lm-ob-price" id="lm-obprice-{{ lm }}"></div>
+  </div>
+
+  <!-- CTA -->
+  <div class="lm-cta-wrap">
+    <button class="lm-btn-cart" id="lm-bcart-{{ lm }}">{{ section.settings.btn_cart_text }}</button>
+    <button class="lm-btn-now"  id="lm-bnow-{{ lm }}">{{ section.settings.btn_now_text }}</button>
+    <div class="lm-cta-trust">
+      <div class="lm-ct-item">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        {{ section.settings.trust1 }}
+      </div>
+      <div class="lm-ct-item">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+        {{ section.settings.trust2 }}
+      </div>
+      <div class="lm-ct-item">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        {{ section.settings.trust3 }}
+      </div>
+    </div>
+  </div>
+
+  <div class="lm-divider"></div>
+
+  <!-- FEATURES -->
+  <div class="lm-features" id="lm-res-{{ lm }}">
+    {%- if lm_feats.size > 0 -%}
+      {%- for block in lm_feats -%}
+        <div class="lm-feat" {{ block.shopify_attributes }}>
+          <div class="lm-feat-ico">
+            {%- case block.settings.icon -%}
+              {%- when "clock" -%}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              {%- when "activity" -%}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              {%- when "shield" -%}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              {%- when "dollar" -%}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              {%- when "heart" -%}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              {%- when "star" -%}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              {%- when "leaf" -%}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M11 20A7 7 0 014 13c0-5.47 3.07-9 9-12 5.93 3 9 6.53 9 12a7 7 0 01-7 7z"/><path d="M12 20V8"/></svg>
+              {%- else -%}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {%- endcase -%}
+          </div>
+          <div class="lm-feat-text">
+            <strong>{{ block.settings.title }}</strong>
+            <span>{{ block.settings.desc }}</span>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <p style="padding:1rem 1.2rem;font-size:0.8rem;color:var(--text-light);">Agrega bloques "Característica" desde el editor.</p>
+    {%- endif -%}
+  </div>
+
+  <div class="lm-divider"></div>
+
+  <!-- TABS -->
+  <div class="lm-tabs-wrap" id="lm-uso-{{ lm }}">
+    <div class="lm-tabs">
+      <button class="lm-tab-btn on" data-tab="desc">{{ section.settings.tab1_label }}</button>
+      <button class="lm-tab-btn"    data-tab="uso">{{ section.settings.tab2_label }}</button>
+      <button class="lm-tab-btn"    data-tab="envio">{{ section.settings.tab3_label }}</button>
+    </div>
+    <div class="lm-tab-panel on" id="lm-tdesc-{{ lm }}">
+      <div class="lm-tab-body">{{ section.settings.tab_desc_text }}</div>
+      {%- if lm_accs.size > 0 -%}
+        <div class="lm-acc">
+          {%- for block in lm_accs -%}
+            <div class="lm-acc-item" {{ block.shopify_attributes }}>
+              <div class="lm-acc-head">
+                <span class="lm-acc-title">{{ block.settings.title }}</span>
+                <span class="lm-acc-arr">▾</span>
+              </div>
+              <div class="lm-acc-body"><div class="lm-acc-inner">{{ block.settings.content }}</div></div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="lm-tab-panel" id="lm-tuso-{{ lm }}">
+      {%- if lm_steps.size > 0 -%}
+        <div class="lm-steps">
+          {%- for block in lm_steps -%}
+            <div class="lm-step-item" {{ block.shopify_attributes }}>
+              <span class="lm-step-n">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+              <div class="lm-step-t">
+                <strong>{{ block.settings.title }}</strong>
+                <p>{{ block.settings.desc }}</p>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p style="font-size:0.8rem;color:var(--text-light);">Agrega bloques "Paso" desde el editor.</p>
+      {%- endif -%}
+    </div>
+    <div class="lm-tab-panel" id="lm-tenvio-{{ lm }}">
+      <div class="lm-tab-body">{{ section.settings.tab_shipping_text }}</div>
+    </div>
+  </div>
+
+  <div class="lm-divider"></div>
+
+  <!-- GUARANTEE -->
+  <div class="lm-guarantee">
+    <div class="lm-g-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    <div>
+      <p class="lm-g-title">{{ section.settings.guarantee_title }}</p>
+      <p class="lm-g-text">{{ section.settings.guarantee_text }}</p>
+    </div>
+  </div>
+
+  <div class="lm-divider"></div>
+
+  <!-- REVIEWS -->
+  <div class="lm-reviews-wrap" id="lm-rev-{{ lm }}">
+    <div class="lm-rv-header">
+      <div class="lm-rv-big">{{ section.settings.rv_score }}</div>
+      <div class="lm-rv-right">
+        <div class="lm-rv-stars">★★★★★</div>
+        <div class="lm-rv-count">{{ section.settings.rv_total }}</div>
+        <div class="lm-rv-bars">
+          <div class="lm-rv-bar-r"><span class="lm-rv-bar-n">5</span><div class="lm-rv-bar-bg"><div class="lm-rv-bar-fill" style="width:{{ section.settings.rv_pct_5 }}%"></div></div></div>
+          <div class="lm-rv-bar-r"><span class="lm-rv-bar-n">4</span><div class="lm-rv-bar-bg"><div class="lm-rv-bar-fill" style="width:{{ section.settings.rv_pct_4 }}%"></div></div></div>
+          <div class="lm-rv-bar-r"><span class="lm-rv-bar-n">3</span><div class="lm-rv-bar-bg"><div class="lm-rv-bar-fill" style="width:{{ section.settings.rv_pct_3 }}%"></div></div></div>
+          <div class="lm-rv-bar-r"><span class="lm-rv-bar-n">2</span><div class="lm-rv-bar-bg"><div class="lm-rv-bar-fill" style="width:{{ section.settings.rv_pct_2 }}%"></div></div></div>
+          <div class="lm-rv-bar-r"><span class="lm-rv-bar-n">1</span><div class="lm-rv-bar-bg"><div class="lm-rv-bar-fill" style="width:{{ section.settings.rv_pct_1 }}%"></div></div></div>
+        </div>
+      </div>
+    </div>
+    {%- if lm_revs.size > 0 -%}
+      {%- for block in lm_revs -%}
+        {%- assign star_num = block.settings.stars | times: 1 -%}
+        <div class="lm-review" {{ block.shopify_attributes }}>
+          <div class="lm-rv-top">
+            <span class="lm-rv-name">{{ block.settings.name }}</span>
+            <span class="lm-rv-date">{{ block.settings.date }}</span>
+          </div>
+          <div class="lm-rv-stars-s">{%- for i in (1..5) -%}{%- if i <= star_num -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}</div>
+          <p class="lm-rv-text">"{{ block.settings.text }}"</p>
+          {%- assign rv_has_imgs = false -%}
+          {%- if block.settings.rv_img1 != blank or block.settings.rv_img2 != blank or block.settings.rv_img3 != blank -%}
+            {%- assign rv_has_imgs = true -%}
+          {%- endif -%}
+          {%- if rv_has_imgs -%}
+            <div class="lm-rv-imgs">
+              {%- if block.settings.rv_img1 != blank -%}<img class="lm-rv-img" src="{{ block.settings.rv_img1 | image_url: width: 200 }}" alt="" loading="lazy">{%- endif -%}
+              {%- if block.settings.rv_img2 != blank -%}<img class="lm-rv-img" src="{{ block.settings.rv_img2 | image_url: width: 200 }}" alt="" loading="lazy">{%- endif -%}
+              {%- if block.settings.rv_img3 != blank -%}<img class="lm-rv-img" src="{{ block.settings.rv_img3 | image_url: width: 200 }}" alt="" loading="lazy">{%- endif -%}
+            </div>
+          {%- endif -%}
+          <div class="lm-rv-verified">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ section.settings.rv_verified_label }} · {{ block.settings.location }}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <p style="padding:1rem 1.2rem;font-size:0.8rem;color:var(--text-light);">Agrega bloques "Reseña" desde el editor.</p>
+    {%- endif -%}
+  </div>
+
+  <!-- TIKTOK VIDEOS -->
+  {%- assign lm_vids = section.blocks | where: "type", "video_item" -%}
+  {%- if lm_vids.size > 0 -%}
+  <div class="lm-tv-wrap" id="lm-tv-{{ lm }}">
+    {%- if section.settings.tv_title != blank or section.settings.tv_subtitle != blank -%}
+    <div class="lm-tv-head">
+      {%- if section.settings.tv_title != blank -%}<p class="lm-tv-title">{{ section.settings.tv_title }}</p>{%- endif -%}
+      {%- if section.settings.tv_subtitle != blank -%}<p class="lm-tv-subtitle">{{ section.settings.tv_subtitle }}</p>{%- endif -%}
+    </div>
+    {%- endif -%}
+    <div class="lm-tv-carousel" id="lm-tv-car-{{ lm }}">
+      <div class="lm-tv-track" id="lm-tv-trk-{{ lm }}">
+        {%- for block in lm_vids -%}
+        <div class="lm-tv-item" id="lm-tv-it-{{ lm }}-{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <div class="lm-tv-card">
+            <div class="lm-tv-aspect">
+              {%- if block.settings.video != blank -%}
+                <video class="lm-tv-video" playsinline muted loop
+                  {%- if block.settings.thumbnail != blank %} poster="{{ block.settings.thumbnail | image_url: width: 540 }}"{% endif %}>
+                  {%- for src in block.settings.video.sources -%}
+                    <source src="{{ src.url }}" type="{{ src.mime_type }}">
+                  {%- endfor -%}
+                </video>
+              {%- elsif block.settings.video_url != blank -%}
+                <video class="lm-tv-video" playsinline muted loop
+                  src="{{ block.settings.video_url }}"
+                  {%- if block.settings.thumbnail != blank %} poster="{{ block.settings.thumbnail | image_url: width: 540 }}"{% endif %}>
+                </video>
+              {%- elsif block.settings.thumbnail != blank -%}
+                <img class="lm-tv-thumb" src="{{ block.settings.thumbnail | image_url: width: 540 }}" alt="{{ block.settings.caption }}" loading="lazy">
+              {%- endif -%}
+              <div class="lm-tv-overlay">
+                {%- if block.settings.username != blank -%}<p class="lm-tv-user">{{ block.settings.username }}</p>{%- endif -%}
+                {%- if block.settings.caption != blank -%}<p class="lm-tv-caption">{{ block.settings.caption }}</p>{%- endif -%}
+              </div>
+              <div class="lm-tv-play-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <button class="lm-tv-mute" id="lm-tv-mute-{{ lm }}-{{ forloop.index0 }}" aria-label="Silencio">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+              </button>
+              <div class="lm-tv-progress"><div class="lm-tv-bar" id="lm-tv-bar-{{ lm }}-{{ forloop.index0 }}"></div></div>
+            </div>
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="lm-tv-dots" id="lm-tv-dots-{{ lm }}">
+      {%- for block in lm_vids -%}
+        <button class="lm-tv-dot{% if forloop.first %} on{% endif %}" data-idx="{{ forloop.index0 }}" aria-label="Video {{ forloop.index }}"></button>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  <!-- CLIENTAS FELICES -->
+  {%- if lm_cfcards.size > 0 -%}
+  <div class="lm-cf-wrap" id="lm-cf-{{ lm }}">
+    <div class="lm-cf-top">
+      {%- if section.settings.cf_badge_text != blank -%}
+      <div><span class="lm-cf-badge"><span class="lm-cf-badge-stars">★★★★★</span>{{ section.settings.cf_badge_text }}</span></div>
+      {%- endif -%}
+      <h2 class="lm-cf-heading">
+        {%- if section.settings.cf_title_dark != blank -%}<span class="lm-cf-heading-dark">{{ section.settings.cf_title_dark }} </span>{%- endif -%}
+        {%- if section.settings.cf_title_gold != blank -%}<span class="lm-cf-heading-gold">{{ section.settings.cf_title_gold }}</span>{%- endif -%}
+      </h2>
+    </div>
+    <div class="lm-cf-grid">
+      {%- for block in lm_cfcards -%}
+      {%- assign cf_stars = block.settings.stars | plus: 0 -%}
+      <div class="lm-cf-card" {{ block.shopify_attributes }}>
+        <div class="lm-cf-img-wrap">
+          {%- if block.settings.image != blank -%}
+            <img class="lm-cf-img" src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.name }}" loading="lazy">
+          {%- else -%}
+            <div class="lm-cf-img-ph"></div>
+          {%- endif -%}
+        </div>
+        <div class="lm-cf-body">
+          <div class="lm-cf-card-stars">{%- for i in (1..5) -%}{%- if i <= cf_stars -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}</div>
+          <div class="lm-cf-meta">
+            <span class="lm-cf-name">{{ block.settings.name }}{%- if block.settings.age != blank -%},&nbsp;{{ block.settings.age }}{%- endif -%}</span>
+            {%- if block.settings.verified_label != blank -%}
+            <span class="lm-cf-vf"><span class="lm-cf-vf-dot"></span>{{ block.settings.verified_label }}</span>
+            {%- endif -%}
+          </div>
+          {%- if block.settings.text != blank -%}
+          <p class="lm-cf-text">"{{ block.settings.text }}"</p>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  <!-- FOOTER -->
+  <div class="lm-footer">
+    <div class="lm-ft-top">
+      <div class="lm-ft-logo">
+        {%- if section.settings.footer_logo != blank -%}
+          <img src="{{ section.settings.footer_logo | image_url: width: 200 }}" alt="{{ shop.name }}">
+        {%- elsif section.settings.logo != blank -%}
+          <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}">
+        {%- else -%}
+          <div class="lm-ft-logo-ph">{{ section.settings.logo_text }}</div>
+        {%- endif -%}
+      </div>
+      <p class="lm-ft-tag">{{ section.settings.footer_tagline }}</p>
+      <div class="lm-ft-social">
+        {%- if section.settings.footer_instagram != blank -%}
+          <a class="lm-ft-soc" href="{{ section.settings.footer_instagram }}" target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,90,0.55)" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="rgba(184,150,90,0.55)" stroke="none"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.footer_tiktok != blank -%}
+          <a class="lm-ft-soc" href="{{ section.settings.footer_tiktok }}" target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,90,0.55)" stroke-width="1.5"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="lm-ft-cols">
+      <div class="lm-ft-col">
+        <p class="lm-ft-col-title">{{ section.settings.footer_col1_title }}</p>
+        {%- assign ft_menu1 = linklists[section.settings.footer_menu1] -%}
+        {%- if ft_menu1.links.size > 0 -%}
+          <ul class="lm-ft-links">
+            {%- for link in ft_menu1.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+          </ul>
+        {%- elsif lm_fc1.size > 0 -%}
+          <ul class="lm-ft-links">
+            {%- for block in lm_fc1 -%}<li {{ block.shopify_attributes }}><a href="{{ block.settings.url }}">{{ block.settings.label }}</a></li>{%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+      <div class="lm-ft-col">
+        <p class="lm-ft-col-title">{{ section.settings.footer_col2_title }}</p>
+        {%- assign ft_menu2 = linklists[section.settings.footer_menu2] -%}
+        {%- if ft_menu2.links.size > 0 -%}
+          <ul class="lm-ft-links">
+            {%- for link in ft_menu2.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+          </ul>
+        {%- elsif lm_fc2.size > 0 -%}
+          <ul class="lm-ft-links">
+            {%- for block in lm_fc2 -%}<li {{ block.shopify_attributes }}><a href="{{ block.settings.url }}">{{ block.settings.label }}</a></li>{%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="lm-ft-payments">
+      <p class="lm-ft-pay-title">{{ section.settings.footer_pay_title }}</p>
+      <div class="lm-ft-pay-methods">
+        {%- assign pay_methods = section.settings.footer_payments | split: "," -%}
+        {%- for method in pay_methods -%}<span class="lm-pay-chip">{{ method | strip }}</span>{%- endfor -%}
+      </div>
+    </div>
+    <div class="lm-ft-bottom">
+      <p class="lm-ft-copy">{{ section.settings.footer_copyright }}</p>
+      <div class="lm-ft-legal">
+        {%- if section.settings.footer_privacy_url != blank -%}<a href="{{ section.settings.footer_privacy_url }}">{{ section.settings.footer_privacy_label }}</a>{%- endif -%}
+        {%- if section.settings.footer_terms_url != blank -%}<a href="{{ section.settings.footer_terms_url }}">{{ section.settings.footer_terms_label }}</a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if section.settings.sticky_atc_enabled -%}
+  <div class="lm-sticky-atc" id="lm-sticky-{{ lm }}">
+    <div class="lm-sticky-info">
+      <span class="lm-sticky-name" id="lm-sname-{{ lm }}">{{ section.settings.product_name }}</span>
+      <span class="lm-sticky-price" id="lm-sprice-{{ lm }}"></span>
+    </div>
+    <button class="lm-sticky-btn" id="lm-sbtn-{{ lm }}">{{ section.settings.sticky_btn_text }}</button>
+  </div>
+  {%- endif -%}
+
+  <div class="lm-toast" id="lm-toast-{{ lm }}"></div>
+</div>
+
+<script>
+(function(){
+  var S = document.getElementById('lume-pg-{{ lm }}');
+  if(!S) return;
+
+  /* ANN BAR */
+  var ann = S.querySelector('#lm-ann-{{ lm }}');
+  if(ann){
+    var annS = ann.querySelectorAll('.lm-ann-slide'), ai=0;
+    setInterval(function(){ ai=(ai+1)%annS.length; ann.style.transform='translateY(-'+ai*34+'px)'; },3500);
+  }
+
+  /* CAROUSEL */
+  var track   = S.querySelector('#lm-track-{{ lm }}');
+  var ctrEl   = S.querySelector('#lm-ctr-{{ lm }}');
+  var thumbs  = S.querySelectorAll('#lm-thumbs-{{ lm }} .lm-thumb');
+  var total   = {{ lm_total }}, cur = 0;
+  function lmGo(n){
+    cur=((n%total)+total)%total;
+    track.style.transform='translateX(-'+cur*100+'%)';
+    thumbs.forEach(function(t,i){ t.classList.toggle('on',i===cur); });
+    if(ctrEl) ctrEl.textContent=(cur+1)+' / '+total;
+  }
+  S.querySelector('#lm-prev-{{ lm }}').addEventListener('click',function(){ lmGo(cur-1); });
+  S.querySelector('#lm-next-{{ lm }}').addEventListener('click',function(){ lmGo(cur+1); });
+  thumbs.forEach(function(t){ t.addEventListener('click',function(){ lmGo(parseInt(t.dataset.idx)||0); }); });
+  var carEl=S.querySelector('#lm-car-{{ lm }}'), sx=0;
+  if(carEl){
+    carEl.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; },{passive:true});
+    carEl.addEventListener('touchend',  function(e){ var dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40) lmGo(dx<0?cur+1:cur-1); },{passive:true});
+  }
+
+  /* TOAST */
+  var toastEl=S.querySelector('#lm-toast-{{ lm }}');
+  function lmToast(msg){ if(!toastEl) return; toastEl.textContent=msg; toastEl.classList.add('show'); setTimeout(function(){ toastEl.classList.remove('show'); },2500); }
+
+  /* PACKS */
+  function lmFmt(n){ var v=parseFloat(n); return v?'$'+v.toLocaleString('es-CL'):''; }
+  function lmPick(el){
+    S.querySelectorAll('.lm-pack').forEach(function(p){ p.classList.remove('on'); });
+    el.classList.add('on');
+    var price=el.dataset.price||'', was=el.dataset.was||'', save=el.dataset.save||'', qty=el.dataset.qty||'';
+    var pm=S.querySelector('#lm-pmain-{{ lm }}'), pw=S.querySelector('#lm-pwas-{{ lm }}'), pt=S.querySelector('#lm-ptag-{{ lm }}');
+    var op=S.querySelector('#lm-obprice-{{ lm }}'), ot=S.querySelector('#lm-obtitle-{{ lm }}'), os=S.querySelector('#lm-obsave-{{ lm }}');
+    if(pm) pm.textContent=lmFmt(price);
+    if(op) op.textContent=lmFmt(price);
+    if(ot) ot.textContent=qty;
+    if(os) os.textContent=save;
+    if(pw){ if(was&&parseFloat(was)>0){ pw.textContent=lmFmt(was); pw.style.display=''; } else pw.style.display='none'; }
+    if(pt){ if(was&&price&&parseFloat(was)>0){ pt.textContent='-'+Math.round((1-parseFloat(price)/parseFloat(was))*100)+'%'; pt.style.display=''; } else pt.style.display='none'; }
+    var sn=S.querySelector('#lm-sname-{{ lm }}'), sp=S.querySelector('#lm-sprice-{{ lm }}');
+    if(sn) sn.textContent=el.dataset.name||el.dataset.qty||'';
+    if(sp) sp.textContent=lmFmt(price);
+    var oi=S.querySelector('#lm-obimg-{{ lm }}');
+    if(oi){ var imgSrc=el.dataset.img||''; oi.src=imgSrc; oi.alt=el.dataset.name||''; }
+  }
+  S.querySelectorAll('.lm-pack').forEach(function(p){ p.addEventListener('click',function(){ lmPick(p); }); });
+  var initP=S.querySelector('.lm-pack.on')||S.querySelector('.lm-pack');
+  if(initP) lmPick(initP);
+
+  /* CART */
+  S.querySelector('#lm-bcart-{{ lm }}').addEventListener('click',async function(){
+    var ap=S.querySelector('.lm-pack.on'), vid=ap?ap.dataset.variant:null;
+    if(!vid||!vid.trim()){ lmToast('Configura el Variant ID en el editor'); return; }
+    try{
+      var r=await fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:parseInt(vid),quantity:1})});
+      if(r.ok){
+        lmToast('{{ section.settings.toast_cart | escape }}');
+        var dot=S.querySelector('#lm-cdot-{{ lm }}');
+        if(dot){ dot.textContent=(parseInt(dot.textContent)||0)+1; dot.style.display='flex'; }
+      } else { var e=await r.json(); lmToast(e.description||'Error al agregar'); }
+    } catch(e){ lmToast('Error de conexión'); }
+  });
+  S.querySelector('#lm-bnow-{{ lm }}').addEventListener('click',function(){
+    var ap=S.querySelector('.lm-pack.on'), vid=ap?ap.dataset.variant:null;
+    if(!vid||!vid.trim()){ lmToast('Configura el Variant ID en el editor'); return; }
+    window.location.href='/cart/'+vid+':1';
+  });
+
+  /* TABS */
+  S.querySelectorAll('.lm-tab-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var id=btn.dataset.tab;
+      S.querySelectorAll('.lm-tab-btn').forEach(function(b){ b.classList.remove('on'); });
+      S.querySelectorAll('.lm-tab-panel').forEach(function(p){ p.classList.remove('on'); });
+      btn.classList.add('on');
+      var panel=S.querySelector('#lm-t'+id+'-{{ lm }}');
+      if(panel) panel.classList.add('on');
+    });
+  });
+
+  /* ACCORDION */
+  S.querySelectorAll('.lm-acc-item').forEach(function(item){
+    item.querySelector('.lm-acc-head').addEventListener('click',function(){ item.classList.toggle('open'); });
+  });
+
+  /* HAMBURGER DRAWER */
+  var lmHam=document.getElementById('lm-ham-{{ lm }}');
+  var lmDrw=document.getElementById('lm-drawer-{{ lm }}');
+  var lmOvl=document.getElementById('lm-overlay-{{ lm }}');
+  var lmDrwX=document.getElementById('lm-drw-close-{{ lm }}');
+  function lmDrwClose(){ if(lmDrw) lmDrw.classList.remove('open'); if(lmOvl) lmOvl.classList.remove('show'); document.body.style.overflow=''; }
+  function lmDrwOpen(){ if(lmDrw) lmDrw.classList.add('open'); if(lmOvl) lmOvl.classList.add('show'); document.body.style.overflow='hidden'; }
+  if(lmHam){ lmHam.addEventListener('click', function(){ lmDrw&&lmDrw.classList.contains('open') ? lmDrwClose() : lmDrwOpen(); }); }
+  if(lmDrwX){ lmDrwX.addEventListener('click', lmDrwClose); }
+  if(lmOvl){ lmOvl.addEventListener('click', lmDrwClose); }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') lmDrwClose(); });
+
+  /* STICKY ATC */
+  var lmSticky=document.getElementById('lm-sticky-{{ lm }}');
+  var lmCtaRef=S.querySelector('.lm-cta-wrap');
+  if(lmSticky&&lmCtaRef){
+    function lmChkSticky(){ lmSticky.classList.toggle('show', lmCtaRef.getBoundingClientRect().bottom<0); }
+    window.addEventListener('scroll',lmChkSticky,{passive:true});
+    lmChkSticky();
+    document.getElementById('lm-sbtn-{{ lm }}').addEventListener('click',async function(){
+      var ap=S.querySelector('.lm-pack.on'), vid=ap?ap.dataset.variant:null;
+      if(!vid||!vid.trim()){ lmToast('Configura el Variant ID en el editor'); return; }
+      try{
+        var r=await fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:parseInt(vid),quantity:1})});
+        if(r.ok){ lmToast('{{ section.settings.toast_cart | escape }}'); }
+        else { var e=await r.json(); lmToast(e.description||'Error al agregar'); }
+      } catch(e){ lmToast('Error de conexión'); }
+    });
+  }
+
+  /* NAV SCROLL */
+  S.querySelectorAll('.lm-hn-link').forEach(function(a){
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      var target=S.querySelector(a.getAttribute('href'));
+      if(!target) return;
+      var hh=(S.querySelector('.lm-header')||{offsetHeight:0}).offsetHeight+34;
+      window.scrollTo({top:target.getBoundingClientRect().top+window.scrollY-hh-8,behavior:'smooth'});
+    });
+  });
+  var navIds=['lm-prod-{{ lm }}','lm-res-{{ lm }}','lm-uso-{{ lm }}','lm-rev-{{ lm }}','lm-buy-{{ lm }}'];
+  var navLinks=S.querySelectorAll('.lm-hn-link');
+  function onScroll(){
+    var hh=(S.querySelector('.lm-header')||{offsetHeight:0}).offsetHeight+40, active=navIds[0];
+    navIds.forEach(function(id){ var el=S.querySelector('#'+id); if(el&&el.getBoundingClientRect().top<=hh+20) active=id; });
+    navLinks.forEach(function(l){ l.classList.toggle('active',l.getAttribute('href').replace('#','')==active); });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  /* TIKTOK VIDEOS */
+  (function(){
+    var tvWrap=document.getElementById('lm-tv-{{ lm }}');
+    if(!tvWrap) return;
+    var tvTrack=document.getElementById('lm-tv-trk-{{ lm }}');
+    var tvDots=tvWrap.querySelectorAll('.lm-tv-dot');
+    var tvItems=tvWrap.querySelectorAll('.lm-tv-item');
+    var tvTotal=tvItems.length;
+    if(!tvTotal||!tvTrack) return;
+    var tvCur=0, tvMuted=true, tvSx=0, tvRaf={};
+    var tvCardW={{ section.settings.tv_card_width }};
+    function tvGo(n){
+      n=((n%tvTotal)+tvTotal)%tvTotal;
+      tvPauseAll(); tvCur=n;
+      tvTrack.style.transform='translateX(-'+(tvCur*tvCardW)+'%)';
+      tvDots.forEach(function(d,i){ d.classList.toggle('on',i===tvCur); });
+      tvPlay(tvCur);
+    }
+    function tvPlay(idx){
+      var item=tvItems[idx]; if(!item) return;
+      var vid=item.querySelector('video'); if(!vid) return;
+      vid.muted=tvMuted; vid.play().catch(function(){});
+      item.classList.remove('paused'); tvStartProg(idx,vid);
+    }
+    function tvPauseAll(){
+      tvItems.forEach(function(item,idx){
+        var vid=item.querySelector('video');
+        if(vid){ vid.pause(); tvStopProg(idx); }
+        item.classList.add('paused');
+      });
+    }
+    function tvStopProg(idx){ if(tvRaf[idx]){ cancelAnimationFrame(tvRaf[idx]); delete tvRaf[idx]; } }
+    function tvStartProg(idx,vid){
+      tvStopProg(idx);
+      var bar=document.getElementById('lm-tv-bar-{{ lm }}-'+idx);
+      if(!bar||!vid.duration) return;
+      function tick(){ if(vid.paused||vid.ended) return; bar.style.width=(vid.currentTime/vid.duration*100)+'%'; tvRaf[idx]=requestAnimationFrame(tick); }
+      vid.addEventListener('loadedmetadata',function(){ tvRaf[idx]=requestAnimationFrame(tick); },{once:true});
+      if(vid.readyState>=1) tvRaf[idx]=requestAnimationFrame(tick);
+    }
+    tvItems.forEach(function(item,idx){
+      item.querySelector('.lm-tv-card').addEventListener('click',function(e){
+        if(e.target.closest('.lm-tv-mute')) return;
+        var vid=item.querySelector('video'); if(!vid) return;
+        if(vid.paused){ vid.play(); item.classList.remove('paused'); tvStartProg(idx,vid); }
+        else { vid.pause(); item.classList.add('paused'); tvStopProg(idx); }
+      });
+    });
+    var muteIconSvg='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+    var unmuteIconSvg='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>';
+    tvWrap.querySelectorAll('.lm-tv-mute').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        tvMuted=!tvMuted;
+        tvItems.forEach(function(item){ var vid=item.querySelector('video'); if(vid) vid.muted=tvMuted; });
+        tvWrap.querySelectorAll('.lm-tv-mute').forEach(function(b){ b.innerHTML=tvMuted?muteIconSvg:unmuteIconSvg; });
+      });
+    });
+    tvDots.forEach(function(d){ d.addEventListener('click',function(){ tvGo(parseInt(d.dataset.idx)); }); });
+    tvTrack.addEventListener('touchstart',function(e){ tvSx=e.touches[0].clientX; },{passive:true});
+    tvTrack.addEventListener('touchend',function(e){ var dx=e.changedTouches[0].clientX-tvSx; if(Math.abs(dx)>40) tvGo(dx<0?tvCur+1:tvCur-1); },{passive:true});
+    tvGo(0);
+    if('IntersectionObserver' in window){
+      var tvIo=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          var vid=e.target.querySelector('video'); if(!vid) return;
+          if(e.isIntersecting){ if(e.target===tvItems[tvCur]) vid.play().catch(function(){}); }
+          else { vid.pause(); }
+        });
+      },{threshold:0.4});
+      tvItems.forEach(function(item){ tvIo.observe(item); });
+    }
+  })();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Lumé Product Page",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "🎨 Colores" },
+    { "type": "color", "id": "color_gold",      "label": "Dorado principal",     "default": "#B8965A" },
+    { "type": "color", "id": "color_gold_light", "label": "Dorado claro",         "default": "#D9BF8C" },
+    { "type": "color", "id": "color_gold_faint", "label": "Dorado muy claro",     "default": "#F0E6D0" },
+    { "type": "color", "id": "color_gold_dark",  "label": "Dorado oscuro",        "default": "#7A6035" },
+    { "type": "color", "id": "color_ink",        "label": "Tinta / fondo oscuro", "default": "#141210" },
+    { "type": "color", "id": "color_ink_soft",   "label": "Tinta suave",          "default": "#2A2620" },
+    { "type": "color", "id": "color_cream",      "label": "Crema (fondo página)", "default": "#F8F5F0" },
+    { "type": "color", "id": "color_cream_mid",  "label": "Crema media",          "default": "#EDE8DF" },
+    { "type": "color", "id": "color_cream_dark", "label": "Crema oscura",         "default": "#E4DDD1" },
+    { "type": "color", "id": "color_warm_white", "label": "Blanco cálido",        "default": "#FDFBF8" },
+    { "type": "color", "id": "color_text",       "label": "Texto principal",      "default": "#302C27" },
+    { "type": "color", "id": "color_text_mid",   "label": "Texto medio",          "default": "#6B6459" },
+    { "type": "color", "id": "color_text_light", "label": "Texto claro",          "default": "#9C9488" },
+    { "type": "color", "id": "color_green",      "label": "Verde (ahorro)",       "default": "#3D6648" },
+    { "type": "color", "id": "color_green_bg",   "label": "Fondo verde",          "default": "#EDF2EE" },
+
+    { "type": "header", "content": "🖼️ Logo" },
+    { "type": "image_picker", "id": "logo",        "label": "Logo (header)" },
+    { "type": "text",         "id": "logo_text",   "label": "Texto si no hay logo", "default": "Lumé" },
+    { "type": "range",        "id": "logo_height", "label": "Altura del logo", "min": 16, "max": 80, "step": 1, "default": 28, "unit": "px" },
+    { "type": "url",          "id": "logo_url",    "label": "Destino al hacer clic en el logo" },
+
+    { "type": "header", "content": "☰ Menú de categorías (drawer)" },
+    { "type": "link_list", "id": "header_menu", "label": "Menú de categorías", "info": "Selecciona el menú de Shopify que aparece al abrir el drawer lateral" },
+
+    { "type": "header", "content": "📢 Barra de anuncios" },
+    { "type": "color",  "id": "ann_bg_color",   "label": "Fondo de la barra",  "default": "#141210" },
+    { "type": "color",  "id": "ann_text_color", "label": "Color del texto",    "default": "#D9BF8C" },
+    { "type": "color",  "id": "ann_icon_color", "label": "Color del icono",    "default": "#B8965A" },
+    { "type": "text",   "id": "ann1_text",      "label": "Anuncio 1",          "default": "Envío gratis en todo Chile en todos los pedidos" },
+    { "type": "text",   "id": "ann2_text",      "label": "Anuncio 2",          "default": "Garantía de satisfacción 30 días — devolución sin preguntas" },
+
+    { "type": "header", "content": "🧭 Navegación" },
+    { "type": "text", "id": "nav1", "label": "Nav 1", "default": "Producto" },
+    { "type": "text", "id": "nav2", "label": "Nav 2", "default": "Cómo usar" },
+    { "type": "text", "id": "nav3", "label": "Nav 3", "default": "Resultados" },
+    { "type": "text", "id": "nav4", "label": "Nav 4", "default": "Reseñas" },
+    { "type": "text", "id": "nav5", "label": "Nav 5", "default": "Comprar" },
+
+    { "type": "header", "content": "🗂️ Breadcrumb" },
+    { "type": "text", "id": "bc_home",     "label": "Inicio — texto",    "default": "Inicio" },
+    { "type": "url",  "id": "bc_home_url", "label": "Inicio — destino URL" },
+    { "type": "text", "id": "bc_cat",     "label": "Categoría", "default": "Cepillos" },
+    { "type": "text", "id": "bc_product", "label": "Producto",  "default": "Lumé Facial Brush" },
+
+    { "type": "header", "content": "📦 Información del producto" },
+    { "type": "text",     "id": "brand_text",       "label": "Marca",                "default": "Lumé · Skincare Tools" },
+    { "type": "text",     "id": "product_name",     "label": "Nombre del producto",  "default": "Facial Brush" },
+    { "type": "text",     "id": "product_name_em",  "label": "Subtítulo en cursiva", "default": "Drenaje Linfático" },
+    { "type": "text",     "id": "product_subtitle", "label": "Subtítulo pequeño",    "default": "Cepillo de drenaje linfático · Uso en seco" },
+    { "type": "text",     "id": "rating_num",       "label": "Calificación (ej. 4.9)","default": "4.9" },
+    { "type": "text",     "id": "rating_count",     "label": "Texto de reseñas",     "default": "238 reseñas" },
+    { "type": "textarea", "id": "product_desc",     "label": "Descripción corta",    "default": "Cepillo de cerdas suaves para drenaje linfático facial en casa. Reduce la hinchazón matutina y define la mandíbula en 3 minutos. Funciona en seco, sin aceite, sin preparación." },
+
+    { "type": "header", "content": "🛍️ Packs" },
+    { "type": "text", "id": "packs_label",        "label": "Etiqueta de sección",     "default": "Selecciona tu pack" },
+    { "type": "text", "id": "badge_popular_text", "label": "Texto badge popular",     "default": "Más popular" },
+    { "type": "text", "id": "badge_best_text",    "label": "Texto badge mejor valor", "default": "Mejor valor" },
+
+    { "type": "header", "content": "🧾 Resumen del pedido" },
+    { "type": "text", "id": "ob_sub", "label": "Texto de envío", "default": "Envío gratis incluido" },
+
+    { "type": "header", "content": "🛒 Botones de compra" },
+    { "type": "text", "id": "btn_cart_text", "label": "Texto botón carrito",       "default": "Agregar al carrito" },
+    { "type": "text", "id": "btn_now_text",  "label": "Texto botón comprar ahora", "default": "Comprar ahora" },
+    { "type": "text", "id": "trust1",        "label": "Trust badge 1",             "default": "Pago seguro" },
+    { "type": "text", "id": "trust2",        "label": "Trust badge 2",             "default": "30 días garantía" },
+    { "type": "text", "id": "trust3",        "label": "Trust badge 3",             "default": "Envío gratis" },
+    { "type": "text",  "id": "toast_cart", "label": "Mensaje al agregar al carrito", "default": "Agregado al carrito ✓" },
+    { "type": "range", "id": "btn_radius", "label": "Redondeo de botones de compra", "min": 0, "max": 50, "step": 1, "default": 0, "unit": "px" },
+
+    { "type": "header", "content": "📌 Sticky Add to Cart" },
+    { "type": "checkbox", "id": "sticky_atc_enabled",    "label": "Activar sticky ATC",            "default": true },
+    { "type": "text",     "id": "sticky_btn_text",       "label": "Texto del botón",               "default": "Agregar al carrito" },
+    { "type": "color",    "id": "sticky_bg",             "label": "Color de fondo",                "default": "#141210" },
+    { "type": "color",    "id": "sticky_text_color",     "label": "Color del texto / precio",      "default": "#FDFBF8" },
+    { "type": "color",    "id": "sticky_btn_color",      "label": "Color del botón",               "default": "#B8965A" },
+    { "type": "color",    "id": "sticky_btn_text_color", "label": "Color del texto del botón",     "default": "#141210" },
+
+    { "type": "header", "content": "📋 Pestaña Descripción" },
+    { "type": "text",     "id": "tab1_label",    "label": "Nombre pestaña 1",  "default": "Descripción" },
+    { "type": "richtext", "id": "tab_desc_text", "label": "Texto descripción", "default": "<p>Lumé es un cepillo de drenaje linfático facial para uso diario en seco. Sus cerdas de silicona suave estimulan los vasos linfáticos superficiales, moviendo el fluido retenido durante el sueño hacia los ganglios del cuello.</p><p>A diferencia del gua sha, no requiere aceite ni técnica compleja. 2–4 minutos sobre piel limpia y seca. Desde el primer uso: reducción de puffiness, mandíbula más definida, párpados menos pesados.</p>" },
+
+    { "type": "header", "content": "👣 Pestaña Cómo usar" },
+    { "type": "text", "id": "tab2_label", "label": "Nombre pestaña 2", "default": "Cómo usar" },
+
+    { "type": "header", "content": "🚚 Pestaña Envío" },
+    { "type": "text",     "id": "tab3_label",       "label": "Nombre pestaña 3", "default": "Envío" },
+    { "type": "richtext", "id": "tab_shipping_text", "label": "Texto envío",     "default": "<p><strong>Envío gratis</strong> a todo Chile en todos los pedidos.</p><p>Despacho en 2–4 días hábiles. Santiago en 1–2 días hábiles con Chilexpress o Starken.</p><p>Número de seguimiento por WhatsApp o email el mismo día del despacho.</p><p><strong>Devoluciones:</strong> 30 días de garantía completa. Sin formularios.</p>" },
+
+    { "type": "header", "content": "🛡️ Garantía" },
+    { "type": "text",     "id": "guarantee_title", "label": "Título",  "default": "Garantía de satisfacción — 30 días" },
+    { "type": "textarea", "id": "guarantee_text",  "label": "Cuerpo",  "default": "Si no ves resultados en 30 días de uso diario, te devolvemos el dinero completo. Sin formularios. Sin excusas." },
+
+    { "type": "header", "content": "⭐ Reseñas — Cabecera" },
+    { "type": "text",  "id": "rv_score",         "label": "Puntuación global",    "default": "4.9" },
+    { "type": "text",  "id": "rv_total",         "label": "Total reseñas",        "default": "238 reseñas verificadas" },
+    { "type": "text",  "id": "rv_verified_label","label": "Etiqueta verificado",  "default": "Compra verificada" },
+    { "type": "range", "id": "rv_pct_5", "label": "% 5 estrellas", "min": 0, "max": 100, "step": 1, "default": 88 },
+    { "type": "range", "id": "rv_pct_4", "label": "% 4 estrellas", "min": 0, "max": 100, "step": 1, "default": 9  },
+    { "type": "range", "id": "rv_pct_3", "label": "% 3 estrellas", "min": 0, "max": 100, "step": 1, "default": 2  },
+    { "type": "range", "id": "rv_pct_2", "label": "% 2 estrellas", "min": 0, "max": 100, "step": 1, "default": 1  },
+    { "type": "range", "id": "rv_pct_1", "label": "% 1 estrella",  "min": 0, "max": 100, "step": 1, "default": 0  },
+
+    { "type": "header", "content": "😊 Clientas Felices" },
+    { "type": "color", "id": "cf_bg_color",    "label": "Fondo de la sección",     "default": "#EDEBE4" },
+    { "type": "text",  "id": "cf_badge_text",  "label": "Texto del badge",         "default": "Reseñas 4.8/5 basado en +23,393 reviews" },
+    { "type": "text",  "id": "cf_title_dark",  "label": "Título (parte oscura)",   "default": "Clientas" },
+    { "type": "text",  "id": "cf_title_gold",  "label": "Título (parte dorada)",   "default": "Felices" },
+
+    { "type": "header", "content": "🎬 Videos TikTok" },
+    { "type": "text",  "id": "tv_title",     "label": "Título sección videos",    "default": "Lo que dicen en redes" },
+    { "type": "text",  "id": "tv_subtitle",  "label": "Subtítulo",                "default": "Videos reales de clientas" },
+    { "type": "color", "id": "tv_bg_color",  "label": "Fondo de la sección",      "default": "#0A0A0A" },
+    { "type": "color", "id": "tv_text_color","label": "Color de texto",           "default": "#FFFFFF" },
+    { "type": "range", "id": "tv_card_width","label": "Ancho de tarjeta (%)", "min": 50, "max": 100, "step": 5, "default": 75 },
+    { "type": "range", "id": "tv_card_gap",  "label": "Espacio entre tarjetas (px)", "min": 0, "max": 20, "step": 2, "default": 6 },
+    { "type": "range", "id": "tv_card_radius","label": "Redondeo de tarjeta (px)", "min": 0, "max": 32, "step": 2, "default": 12 },
+
+    { "type": "header", "content": "🦶 Footer" },
+    { "type": "link_list", "id": "footer_menu1", "label": "Menú footer — columna 1 (anula bloques)", "info": "Selecciona un menú de Shopify para la columna Tienda del footer" },
+    { "type": "link_list", "id": "footer_menu2", "label": "Menú footer — columna 2 (anula bloques)", "info": "Selecciona un menú de Shopify para la columna Ayuda del footer" },
+    { "type": "image_picker", "id": "footer_logo",        "label": "Logo footer" },
+    { "type": "range",        "id": "footer_logo_height", "label": "Altura del logo footer", "min": 16, "max": 100, "step": 2, "default": 40, "unit": "px" },
+    { "type": "text",         "id": "footer_tagline",       "label": "Tagline",               "default": "Drenaje linfático facial en casa. Sin rituales complejos. Sin excusas para abandonarlo." },
+    { "type": "url",          "id": "footer_instagram",     "label": "Link Instagram" },
+    { "type": "url",          "id": "footer_tiktok",        "label": "Link TikTok" },
+    { "type": "text",         "id": "footer_col1_title",    "label": "Columna 1 — título",    "default": "Tienda" },
+    { "type": "text",         "id": "footer_col2_title",    "label": "Columna 2 — título",    "default": "Ayuda" },
+    { "type": "text",         "id": "footer_pay_title",     "label": "Título métodos de pago","default": "Métodos de pago" },
+    { "type": "text",         "id": "footer_payments",      "label": "Métodos (separar por coma)", "default": "Webpay,Transferencia,Mercado Pago,Visa,Mastercard" },
+    { "type": "text",         "id": "footer_copyright",     "label": "Copyright",             "default": "© 2025 Lumé · Todos los derechos reservados · Chile" },
+    { "type": "url",          "id": "footer_privacy_url",   "label": "URL Política de privacidad" },
+    { "type": "text",         "id": "footer_privacy_label", "label": "Texto política",        "default": "Política de privacidad" },
+    { "type": "url",          "id": "footer_terms_url",     "label": "URL Términos" },
+    { "type": "text",         "id": "footer_terms_label",   "label": "Texto términos",        "default": "Términos y condiciones" }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "🖼️ Imagen carrusel",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Imagen (430 × 440 px recomendado)" }
+      ]
+    },
+    {
+      "type": "pack",
+      "name": "📦 Pack",
+      "settings": [
+        { "type": "text",     "id": "name",             "label": "Nombre del pack",            "default": "1 Lumé" },
+        { "type": "text",     "id": "price_display",    "label": "Precio (texto)",             "default": "$29.990" },
+        { "type": "number",   "id": "price_raw",        "label": "Precio (número sin puntos)", "default": 29990 },
+        { "type": "text",     "id": "unit_text",        "label": "Precio por unidad",          "default": "$29.990 / unidad" },
+        { "type": "text",     "id": "old_price_display","label": "Precio anterior (texto, dejar vacío si no hay)" },
+        { "type": "number",   "id": "old_price_raw",    "label": "Precio anterior (número)",   "default": 0 },
+        { "type": "textarea", "id": "desc",             "label": "Descripción",                "default": "Ritual de mañana individual." },
+        { "type": "text",     "id": "save_text",        "label": "Texto de ahorro (dejar vacío si no hay)" },
+        { "type": "text",     "id": "qty_label",        "label": "Etiqueta cantidad (ej: 1 unidad)", "default": "1 unidad" },
+        { "type": "select",   "id": "badge",            "label": "Badge",
+          "options": [
+            { "value": "none",    "label": "Sin badge" },
+            { "value": "popular", "label": "Más popular" },
+            { "value": "best",    "label": "Mejor valor" }
+          ], "default": "none"
+        },
+        { "type": "checkbox",     "id": "selected",    "label": "Seleccionado por defecto", "default": false },
+        { "type": "text",         "id": "variant_id",  "label": "Variant ID de Shopify (obligatorio para comprar)" },
+        { "type": "image_picker", "id": "pack_image",  "label": "Imagen del pack (opcional, aparece a la derecha)" },
+        { "type": "text",         "id": "btn_text",    "label": "Texto botón personalizado (dejar vacío = texto global)" }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "✨ Característica",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Ícono",
+          "options": [
+            { "value": "clock",    "label": "Reloj" },
+            { "value": "activity", "label": "Actividad / pulso" },
+            { "value": "shield",   "label": "Escudo" },
+            { "value": "dollar",   "label": "Precio / dinero" },
+            { "value": "heart",    "label": "Corazón" },
+            { "value": "star",     "label": "Estrella" },
+            { "value": "leaf",     "label": "Hoja / natural" }
+          ], "default": "clock"
+        },
+        { "type": "text",     "id": "title", "label": "Título",      "default": "3 minutos al día" },
+        { "type": "textarea", "id": "desc",  "label": "Descripción", "default": "Sin preparación, sin aceite, sin limpiar después." }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "👣 Paso",
+      "settings": [
+        { "type": "text",     "id": "title", "label": "Título",      "default": "Piel limpia y seca" },
+        { "type": "textarea", "id": "desc",  "label": "Descripción", "default": "Lava tu cara y sécala. No necesitas aceite ni serum." }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "❓ Acordeón / FAQ",
+      "settings": [
+        { "type": "text",     "id": "title",   "label": "Pregunta / título",   "default": "¿Para qué tipo de piel?" },
+        { "type": "richtext", "id": "content", "label": "Respuesta / contenido","default": "<p>Apto para todo tipo de piel incluyendo sensible, madura y con tendencia acneica.</p>" }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "⭐ Reseña",
+      "settings": [
+        { "type": "text",   "id": "name",     "label": "Nombre",    "default": "Patricia M." },
+        { "type": "text",   "id": "date",     "label": "Fecha",     "default": "12 mar 2025" },
+        { "type": "select", "id": "stars",    "label": "Estrellas",
+          "options": [
+            { "value": "5", "label": "★★★★★  5 estrellas" },
+            { "value": "4", "label": "★★★★☆  4 estrellas" },
+            { "value": "3", "label": "★★★☆☆  3 estrellas" },
+            { "value": "2", "label": "★★☆☆☆  2 estrellas" },
+            { "value": "1", "label": "★☆☆☆☆  1 estrella"  }
+          ], "default": "5"
+        },
+        { "type": "textarea",     "id": "text",     "label": "Texto de la reseña", "default": "Excelente producto, lo recomiendo." },
+        { "type": "text",         "id": "location", "label": "Ciudad / barrio",    "default": "Santiago" },
+        { "type": "image_picker", "id": "rv_img1",  "label": "Foto 1 (opcional)" },
+        { "type": "image_picker", "id": "rv_img2",  "label": "Foto 2 (opcional)" },
+        { "type": "image_picker", "id": "rv_img3",  "label": "Foto 3 (opcional)" }
+      ]
+    },
+    {
+      "type": "footer_link_col1",
+      "name": "🔗 Link columna Tienda",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "Inicio" },
+        { "type": "url",  "id": "url",   "label": "URL" }
+      ]
+    },
+    {
+      "type": "footer_link_col2",
+      "name": "🔗 Link columna Ayuda",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "Preguntas frecuentes" },
+        { "type": "url",  "id": "url",   "label": "URL" }
+      ]
+    },
+    {
+      "type": "cf_card",
+      "name": "😊 Clienta Feliz (tarjeta)",
+      "settings": [
+        { "type": "image_picker", "id": "image",          "label": "Foto de la clienta" },
+        { "type": "text",         "id": "name",           "label": "Nombre y apellido",       "default": "Maria E. J." },
+        { "type": "text",         "id": "age",            "label": "Edad (opcional)",         "default": "55" },
+        { "type": "select",       "id": "stars",          "label": "Estrellas",
+          "options": [
+            { "value": "1", "label": "1 ★" },
+            { "value": "2", "label": "2 ★★" },
+            { "value": "3", "label": "3 ★★★" },
+            { "value": "4", "label": "4 ★★★★" },
+            { "value": "5", "label": "5 ★★★★★" }
+          ],
+          "default": "5"
+        },
+        { "type": "text",     "id": "verified_label", "label": "Badge verificada",        "default": "Clienta Verificada" },
+        { "type": "textarea", "id": "text",           "label": "Texto de la reseña",      "default": "Increíble producto, lo recomiendo a todas mis amigas." }
+      ]
+    },
+    {
+      "type": "video_item",
+      "name": "🎬 Video TikTok",
+      "settings": [
+        { "type": "video",        "id": "video",      "label": "Video (subir MP4)" },
+        { "type": "url",          "id": "video_url",  "label": "URL del video (alternativa)" },
+        { "type": "image_picker", "id": "thumbnail",  "label": "Miniatura / poster" },
+        { "type": "text",         "id": "username",   "label": "Usuario / nombre",   "default": "@lumeskincare" },
+        { "type": "textarea",     "id": "caption",    "label": "Caption",            "default": "Resultados reales con Lumé 🌿" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lumé Product Page",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "pack", "settings": { "name": "1 Lumé", "price_display": "$29.990", "price_raw": 29990, "unit_text": "$29.990 / unidad", "qty_label": "1 unidad", "badge": "none" } },
+        { "type": "pack", "settings": { "name": "2 Lumé", "price_display": "$49.990", "price_raw": 49990, "old_price_display": "Antes $79.980", "old_price_raw": 79980, "unit_text": "$24.995 / unidad", "qty_label": "2 unidades", "save_text": "Ahorras $29.990", "badge": "popular", "selected": true } },
+        { "type": "pack", "settings": { "name": "3 Lumé", "price_display": "$69.990", "price_raw": 69990, "old_price_display": "Antes $119.970", "old_price_raw": 119970, "unit_text": "$23.330 / unidad", "qty_label": "3 unidades", "save_text": "Ahorras $49.980", "badge": "best" } },
+        { "type": "feature", "settings": { "icon": "clock",    "title": "3 minutos al día",              "desc": "Sin preparación, sin aceite, sin limpiar después." } },
+        { "type": "feature", "settings": { "icon": "activity", "title": "Mecanismo fisiológico real",    "desc": "Activa el drenaje linfático superficial con movimiento mecánico dirigido." } },
+        { "type": "feature", "settings": { "icon": "shield",   "title": "Apto para piel sensible",       "desc": "Cerdas ultrasuaves, sin corrientes ni presión profunda." } },
+        { "type": "feature", "settings": { "icon": "dollar",   "title": "Reemplaza sesiones desde $45.000", "desc": "Una inversión única, uso para siempre." } },
+        { "type": "step", "settings": { "title": "Piel limpia y seca",      "desc": "Lava tu cara y sécala. No necesitas aceite ni serum." } },
+        { "type": "step", "settings": { "title": "Mandíbula hacia arriba",  "desc": "Desde el mentón, cepilla hacia arriba hasta el pómulo. Presión suave. 5–6 veces por lado." } },
+        { "type": "step", "settings": { "title": "Bajo los ojos",           "desc": "Desde el lagrimal hacia la sien. Movimientos muy suaves." } },
+        { "type": "step", "settings": { "title": "Drenar por el cuello",    "desc": "Termina cepillando hacia abajo por el cuello hasta la clavícula." } },
+        { "type": "accordion", "settings": { "title": "Materiales y cuidado",    "content": "<p>Cerdas de silicona médica ultrasuave. Mango de madera de haya. Lavar con jabón suave cada 2 semanas. Secar al aire. No sumergir.</p>" } },
+        { "type": "accordion", "settings": { "title": "¿Para qué tipo de piel?", "content": "<p>Apto para todo tipo de piel incluyendo sensible, madura y con tendencia acneica.</p>" } },
+        { "type": "review", "settings": { "name": "Patricia M.", "date": "12 mar 2025", "stars": "5", "text": "Tenía el gua sha en el cajón hace dos años. Esto lo uso todos los días. Primera vez que algo así me dura más de una semana.", "location": "Providencia" } },
+        { "type": "review", "settings": { "name": "Carolina V.", "date": "4 mar 2025",  "stars": "5", "text": "Me miraba en el espejo cada mañana sintiéndome horrible. Ahora el primer pensamiento no es cuándo se me irá la hinchazón. Ya se fue.", "location": "Las Condes" } },
+        { "type": "review", "settings": { "name": "Alejandra R.","date": "18 feb 2025", "stars": "5", "text": "Mi marido me preguntó si me había hecho algo. No. Solo Lumé, 3 minutos, todas las mañanas.", "location": "Vitacura" } },
+        { "type": "footer_link_col1", "settings": { "label": "Inicio",     "url": "/" } },
+        { "type": "footer_link_col1", "settings": { "label": "Producto",   "url": "/" } },
+        { "type": "footer_link_col1", "settings": { "label": "Resultados", "url": "/" } },
+        { "type": "footer_link_col1", "settings": { "label": "Blog",       "url": "/" } },
+        { "type": "footer_link_col2", "settings": { "label": "Preguntas frecuentes", "url": "/" } },
+        { "type": "footer_link_col2", "settings": { "label": "Envíos",               "url": "/" } },
+        { "type": "footer_link_col2", "settings": { "label": "Devoluciones",         "url": "/" } },
+        { "type": "footer_link_col2", "settings": { "label": "Contacto",             "url": "/" } },
+        { "type": "cf_card", "settings": { "name": "Maria Eugenia J.", "age": "55", "stars": "5", "verified_label": "Clienta Verificada", "text": "Trabajo todo el día sentada y siempre amanecía con la cara hinchada. Empecé a usar el cepillo en la mañana 10 minutos mientras me arreglo. La diferencia se nota heavy, menos inflamación, la cara más liviana y más definida. De verdad vale la pena." } },
+        { "type": "cf_card", "settings": { "name": "Javiera G.", "age": "41", "stars": "5", "verified_label": "Clienta Verificada", "text": "Me encantó que venga con su estuche, se nota que está pensado para cuidarlo y llevarlo a cualquier parte sin que se ensucie. El cepillo es firme pero muy suave al mismo tiempo, no raspa ni molesta la piel. Totalmente recomendado." } },
+        { "type": "cf_card", "settings": { "name": "Fernanda P.", "age": "47", "stars": "5", "verified_label": "Clienta Verificada", "text": "Entre la pega, la casa y los niños, nunca tenía tiempo para mí. Esto fue una solución real. Lo uso casi todos los días, con mi crema, y la piel se ve más firme y desinflamada. No es milagro, pero con constancia funciona." } },
+        { "type": "cf_card", "settings": { "name": "Rafaela C.", "age": "35", "stars": "5", "verified_label": "Clienta Verificada", "text": "Soy bastante escéptica con este tipo de cosas pero este cepillo sí marca una diferencia. Mi rostro se ve menos hinchado y la piel se ve más pareja. No duele ni deja marcas. Súper recomendado si eres constante." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

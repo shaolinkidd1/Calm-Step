@@ -1,0 +1,1051 @@
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+.sl-wrap *, .sl-wrap *::before, .sl-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --lavender: #C8B8E8;
+  --lavender-light: #E8DFF5;
+  --lavender-bg: #EDE6F7;
+  --black: #0A0A0A;
+  --white: #FFFFFF;
+  --gray-light: #F5F3F0;
+  --gray-mid: #888;
+  --gray-dark: #333;
+  --border: #E0DCE8;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--white); color: var(--black); font-size: 15px; }
+
+/* ANN BAR */
+.sl-ann-bar {
+  background: var(--lavender);
+  text-align: center;
+  padding: 10px 20px;
+  overflow: hidden;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sl-ann-track { position: relative; width: 100%; }
+.sl-ann-slide {
+  position: absolute; width: 100%; left: 0;
+  font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+.sl-ann-slide.active { opacity: 1; transform: translateY(0); position: relative; pointer-events: auto; }
+
+/* NAV */
+.sl-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 32px;
+  height: 64px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 100;
+}
+.sl-nav-left { display: flex; align-items: center; justify-content: flex-start; }
+.sl-nav-hamburger {
+  background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; gap: 5px; padding: 6px 4px;
+}
+.sl-nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--black); transition: opacity 0.15s; }
+.sl-nav-hamburger:hover span { opacity: 0.5; }
+.sl-nav-logo {
+  font-family: var(--font-display);
+  font-size: 28px; letter-spacing: 0.08em;
+  color: var(--black); text-decoration: none;
+  text-align: center; white-space: nowrap;
+  display: flex; align-items: center; justify-content: center;
+}
+.sl-nav-logo img { height: var(--header-logo-h, 32px); width: auto; display: block; }
+.sl-nav-right { display: flex; gap: 18px; align-items: center; justify-content: flex-end; }
+.sl-nav-right a { display: flex; align-items: center; color: var(--black); text-decoration: none; }
+.sl-nav-right svg { width: 20px; height: 20px; }
+.sl-cart-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; text-decoration: none; color: var(--black); }
+.sl-cart-count { background: var(--black); color: var(--white); width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+
+/* PRODUCT HERO */
+.sl-product-hero {
+  display: grid; grid-template-columns: 1fr 1fr;
+  max-width: 1200px; margin: 0 auto;
+  gap: 0;
+}
+.sl-gallery { position: relative; }
+.sl-gallery-main {
+  width: 100%;
+  padding-top: 100%; /* ratio 1:1 */
+  position: relative;
+  overflow: hidden;
+  background: var(--gray-light);
+}
+.sl-gallery-slides {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+.sl-slide-img {
+  position: absolute !important;
+  top: 0 !important; left: 0 !important;
+  width: 100% !important; height: 100% !important;
+  object-fit: cover !important;
+  display: none;
+}
+.sl-slide-img.sl-active { display: block !important; }
+.sl-gallery-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px; background: var(--white);
+  border: 1px solid var(--border); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 10; font-size: 18px;
+}
+.sl-gallery-nav.prev { left: 12px; }
+.sl-gallery-nav.next { right: 12px; }
+.sl-gallery-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+.sl-gallery-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--border); cursor: pointer; }
+.sl-gallery-dots span.active { background: var(--black); }
+
+.sl-product-info { padding: 40px 40px 60px; }
+.sl-product-stars-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.sl-stars-display { position: relative; display: inline-block; font-size: 16px; letter-spacing: 3px; line-height: 1; }
+.sl-stars-bg { color: #D8D0E8; }
+.sl-stars-fg { position: absolute; top: 0; left: 0; overflow: hidden; white-space: nowrap; color: #F5A623; pointer-events: none; }
+.sl-stars-hero-label { font-size: 12px; color: var(--gray-mid); }
+.sl-product-subtitle { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 6px; }
+.sl-product-title { font-family: var(--font-display); font-size: 46px; line-height: 1; letter-spacing: 0.03em; margin-bottom: 14px; }
+.sl-product-title sup { font-size: 22px; }
+.sl-product-tagline { font-size: 13px; color: var(--gray-dark); line-height: 1.6; margin-bottom: 6px; }
+.sl-product-tagline p { margin: 0; }
+.sl-product-tagline a { color: var(--black); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+
+.sl-option-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 10px; }
+.sl-option-btns { display: flex; gap: 10px; margin-bottom: 24px; }
+.sl-option-btn { padding: 8px 20px; border: 1.5px solid var(--border); border-radius: 4px; font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; background: var(--white); color: var(--black); transition: all 0.15s; }
+.sl-option-btn.active { border-color: var(--black); background: var(--black); color: var(--white); }
+
+.sl-purchase-options { margin-bottom: 22px; }
+.sl-purchase-option {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border: 1.5px solid var(--border);
+  border-radius: 4px; margin-bottom: 8px; cursor: pointer; transition: border-color 0.15s;
+}
+.sl-purchase-option.selected { border-color: var(--black); }
+.sl-purchase-option-left { display: flex; align-items: center; gap: 12px; }
+.sl-radio { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sl-radio.checked { border-color: var(--black); }
+.sl-radio.checked::after { content: ''; width: 10px; height: 10px; background: var(--black); border-radius: 50%; }
+.sl-purchase-option-text { font-size: 14px; font-weight: 500; }
+.sl-purchase-option-price { font-size: 14px; font-weight: 500; }
+.sl-purchase-option-sub { font-size: 11px; color: var(--gray-mid); }
+
+.sl-cta-btn {
+  width: 100%; background: var(--black); color: var(--white); border: none;
+  padding: 18px; font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  letter-spacing: 0.04em; cursor: pointer; border-radius: 4px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; transition: background 0.15s;
+}
+.sl-cta-btn:hover { background: #222; }
+.sl-shipping-note { font-size: 12px; color: var(--gray-mid); margin-bottom: 24px; }
+
+.sl-accordion { border-top: 1px solid var(--border); }
+.sl-accordion-item { border-bottom: 1px solid var(--border); }
+.sl-accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; cursor: pointer; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.sl-accordion-header span { font-size: 20px; font-weight: 300; transition: transform 0.2s; }
+.sl-accordion-header.open span { transform: rotate(45deg); }
+.sl-accordion-content { display: none; padding-bottom: 16px; font-size: 13px; line-height: 1.7; color: var(--gray-dark); }
+.sl-accordion-content.open { display: block; }
+
+/* TICKER */
+.sl-ticker { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 12px 0; overflow: hidden; white-space: nowrap; }
+.sl-ticker-track { display: inline-flex; gap: 0; animation: sl-ticker 18s linear infinite; }
+.sl-ticker-item { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0 30px; }
+.sl-ticker-dot { width: 4px; height: 4px; background: var(--black); border-radius: 50%; }
+@keyframes sl-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* CLINICAL */
+.sl-clinical { display: grid; grid-template-columns: 1fr 1fr; min-height: 480px; }
+.sl-clinical-img { position: relative; overflow: hidden; background: var(--gray-light); }
+.sl-clinical-img img { width: 100%; height: 100%; object-fit: cover; }
+.sl-clinical-data { background: var(--white); padding: 60px 60px; display: flex; flex-direction: column; justify-content: center; }
+.sl-clinical-title { font-family: var(--font-display); font-size: 48px; letter-spacing: 0.04em; margin-bottom: 40px; }
+.sl-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.sl-stat-num { font-family: var(--font-display); font-size: 64px; line-height: 1; letter-spacing: 0.02em; margin-bottom: 8px; }
+.sl-stat-desc { font-size: 13px; line-height: 1.5; color: var(--gray-dark); max-width: 180px; }
+.sl-clinical-note { font-size: 10px; color: var(--gray-mid); margin-top: 24px; line-height: 1.5; }
+
+/* GOOD FOR BAND */
+.sl-good-for-band { background: var(--lavender); padding: 40px; display: flex; align-items: center; gap: 20px; }
+.sl-good-for-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); opacity: 0.6; }
+.sl-good-for-title { font-family: var(--font-display); font-size: 36px; letter-spacing: 0.04em; color: var(--black); }
+
+/* PRODUCT DETAILS */
+.sl-product-details { display: grid; grid-template-columns: 1fr 1fr; }
+.sl-details-left { padding: 50px 50px; border-right: 1px solid var(--border); }
+.sl-details-right { background: var(--gray-light); display: flex; align-items: center; justify-content: center; padding: 40px; overflow: hidden; }
+.sl-details-right.has-img { padding: 0; }
+.sl-details-right.has-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sl-detail-block { margin-bottom: 32px; }
+.sl-detail-block-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 8px; }
+.sl-detail-block-value { font-family: var(--font-display); font-size: 42px; line-height: 1.1; letter-spacing: 0.02em; }
+.sl-detail-block-value.small { font-size: 22px; line-height: 1.4; }
+
+.sl-bottle { width: 70%; max-width: 280px; background: var(--white); border-radius: 12px; padding: 24px 20px; text-align: center; box-shadow: 0 4px 40px rgba(0,0,0,0.08); }
+.sl-bottle-brand { font-family: var(--font-display); font-size: 14px; letter-spacing: 0.15em; margin-bottom: 4px; }
+.sl-bottle-name { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.08em; line-height: 1.1; margin-bottom: 6px; }
+.sl-bottle-label { font-size: 9px; color: var(--gray-mid); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; line-height: 1.5; }
+.sl-bottle-icon { width: 80px; height: 110px; background: linear-gradient(145deg, #E8DFF5, #C8B8E8); border-radius: 40px 40px 20px 20px; margin: 0 auto 12px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.sl-bottle-icon::before { content: ''; position: absolute; top: -10px; width: 30px; height: 14px; background: #B8A8D8; border-radius: 4px 4px 0 0; }
+.sl-bottle-icon-text { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); text-align: center; padding: 0 10px; }
+.sl-bottle-count { font-size: 11px; color: var(--gray-mid); margin-top: 8px; }
+
+/* FAQ */
+.sl-faq-section { border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; max-width: 1200px; margin: 0 auto; padding: 60px 40px; gap: 60px; }
+.sl-faq-title { font-family: var(--font-display); font-size: 48px; letter-spacing: 0.03em; line-height: 1.1; align-self: start; }
+
+/* MARQUEE */
+
+
+/* PERSON PLACEHOLDER */
+.sl-person-placeholder { width: 100%; height: 100%; background: linear-gradient(160deg, #D4C5E8 0%, #C8B8E8 100%); display: flex; align-items: center; justify-content: center; min-height: 480px; }
+
+/* SOCIAL ICONS */
+  border: 1px solid rgba(0,0,0,0.18); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(0,0,0,0.5); text-decoration: none;
+  font-size: 10px; font-weight: 700; transition: all 0.14s;
+}
+
+/* MOBILE MENU DRAWER */
+.sl-menu-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45); z-index: 200;
+}
+.sl-menu-overlay.open { display: block; }
+.sl-mobile-menu {
+  position: fixed; top: 0; left: 0;
+  width: 300px; height: 100vh;
+  background: var(--white); z-index: 300;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto; display: flex; flex-direction: column;
+}
+.sl-mobile-menu.open { transform: translateX(0); }
+.sl-mobile-menu-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px; border-bottom: 1px solid var(--border);
+}
+.sl-mobile-menu-logo {
+  font-family: var(--font-display); font-size: 24px;
+  letter-spacing: 0.08em; color: var(--black); text-decoration: none;
+  display: flex; align-items: center;
+}
+.sl-mobile-menu-logo img { height: var(--header-logo-h, 28px); width: auto; display: block; }
+.sl-skinflow2-note { font-size: 12px; color: var(--gray-mid); margin-top: 6px; margin-bottom: 20px; line-height: 1.5; }
+.sl-skinflow2-link { color: var(--black); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; letter-spacing: 0.01em; }
+.sl-mobile-menu-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 28px; line-height: 1; color: var(--black); padding: 2px 6px;
+}
+.sl-mobile-menu-nav { padding: 8px 24px; }
+.sl-mobile-menu-nav a {
+  display: block; font-size: 16px; font-weight: 500;
+  color: var(--black); text-decoration: none;
+  padding: 16px 0; border-bottom: 1px solid var(--border);
+  transition: opacity 0.15s;
+}
+.sl-mobile-menu-nav a:first-child { border-top: 1px solid var(--border); }
+.sl-mobile-menu-nav a:hover { opacity: 0.45; }
+.sl-mobile-menu-cta { padding: 24px; border-top: 1px solid var(--border); }
+.sl-mobile-menu-cta button {
+  width: 100%; background: var(--black); color: var(--white);
+  border: none; padding: 16px; font-family: var(--font-body);
+  font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 4px;
+  transition: background 0.15s;
+}
+.sl-mobile-menu-cta button:hover { background: #222; }
+body.sl-menu-open { overflow: hidden; }
+
+/* STICKY ADD TO CART */
+#sl-sticky-atc {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.10);
+  z-index: 400;
+  padding: 12px 24px;
+  display: none;
+  font-family: var(--font-body);
+}
+#sl-sticky-atc.visible { display: block; }
+.sl-sticky-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.sl-sticky-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.sl-sticky-name {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sl-sticky-qty {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--lavender-light);
+  color: var(--black);
+  padding: 2px 8px;
+  border-radius: 20px;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+.sl-sticky-price {
+  font-size: 13px;
+  color: var(--gray-mid);
+}
+.sl-sticky-btn {
+  flex-shrink: 0;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.sl-sticky-btn:hover { background: #222; }
+.sl-sticky-btn:disabled { opacity: 0.6; cursor: default; }
+@media (max-width: 480px) {
+  #sl-sticky-atc { padding: 10px 16px; }
+  .sl-sticky-btn { padding: 11px 18px; font-size: 13px; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sl-product-hero, .sl-clinical, .sl-product-details, .sl-faq-section { grid-template-columns: 1fr; }
+  .sl-product-info { padding: 28px 20px 40px; }
+  .sl-stats-grid { grid-template-columns: 1fr 1fr; }
+  .sl-nav { padding: 0 20px; }
+  .sl-gallery-main { touch-action: pan-y; }
+  .sl-slide-img { pointer-events: none; user-select: none; -webkit-user-select: none; }
+}
+</style>
+
+<div class="sl-wrap">
+{%- assign lp = all_products[section.settings.linked_product] -%}
+{%- if lp != blank -%}
+  {%- assign _lp_vid1 = lp.variants[0].id -%}
+  {%- assign _lp_vid2 = lp.variants[1].id -%}
+  {%- assign _lp_vid3 = lp.variants[2].id -%}
+  {%- assign _lp_p1 = lp.variants[0].price | money -%}
+  {%- assign _lp_p2 = lp.variants[1].price | money -%}
+  {%- assign _lp_p3 = lp.variants[2].price | money -%}
+  {%- assign _lp_url = lp.url -%}
+  {%- assign _lp_selling_plan_id = '' -%}
+  {%- if lp.selling_plan_groups.size > 0 -%}
+    {%- assign _lp_selling_plan_id = lp.selling_plan_groups.first.selling_plans.first.id -%}
+  {%- endif -%}
+{%- endif -%}
+<!-- ANNOUNCEMENT BAR -->
+<div class="sl-ann-bar" id="sl-annBar">
+  <div class="sl-ann-track" id="sl-annTrack">
+    <div class="sl-ann-slide active">{{ section.settings.ann_1 | default: 'Envío gratis en compras sobre $49.990' }}</div>
+    <div class="sl-ann-slide">{{ section.settings.ann_2 | default: '30 días para amarlo — o te devolvemos el dinero' }}</div>
+    <div class="sl-ann-slide">{{ section.settings.ann_3 | default: 'Clínicamente testeado · Sin drogas · Sin receta' }}</div>
+    <div class="sl-ann-slide">{{ section.settings.ann_4 | default: 'Resultados en 7–10 días*' }}</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="sl-nav">
+  <div class="sl-nav-left">
+    <button class="sl-nav-hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <a class="sl-nav-logo" href="{{ section.settings.logo_url | default: '/' }}" style="--header-logo-h:{{ section.settings.header_logo_height | default: 32 }}px">
+    {%- if section.settings.header_logo_image != blank -%}
+      <img src="{{ section.settings.header_logo_image | image_url: width: 400 }}" alt="{{ section.settings.brand_name | default: 'SILUNE.' }}" loading="eager">
+    {%- else -%}
+      {{ section.settings.brand_name | default: 'SILUNE.' }}
+    {%- endif -%}
+  </a>
+  <div class="sl-nav-right">
+    <a href="{{ section.settings.search_url | default: '/search' }}" aria-label="Buscar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </a>
+    <a href="{{ section.settings.cart_url | default: '/cart' }}" class="sl-cart-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <div class="sl-cart-count" id="sl-cartCount">0</div>
+    </a>
+  </div>
+</nav>
+
+<!-- MOBILE MENU DRAWER -->
+<div class="sl-menu-overlay" id="sl-menuOverlay"></div>
+<div class="sl-mobile-menu" id="sl-mobileMenu">
+  <div class="sl-mobile-menu-header">
+    <a class="sl-mobile-menu-logo" href="{{ section.settings.logo_url | default: '/' }}" style="--header-logo-h:{{ section.settings.header_logo_height | default: 28 }}px">
+      {%- if section.settings.header_logo_image != blank -%}
+        <img src="{{ section.settings.header_logo_image | image_url: width: 300 }}" alt="{{ section.settings.brand_name | default: 'SILUNE.' }}" loading="lazy">
+      {%- else -%}
+        {{ section.settings.brand_name | default: 'SILUNE.' }}
+      {%- endif -%}
+    </a>
+    <button class="sl-mobile-menu-close" id="sl-menuClose" aria-label="Cerrar">×</button>
+  </div>
+  <nav class="sl-mobile-menu-nav">
+    {%- for block in section.blocks -%}
+      <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | default: 'Link' }}</a>
+    {%- endfor -%}
+  </nav>
+</div>
+
+<!-- PRODUCT HERO -->
+<div class="sl-product-hero">
+  <!-- Gallery -->
+  <div class="sl-gallery">
+    <div class="sl-gallery-main" id="sl-galleryMain">
+      <div class="sl-gallery-slides">
+        {%- assign sl_has_img = false -%}
+        {%- if section.settings.slide_1_image != blank -%}
+          {%- assign sl_has_img = true -%}
+          <img class="sl-slide-img sl-active" src="{{ section.settings.slide_1_image | image_url: width: 1080 }}" alt="{{ section.settings.product_name | default: 'SKINFLOW®' }}" loading="eager" width="1080" height="1080">
+        {%- endif -%}
+        {%- if section.settings.slide_2_image != blank -%}
+          {%- assign sl_has_img = true -%}
+          <img class="sl-slide-img" src="{{ section.settings.slide_2_image | image_url: width: 1080 }}" alt="{{ section.settings.product_name | default: 'SKINFLOW®' }}" loading="lazy" width="1080" height="1080">
+        {%- endif -%}
+        {%- if section.settings.slide_3_image != blank -%}
+          {%- assign sl_has_img = true -%}
+          <img class="sl-slide-img" src="{{ section.settings.slide_3_image | image_url: width: 1080 }}" alt="{{ section.settings.product_name | default: 'SKINFLOW®' }}" loading="lazy" width="1080" height="1080">
+        {%- endif -%}
+        {%- if section.settings.slide_4_image != blank -%}
+          {%- assign sl_has_img = true -%}
+          <img class="sl-slide-img" src="{{ section.settings.slide_4_image | image_url: width: 1080 }}" alt="{{ section.settings.product_name | default: 'SKINFLOW®' }}" loading="lazy" width="1080" height="1080">
+        {%- endif -%}
+        {%- if section.settings.slide_5_image != blank -%}
+          {%- assign sl_has_img = true -%}
+          <img class="sl-slide-img" src="{{ section.settings.slide_5_image | image_url: width: 1080 }}" alt="{{ section.settings.product_name | default: 'SKINFLOW®' }}" loading="lazy" width="1080" height="1080">
+        {%- endif -%}
+        {%- unless sl_has_img -%}
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--gray-light);gap:12px;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb">Sube imágenes en el editor</span>
+          </div>
+        {%- endunless -%}
+      </div>
+      <button class="sl-gallery-nav prev" onclick="slChangeImg(-1)" style="z-index:10">&#8249;</button>
+      <button class="sl-gallery-nav next" onclick="slChangeImg(1)" style="z-index:10">&#8250;</button>
+    </div>
+    {%- assign sl_dot_count = 0 -%}
+    {%- if section.settings.slide_1_image != blank -%}{%- assign sl_dot_count = sl_dot_count | plus: 1 -%}{%- endif -%}
+    {%- if section.settings.slide_2_image != blank -%}{%- assign sl_dot_count = sl_dot_count | plus: 1 -%}{%- endif -%}
+    {%- if section.settings.slide_3_image != blank -%}{%- assign sl_dot_count = sl_dot_count | plus: 1 -%}{%- endif -%}
+    {%- if section.settings.slide_4_image != blank -%}{%- assign sl_dot_count = sl_dot_count | plus: 1 -%}{%- endif -%}
+    {%- if section.settings.slide_5_image != blank -%}{%- assign sl_dot_count = sl_dot_count | plus: 1 -%}{%- endif -%}
+    <div class="sl-gallery-dots" id="sl-galleryDots">
+      {%- for i in (1..sl_dot_count) -%}
+        <span{% if forloop.first %} class="active"{% endif %}></span>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <!-- Product Info -->
+  <div class="sl-product-info">
+    {%- assign sl_score = section.settings.review_score | default: '4.5' | plus: 0 -%}
+    {%- assign sl_pct = sl_score | times: 20 -%}
+    <div class="sl-product-stars-row">
+      <span class="sl-stars-display">
+        <span class="sl-stars-bg">★★★★★</span>
+        <span class="sl-stars-fg" style="width:{{ sl_pct }}%">★★★★★</span>
+      </span>
+      <span class="sl-stars-hero-label">{{ sl_score }} · {{ section.settings.review_count | default: '1.223' }} reseñas</span>
+    </div>
+    <div class="sl-product-title">{{ section.settings.product_name | default: 'SKINFLOW' }}<sup>®</sup></div>
+    <div class="sl-product-subtitle">{{ section.settings.product_category | default: 'Suplemento para Acné Hormonal' }}</div>
+    <div class="sl-product-tagline">
+      {%- if section.settings.product_tagline_rt != blank -%}
+        {{ section.settings.product_tagline_rt }}
+      {%- else -%}
+        <p>La cápsula diaria #1 para abordar y combatir el acné hormonal en su raíz.*</p>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.skinflow2_url != blank or section.settings.skinflow2_note != blank -%}
+    <p class="sl-skinflow2-note">También disponible:&nbsp;
+      {%- if section.settings.skinflow2_url != blank -%}
+        <a class="sl-skinflow2-link" href="{{ section.settings.skinflow2_url }}">SKINFLOW®2</a>
+      {%- else -%}
+        <strong class="sl-skinflow2-link">SKINFLOW®2</strong>
+      {%- endif -%}
+      {%- if section.settings.skinflow2_note != blank %}&nbsp;{{ section.settings.skinflow2_note }}{%- endif -%}
+    </p>
+    {%- endif -%}
+
+    <div class="sl-option-label">Cantidad</div>
+    <div class="sl-option-btns" id="sl-qtyBtns">
+      <button class="sl-option-btn active" onclick="slSelectQty(this,'1','{{ _lp_p1 | default: section.settings.price_1 | default: "$34.980" }}','{{ section.settings.price_1_sub | default: "$31.482" }}')">1 Unidad</button>
+      <button class="sl-option-btn" onclick="slSelectQty(this,'2','{{ _lp_p2 | default: section.settings.price_2 | default: "$62.990" }}','{{ section.settings.price_2_sub | default: "$56.691" }}')">2 Unidades</button>
+      <button class="sl-option-btn" onclick="slSelectQty(this,'3','{{ _lp_p3 | default: section.settings.price_3 | default: "$89.990" }}','{{ section.settings.price_3_sub | default: "$80.991" }}')">3 Unidades</button>
+    </div>
+
+    <div class="sl-purchase-options">
+      <div class="sl-purchase-option selected" onclick="slSelectPurchase(this,'once')">
+        <div class="sl-purchase-option-left">
+          <div class="sl-radio checked"></div>
+          <div><div class="sl-purchase-option-text">Compra única</div></div>
+        </div>
+        <div class="sl-purchase-option-price" id="sl-priceOnce">{{ _lp_p1 | default: section.settings.price_1 | default: '$34.980' }}</div>
+      </div>
+      <div class="sl-purchase-option" onclick="slSelectPurchase(this,'sub')">
+        <div class="sl-purchase-option-left">
+          <div class="sl-radio"></div>
+          <div>
+            <div class="sl-purchase-option-text">Suscríbete + Ahorra 10%</div>
+            <div class="sl-purchase-option-sub">Entrega cada 30 días · Cancela cuando quieras</div>
+          </div>
+        </div>
+        <div class="sl-purchase-option-price" id="sl-priceSub">{{ section.settings.price_1_sub | default: '$31.482' }}</div>
+
+      </div>
+    </div>
+
+    <button class="sl-cta-btn" id="sl-ctaBtn" onclick="slAddToCart()">
+      <span>Agregar al Carro</span>
+      <span id="sl-ctaPrice">{{ _lp_p1 | default: section.settings.price_1 | default: '$34.980' }}</span>
+    </button>
+    <p class="sl-shipping-note">Envío gratis &nbsp;·&nbsp; IVA incluido &nbsp;·&nbsp; Devoluciones en 30 días</p>
+
+    <div class="sl-accordion">
+      <div class="sl-accordion-item">
+        <div class="sl-accordion-header" onclick="slToggleAcc(this)">{{ section.settings.acc_1_title | default: 'Por qué te va a encantar' }} <span>+</span></div>
+        <div class="sl-accordion-content">
+          {%- if section.settings.acc_1_body != blank -%}
+            {{ section.settings.acc_1_body }}
+          {%- else -%}
+            <p><strong>Ataca las 5 raíces del acné hormonal simultáneamente:</strong> hormonas, digestión, detoxificación, estrés y producción de sebo. No es un tratamiento tópico — actúa desde adentro para detener los brotes antes de que se formen.</p>
+            <p>✓ Sin receta médica &nbsp;·&nbsp; ✓ Sin drogas &nbsp;·&nbsp; ✓ Sin gluten &nbsp;·&nbsp; ✓ Sin lácteos<br>✓ Clínicamente testeado &nbsp;·&nbsp; ✓ Resultados en 7–10 días*</p>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="sl-accordion-item">
+        <div class="sl-accordion-header" onclick="slToggleAcc(this)">{{ section.settings.acc_2_title | default: 'Cómo usarlo' }} <span>+</span></div>
+        <div class="sl-accordion-content">
+          {%- if section.settings.acc_2_body != blank -%}
+            {{ section.settings.acc_2_body }}
+          {%- else -%}
+            <p><strong>Dosis:</strong> 2 cápsulas diarias con comida.</p>
+            <p>Tómalo de forma consistente. Los primeros cambios se notan en 7–10 días. El resultado consolidado se da entre los 2 y 3 meses de uso continuo.</p>
+            <p><em>Para quienes toman antidepresivos o medicamentos que interactúan con el 5-HTP, consultar la versión {{ section.settings.product_name | default: 'SKINFLOW®' }}2.</em></p>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="sl-accordion-item">
+        <div class="sl-accordion-header" onclick="slToggleAcc(this)">{{ section.settings.acc_3_title | default: 'Ingredientes' }} <span>+</span></div>
+        <div class="sl-accordion-content">
+          {%- if section.settings.acc_3_body != blank -%}
+            {{ section.settings.acc_3_body }}
+          {%- else -%}
+            <p><strong>Ingredientes clave:</strong> Vitamina A Biodisponible, DIM (Diindolilmetano), Vitamina B5, Cúrcuma, Raíz de Diente de León, 5-HTP, Glutatión.</p>
+            <p>Todos los ingredientes son de origen natural, sin colorantes artificiales, sin conservantes sintéticos.</p>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="sl-accordion-item">
+        <div class="sl-accordion-header" onclick="slToggleAcc(this)">{{ section.settings.acc_4_title | default: 'Combina bien con' }} <span>+</span></div>
+        <div class="sl-accordion-content">
+          {%- if section.settings.acc_4_body != blank -%}
+            {{ section.settings.acc_4_body }}
+          {%- else -%}
+            <p>Para mejores resultados, combina {{ section.settings.product_name | default: 'SKINFLOW®' }} con una rutina de skincare libre de ingredientes comedogénicos. Nuestro Checker de Ingredientes te ayuda a verificar tus productos actuales.</p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="sl-ticker">
+  <div class="sl-ticker-track">
+    <span class="sl-ticker-item">Clínicamente Testeado <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Apto para Mujeres y Hombres <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Resultados en 7–10 días* <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Sin Drogas <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Sin Gluten <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Sin Lácteos <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Clínicamente Testeado <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Apto para Mujeres y Hombres <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Resultados en 7–10 días* <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Sin Drogas <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Sin Gluten <span class="sl-ticker-dot"></span></span>
+    <span class="sl-ticker-item">Sin Lácteos <span class="sl-ticker-dot"></span></span>
+  </div>
+</div>
+
+<!-- CLINICAL RESULTS -->
+<div class="sl-clinical">
+  <div class="sl-clinical-img">
+    {%- if section.settings.clinical_image != blank -%}
+      {{ section.settings.clinical_image | image_url: width: 800 | image_tag: loading: 'lazy', style: 'width:100%;height:100%;object-fit:cover;' }}
+    {%- else -%}
+      <div class="sl-person-placeholder">
+        <div style="text-align:center;opacity:0.25;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.1em">{{ section.settings.product_name | default: 'SKINFLOW®' }}</div>
+          <div style="font-size:13px;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px">Resultados reales</div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+  <div class="sl-clinical-data">
+    <div class="sl-clinical-title">Resultados Clínicos</div>
+    <div class="sl-stats-grid">
+      <div><div class="sl-stat-num">{{ section.settings.stat_1_num | default: '89%' }}</div><div class="sl-stat-desc">{{ section.settings.stat_1_desc | default: 'lo elegiría sobre tratamientos tradicionales para el acné*' }}</div></div>
+      <div><div class="sl-stat-num">{{ section.settings.stat_2_num | default: '85%' }}</div><div class="sl-stat-desc">{{ section.settings.stat_2_desc | default: 'notó mejora en el tono y brillo de su piel**' }}</div></div>
+      <div><div class="sl-stat-num">{{ section.settings.stat_3_num | default: '81%' }}</div><div class="sl-stat-desc">{{ section.settings.stat_3_desc | default: 'vio su piel mantenerse limpia a lo largo del tiempo*' }}</div></div>
+      <div><div class="sl-stat-num">{{ section.settings.stat_4_num | default: '81%' }}</div><div class="sl-stat-desc">{{ section.settings.stat_4_desc | default: 'reportó mejora en la textura de su piel*' }}</div></div>
+    </div>
+    <div class="sl-clinical-note">{{ section.settings.clinical_note | default: '*Basado en un estudio clínico de eficacia de 24 semanas con 30 participantes.' }}</div>
+  </div>
+</div>
+
+<!-- GOOD FOR BAND -->
+<div class="sl-good-for-band">
+  <div>
+    <div class="sl-good-for-label">Bueno para</div>
+    <div class="sl-good-for-title">{{ section.settings.good_for | default: 'Control de Sebo, Renovación Celular, Detoxificación' }}</div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAILS -->
+<div class="sl-product-details">
+  <div class="sl-details-left">
+    <div class="sl-detail-block" style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+      <div class="sl-detail-block-label">Tamaño por porción</div>
+      <div class="sl-detail-block-value">{{ section.settings.serving_size | default: '2 Cápsulas' }}</div>
+    </div>
+    <div class="sl-detail-block" style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+      <div class="sl-detail-block-label">Cuándo tomarlo</div>
+      <div class="sl-detail-block-value small">{{ section.settings.when_to_take | default: 'Tomar diariamente con comida' }}</div>
+    </div>
+    <div class="sl-detail-block">
+      <div class="sl-detail-block-label">Ingredientes clave</div>
+      <div class="sl-detail-block-value small">{{ section.settings.key_ingredients | default: 'Vitamina A Biodisponible, DIM, B5, Cúrcuma, Raíz de Diente de León, 5-HTP, Glutatión' }}</div>
+    </div>
+  </div>
+  <div class="sl-details-right{%- if section.settings.bottle_image != blank %} has-img{%- endif -%}">
+    {%- if section.settings.bottle_image != blank -%}
+      {{ section.settings.bottle_image | image_url: width: 800 | image_tag: loading: 'lazy' }}
+    {%- else -%}
+      <div class="sl-bottle">
+        <div class="sl-bottle-brand">{{ section.settings.product_name | default: 'SKINFLOW' }}</div>
+        <div class="sl-bottle-name">{{ section.settings.product_name | default: 'SKINFLOW' }}<sup style="font-size:10px">®</sup></div>
+        <div class="sl-bottle-label">Suplemento Dietario<br>Acné Hormonal</div>
+        <div class="sl-bottle-icon"><div class="sl-bottle-icon-text">SKIN<br>FLOW</div></div>
+        <div class="sl-bottle-count">60 Cápsulas</div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<!-- REVIEWS (ahora en sección separada: silune-reviews.liquid) -->
+
+<!-- FAQ -->
+<div class="sl-faq-section">
+  <div class="sl-faq-title">Preguntas<br>Frecuentes</div>
+  <div class="sl-accordion" style="align-self:start;width:100%">
+    <div class="sl-accordion-item">
+      <div class="sl-accordion-header" onclick="slToggleAcc(this)">¿Es apto para todos los tonos de piel? <span>+</span></div>
+      <div class="sl-accordion-content">Sí. {{ section.settings.product_name | default: 'SKINFLOW®' }} fue formulado para funcionar en todo tipo y tono de piel. El acné hormonal es una condición sistémica que no distingue tono de piel.</div>
+    </div>
+    <div class="sl-accordion-item">
+      <div class="sl-accordion-header" onclick="slToggleAcc(this)">¿Quién debería tomar este producto? <span>+</span></div>
+      <div class="sl-accordion-content">Está diseñado para mujeres y hombres que experimentan acné hormonal — especialmente brotes cíclicos relacionados con el período, el estrés, o cambios en métodos anticonceptivos. No apto para embarazadas sin consulta médica previa.</div>
+    </div>
+    <div class="sl-accordion-item">
+      <div class="sl-accordion-header" onclick="slToggleAcc(this)">¿Cuánto tarda en dar resultados? <span>+</span></div>
+      <div class="sl-accordion-content">Muchos reportan ver una diferencia notable en tan solo 7–10 días. Cada caso es distinto: recomendamos comprometerse con 3 meses completos antes de evaluar resultados definitivos. La consistencia es clave.</div>
+    </div>
+    <div class="sl-accordion-item">
+      <div class="sl-accordion-header" onclick="slToggleAcc(this)">¿Cuántas cápsulas se toman y cuándo? <span>+</span></div>
+      <div class="sl-accordion-content">2 cápsulas diarias, tomadas con comida. Pueden tomarse en la mañana o en cualquier momento del día mientras haya comida de por medio.</div>
+    </div>
+    <div class="sl-accordion-item">
+      <div class="sl-accordion-header" onclick="slToggleAcc(this)">¿Qué resultados debo esperar? <span>+</span></div>
+      <div class="sl-accordion-content">Reducción de brotes nuevos, menos inflamación, piel menos grasa, mejor tono general, y reducción de manchas post-acné. Muchas usuarias también reportan menos síntomas de SPM y mejor estado de ánimo durante el ciclo.</div>
+    </div>
+  </div>
+</div>
+
+
+</div><!-- /sl-wrap -->
+
+<!-- STICKY ADD TO CART -->
+<div id="sl-sticky-atc">
+  <div class="sl-sticky-inner">
+    <div class="sl-sticky-left">
+      <span class="sl-sticky-name">{{ section.settings.product_name | default: 'SKINFLOW' }}<sup style="font-size:9px">®</sup> &nbsp;<span class="sl-sticky-qty" id="sl-sticky-qty">1 Unidad</span></span>
+      <span class="sl-sticky-price" id="sl-sticky-price">{{ _lp_p1 | default: section.settings.price_1 | default: '$34.980' }}</span>
+    </div>
+    <button class="sl-sticky-btn" id="sl-sticky-btn" onclick="slAddToCart()">Agregar al Carro</button>
+  </div>
+</div>
+
+<script>
+(function() {
+
+  // ANN BAR rotation
+  var annSlides = document.querySelectorAll('.sl-ann-slide');
+  var annIdx = 0;
+  if (annSlides.length > 1) {
+    setInterval(function() {
+      annSlides[annIdx].classList.remove('active');
+      annIdx = (annIdx + 1) % annSlides.length;
+      annSlides[annIdx].classList.add('active');
+    }, 3500);
+  }
+
+  // GALLERY
+  var slImages = document.querySelectorAll('.sl-slide-img');
+  var slDots = document.querySelectorAll('#sl-galleryDots span');
+  var slIdx = 0;
+  var slTotal = slImages.length;
+  window.slChangeImg = function(dir) {
+    if (slTotal < 2) return;
+    if (slImages[slIdx]) slImages[slIdx].classList.remove('sl-active');
+    if (slDots[slIdx]) slDots[slIdx].classList.remove('active');
+    slIdx = (slIdx + dir + slTotal) % slTotal;
+    if (slImages[slIdx]) slImages[slIdx].classList.add('sl-active');
+    if (slDots[slIdx]) slDots[slIdx].classList.add('active');
+  };
+  slDots.forEach(function(dot, i) {
+    dot.addEventListener('click', function() {
+      if (i !== slIdx) {
+        slImages[slIdx].classList.remove('sl-active');
+        slDots[slIdx] && slDots[slIdx].classList.remove('active');
+        slIdx = i;
+        slImages[slIdx].classList.add('sl-active');
+        slDots[slIdx] && slDots[slIdx].classList.add('active');
+      }
+    });
+  });
+  // TOUCH SWIPE (mobile only)
+  var slGalleryEl = document.getElementById('sl-galleryMain');
+  if (slGalleryEl) {
+    var slTouchX = null;
+    slGalleryEl.addEventListener('touchstart', function(e) {
+      slTouchX = e.touches[0].clientX;
+    }, { passive: true });
+    slGalleryEl.addEventListener('touchend', function(e) {
+      if (slTouchX === null) return;
+      var dx = e.changedTouches[0].clientX - slTouchX;
+      slTouchX = null;
+      if (Math.abs(dx) < 30) return;
+      slChangeImg(dx < 0 ? 1 : -1);
+    }, { passive: true });
+  }
+
+  // MOBILE MENU
+  var hamburger = document.querySelector('.sl-nav-hamburger');
+  var mobileMenu = document.getElementById('sl-mobileMenu');
+  var menuOverlay = document.getElementById('sl-menuOverlay');
+  var menuClose = document.getElementById('sl-menuClose');
+  function openMenu() { mobileMenu.classList.add('open'); menuOverlay.classList.add('open'); document.body.classList.add('sl-menu-open'); }
+  function closeMenu() { mobileMenu.classList.remove('open'); menuOverlay.classList.remove('open'); document.body.classList.remove('sl-menu-open'); }
+  if (hamburger) hamburger.addEventListener('click', openMenu);
+  if (menuClose) menuClose.addEventListener('click', closeMenu);
+  if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
+  // Cerrar al hacer clic en link dentro del menú
+  if (mobileMenu) mobileMenu.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+
+  // CART COUNT (Shopify Ajax API)
+  function slUpdateCartCount() {
+    fetch('/cart.js', { headers: { 'Accept': 'application/json' } })
+      .then(function(r) { return r.json(); })
+      .then(function(d) { var el = document.getElementById('sl-cartCount'); if (el) el.textContent = d.item_count; })
+      .catch(function() {});
+  }
+  slUpdateCartCount();
+
+  // QTY / PURCHASE
+  var variantIds = {
+    '1': '{{ _lp_vid1 | default: section.settings.variant_id_1 | default: "" }}',
+    '2': '{{ _lp_vid2 | default: section.settings.variant_id_2 | default: "" }}',
+    '3': '{{ _lp_vid3 | default: section.settings.variant_id_3 | default: "" }}'
+  };
+  var sellingPlanId = '{{ _lp_selling_plan_id | default: section.settings.selling_plan_id | default: "" }}'.trim();
+  var currentQty = '1';
+  var currentPrice = '{{ section.settings.price_1 | default: "$34.980" }}';
+  var currentPriceSub = '{{ section.settings.price_1_sub | default: "$31.482" }}';
+  var purchaseMode = 'once';
+
+  function slSyncStickyPrice() {
+    var el = document.getElementById('sl-sticky-price');
+    if (el) el.textContent = purchaseMode === 'once' ? currentPrice : currentPriceSub;
+  }
+
+  window.slSelectQty = function(btn, qty, price, priceSub) {
+    document.querySelectorAll('.sl-option-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    currentQty = qty; currentPrice = price; currentPriceSub = priceSub;
+    document.getElementById('sl-priceOnce').textContent = price;
+    document.getElementById('sl-priceSub').textContent = priceSub;
+    document.getElementById('sl-ctaPrice').textContent = purchaseMode === 'once' ? price : priceSub;
+    slSyncStickyPrice();
+    var qtyEl = document.getElementById('sl-sticky-qty');
+    if (qtyEl) qtyEl.textContent = btn.textContent;
+  };
+
+  window.slSelectPurchase = function(el, mode) {
+    document.querySelectorAll('.sl-purchase-option').forEach(function(o) {
+      o.classList.remove('selected');
+      o.querySelector('.sl-radio').classList.remove('checked');
+    });
+    el.classList.add('selected');
+    el.querySelector('.sl-radio').classList.add('checked');
+    purchaseMode = mode;
+    document.getElementById('sl-ctaPrice').textContent = mode === 'once' ? currentPrice : currentPriceSub;
+    slSyncStickyPrice();
+  };
+
+  window.slAddToCart = function() {
+    var vid = (variantIds[currentQty] || '').trim();
+    var productUrl = '{{ _lp_url | default: section.settings.product_url | default: "" }}'.trim();
+    var btn        = document.getElementById('sl-ctaBtn');
+    var stickyBtn  = document.getElementById('sl-sticky-btn');
+    var label      = btn ? btn.querySelector('span:first-child') : null;
+
+    function setLoading(on) {
+      if (btn)       { btn.disabled = on;       if (label) label.textContent = on ? 'Agregando…' : 'Agregar al Carro'; }
+      if (stickyBtn) { stickyBtn.disabled = on; stickyBtn.textContent = on ? 'Agregando…' : 'Agregar al Carro'; }
+    }
+    function setSuccess() {
+      if (label)     label.textContent = '✓ Agregado al carro';
+      if (btn)       btn.style.background = '#207020';
+      if (stickyBtn) { stickyBtn.textContent = '✓ Agregado'; stickyBtn.style.background = '#207020'; }
+      slUpdateCartCount();
+      setTimeout(function() {
+        if (label)     label.textContent = 'Agregar al Carro';
+        if (btn)       { btn.style.background = ''; btn.disabled = false; }
+        if (stickyBtn) { stickyBtn.textContent = 'Agregar al Carro'; stickyBtn.style.background = ''; stickyBtn.disabled = false; }
+      }, 2200);
+    }
+
+    if (vid !== '') {
+      setLoading(true);
+      var cartBody = { id: parseInt(vid, 10), quantity: 1 };
+      if (purchaseMode === 'sub' && sellingPlanId !== '') {
+        cartBody.selling_plan = parseInt(sellingPlanId, 10);
+      }
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(cartBody)
+      })
+      .then(function(r) { if (!r.ok) throw r; return r.json(); })
+      .then(setSuccess)
+      .catch(function() {
+        setLoading(false);
+        if (productUrl) window.location.href = productUrl;
+      });
+    } else if (productUrl) {
+      window.location.href = productUrl;
+    }
+  };
+
+  // STICKY ADD TO CART — show when main CTA is out of view AND footer is not visible
+  (function() {
+    var stickyBar = document.getElementById('sl-sticky-atc');
+    var mainBtn   = document.getElementById('sl-ctaBtn');
+    if (!stickyBar || !mainBtn) return;
+
+    var ctaVisible    = true;
+    var footerVisible = false;
+
+    function update() {
+      stickyBar.classList.toggle('visible', !ctaVisible && !footerVisible);
+    }
+
+    // Hide when main CTA button is visible
+    new IntersectionObserver(function(entries) {
+      ctaVisible = entries[0].isIntersecting;
+      update();
+    }, { threshold: 0 }).observe(mainBtn);
+
+    // Hide when footer enters viewport — scroll-based for reliable cross-section detection
+    function checkFooter() {
+      var footer = document.querySelector('.sl-footer') ||
+                   document.querySelector('footer') ||
+                   document.querySelector('[class*="footer"]');
+      if (footer) {
+        footerVisible = footer.getBoundingClientRect().top < window.innerHeight;
+      } else {
+        var barH = stickyBar.offsetHeight || 70;
+        footerVisible = (document.documentElement.scrollHeight - window.innerHeight - window.scrollY) < barH;
+      }
+      update();
+    }
+
+    window.addEventListener('scroll', checkFooter, { passive: true });
+    checkFooter();
+  })();
+
+  // ACCORDION
+  window.slToggleAcc = function(header) {
+    var content = header.nextElementSibling;
+    var isOpen = header.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    content.classList.toggle('open', !isOpen);
+  };
+
+
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SILUNE Landing",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Marca" },
+    { "type": "text", "id": "brand_name", "label": "Nombre de la marca (texto fallback)", "default": "SILUNE." },
+    { "type": "url", "id": "logo_url", "label": "URL del logo (clic)" },
+    { "type": "image_picker", "id": "header_logo_image", "label": "Logo del header (imagen)" },
+    { "type": "range", "id": "header_logo_height", "min": 18, "max": 80, "step": 2, "unit": "px", "label": "Alto del logo header", "default": 32 },
+    { "type": "text", "id": "product_name", "label": "Nombre del producto", "default": "SKINFLOW" },
+    { "type": "text", "id": "product_category", "label": "Categoría del producto", "default": "Suplemento para Acné Hormonal" },
+    { "type": "richtext", "id": "product_tagline_rt", "label": "Tagline del producto (soporta links, negrita)", "default": "<p>La cápsula diaria #1 para abordar y combatir el acné hormonal en su raíz.*</p>" },
+    { "type": "url", "id": "product_url", "label": "URL del producto / carrito" },
+    { "type": "header", "content": "Nota SKINFLOW®2 (bajo el botón de compra)" },
+    { "type": "text", "id": "skinflow2_note", "label": "Texto después del enlace (vacío = ocultar nota)", "default": "sin 5-HTP — para quienes toman antidepresivos u otros medicamentos." },
+    { "type": "url", "id": "skinflow2_url", "label": "URL SKINFLOW®2 (opcional)" },
+
+    { "type": "header", "content": "Announcement Bar" },
+    { "type": "text", "id": "ann_1", "label": "Anuncio 1", "default": "Envío gratis en compras sobre $49.990" },
+    { "type": "text", "id": "ann_2", "label": "Anuncio 2", "default": "30 días para amarlo — o te devolvemos el dinero" },
+    { "type": "text", "id": "ann_3", "label": "Anuncio 3", "default": "Clínicamente testeado · Sin drogas · Sin receta" },
+    { "type": "text", "id": "ann_4", "label": "Anuncio 4", "default": "Resultados en 7–10 días*" },
+
+    { "type": "header", "content": "Galería de imágenes" },
+    { "type": "image_picker", "id": "slide_1_image", "label": "Imagen 1" },
+    { "type": "image_picker", "id": "slide_2_image", "label": "Imagen 2" },
+    { "type": "image_picker", "id": "slide_3_image", "label": "Imagen 3" },
+    { "type": "image_picker", "id": "slide_4_image", "label": "Imagen 4" },
+    { "type": "image_picker", "id": "slide_5_image", "label": "Imagen 5" },
+
+    { "type": "header", "content": "Producto vinculado" },
+    { "type": "product", "id": "linked_product", "label": "Seleccionar producto del catálogo", "info": "Al vincular un producto, variantes y precios se auto-rellenan desde Shopify. Los campos manuales de abajo quedan como respaldo." },
+
+    { "type": "header", "content": "Variantes Shopify (respaldo manual)" },
+    { "type": "text", "id": "variant_id_1", "label": "Variant ID — 1 unidad", "info": "ID numérico de la variante de Shopify. Ej: 44519123456789" },
+    { "type": "text", "id": "variant_id_2", "label": "Variant ID — 2 unidades" },
+    { "type": "text", "id": "variant_id_3", "label": "Variant ID — 3 unidades" },
+    { "type": "text", "id": "selling_plan_id", "label": "Selling Plan ID (suscripción)", "info": "Se auto-detecta si el producto vinculado tiene Shopify Subscriptions. Usa esto solo como respaldo." },
+
+    { "type": "header", "content": "Precios" },
+    { "type": "text", "id": "price_1", "label": "Precio 1 unidad", "default": "$34.980" },
+    { "type": "text", "id": "price_1_sub", "label": "Precio suscripción 1 unidad", "default": "$31.482" },
+    { "type": "text", "id": "price_2", "label": "Precio 2 unidades", "default": "$62.990" },
+    { "type": "text", "id": "price_2_sub", "label": "Precio suscripción 2 unidades", "default": "$56.691" },
+    { "type": "text", "id": "price_3", "label": "Precio 3 unidades", "default": "$89.990" },
+    { "type": "text", "id": "price_3_sub", "label": "Precio suscripción 3 unidades", "default": "$80.991" },
+
+    { "type": "header", "content": "Imágenes del producto" },
+    { "type": "image_picker", "id": "bottle_image", "label": "Imagen del frasco / producto" },
+    { "type": "image_picker", "id": "clinical_image", "label": "Imagen sección clínica" },
+
+    { "type": "header", "content": "Resultados clínicos" },
+    { "type": "text", "id": "stat_1_num", "label": "Estadística 1 — número", "default": "89%" },
+    { "type": "text", "id": "stat_1_desc", "label": "Estadística 1 — descripción", "default": "lo elegiría sobre tratamientos tradicionales para el acné*" },
+    { "type": "text", "id": "stat_2_num", "label": "Estadística 2 — número", "default": "85%" },
+    { "type": "text", "id": "stat_2_desc", "label": "Estadística 2 — descripción", "default": "notó mejora en el tono y brillo de su piel**" },
+    { "type": "text", "id": "stat_3_num", "label": "Estadística 3 — número", "default": "81%" },
+    { "type": "text", "id": "stat_3_desc", "label": "Estadística 3 — descripción", "default": "vio su piel mantenerse limpia a lo largo del tiempo*" },
+    { "type": "text", "id": "stat_4_num", "label": "Estadística 4 — número", "default": "81%" },
+    { "type": "text", "id": "stat_4_desc", "label": "Estadística 4 — descripción", "default": "reportó mejora en la textura de su piel*" },
+    { "type": "textarea", "id": "clinical_note", "label": "Nota legal estadísticas", "default": "*Basado en un estudio clínico de eficacia de 24 semanas con 30 participantes." },
+
+    { "type": "header", "content": "Detalles del producto" },
+    { "type": "text", "id": "good_for", "label": "Bueno para (banda)", "default": "Control de Sebo, Renovación Celular, Detoxificación" },
+    { "type": "text", "id": "serving_size", "label": "Tamaño por porción", "default": "2 Cápsulas" },
+    { "type": "text", "id": "when_to_take", "label": "Cuándo tomarlo", "default": "Tomar diariamente con comida" },
+    { "type": "textarea", "id": "key_ingredients", "label": "Ingredientes clave", "default": "Vitamina A Biodisponible, DIM, B5, Cúrcuma, Raíz de Diente de León, 5-HTP, Glutatión" },
+
+    { "type": "header", "content": "Acordeón 1 — Por qué te va a encantar" },
+    { "type": "text",     "id": "acc_1_title",   "label": "Título",    "default": "Por qué te va a encantar" },
+    { "type": "richtext", "id": "acc_1_body", "label": "Contenido (soporta negrita, cursiva, listas)", "default": "<p><strong>Ataca las 5 raíces del acné hormonal simultáneamente:</strong> hormonas, digestión, detoxificación, estrés y producción de sebo. No es un tratamiento tópico — actúa desde adentro para detener los brotes antes de que se formen.</p><p>✓ Sin receta médica · ✓ Sin drogas · ✓ Sin gluten · ✓ Sin lácteos<br>✓ Clínicamente testeado · ✓ Resultados en 7–10 días*</p>" },
+
+    { "type": "header", "content": "Acordeón 2 — Cómo usarlo" },
+    { "type": "text",     "id": "acc_2_title",   "label": "Título",    "default": "Cómo usarlo" },
+    { "type": "richtext", "id": "acc_2_body", "label": "Contenido", "default": "<p><strong>Dosis:</strong> 2 cápsulas diarias con comida.</p><p>Tómalo de forma consistente. Los primeros cambios se notan en 7–10 días. El resultado consolidado se da entre los 2 y 3 meses de uso continuo.</p><p><em>Para quienes toman antidepresivos o medicamentos que interactúan con el 5-HTP, consultar la versión SKINFLOW®2.</em></p>" },
+
+    { "type": "header", "content": "Acordeón 3 — Ingredientes" },
+    { "type": "text",     "id": "acc_3_title",   "label": "Título",    "default": "Ingredientes" },
+    { "type": "richtext", "id": "acc_3_body", "label": "Contenido", "default": "<p><strong>Ingredientes clave:</strong> Vitamina A Biodisponible, DIM (Diindolilmetano), Vitamina B5, Cúrcuma, Raíz de Diente de León, 5-HTP, Glutatión.</p><p>Todos los ingredientes son de origen natural, sin colorantes artificiales, sin conservantes sintéticos.</p>" },
+
+    { "type": "header", "content": "Acordeón 4 — Combina bien con" },
+    { "type": "text",     "id": "acc_4_title",   "label": "Título",    "default": "Combina bien con" },
+    { "type": "richtext", "id": "acc_4_body", "label": "Contenido", "default": "<p>Para mejores resultados, combina SKINFLOW® con una rutina de skincare libre de ingredientes comedogénicos. Nuestro Checker de Ingredientes te ayuda a verificar tus productos actuales.</p>" },
+
+    { "type": "header", "content": "Link en tagline (opcional)" },
+    { "type": "text", "id": "product_note_text", "label": "Texto del link", "default": "¿Tus productos de skincare están saboteando tu piel?" },
+    { "type": "url",  "id": "product_note_link", "label": "URL del link" },
+
+    { "type": "header", "content": "URLs de navegación" },
+    { "type": "url",  "id": "search_url",  "label": "URL de búsqueda", "info": "Por defecto /search" },
+    { "type": "url",  "id": "cart_url",    "label": "URL del carrito",  "info": "Por defecto /cart" }
+
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Link de menú",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "Nuevo link" },
+        { "type": "url",  "id": "url",   "label": "URL" }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "SILUNE Landing",
+      "blocks": [
+        { "type": "nav_link", "settings": { "label": "Comprar por Categoría" } },
+        { "type": "nav_link", "settings": { "label": "Comprar por Preocupación" } },
+        { "type": "nav_link", "settings": { "label": "Reseñas de Clientes" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

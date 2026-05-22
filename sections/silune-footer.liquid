@@ -1,0 +1,208 @@
+{%- assign sf = section.id -%}
+
+<style>
+#slft-{{ sf }} {
+  --lavender: #C8B8E8;
+  --lavender-light: #E8DFF5;
+  --lavender-bg: #EDE6F7;
+  --black: #0A0A0A;
+  --white: #FFFFFF;
+  --gray-light: #F5F3F0;
+  --gray-mid: #888;
+  --gray-dark: #333;
+  --border: #E0DCE8;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
+}
+#slft-{{ sf }} *, #slft-{{ sf }} *::before, #slft-{{ sf }} *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+@keyframes slft-ticker-{{ sf }} { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* MARQUEE */
+#slft-{{ sf }} .sl-marquee-bottom { background: var(--lavender); border-top: 1px solid var(--lavender-light); padding: 14px 0; overflow: hidden; white-space: nowrap; }
+#slft-{{ sf }} .sl-marquee-track { display: inline-flex; animation: slft-ticker-{{ sf }} 22s linear infinite; }
+#slft-{{ sf }} .sl-marquee-item { font-size: 13px; font-weight: 500; padding: 0 24px; letter-spacing: 0.02em; }
+#slft-{{ sf }} .sl-marquee-dot { opacity: 0.4; }
+
+/* FOOTER */
+#slft-{{ sf }} .sl-footer { background: #0A0A0A; color: #fff; }
+#slft-{{ sf }} .sl-footer-top-grid { background: var(--lavender); display: grid; grid-template-columns: 1fr 1fr; }
+#slft-{{ sf }} .sl-footer-email-col { padding: 48px 36px; border-right: 1px solid rgba(0,0,0,0.1); }
+#slft-{{ sf }} .sl-feb-title { font-family: var(--font-display); font-size: 34px; letter-spacing: 0.03em; line-height: 1.05; color: var(--black); margin-bottom: 10px; }
+#slft-{{ sf }} .sl-feb-sub { font-size: 12px; color: rgba(0,0,0,0.5); line-height: 1.6; margin-bottom: 24px; }
+#slft-{{ sf }} .sl-feb-input-wrap { display: flex; border: 1.5px solid var(--black); background: var(--white); overflow: hidden; margin-bottom: 8px; }
+#slft-{{ sf }} .sl-feb-input { flex: 1; padding: 12px 14px; border: none; background: transparent; font-family: var(--font-body); font-size: 13px; outline: none; color: var(--black); min-width: 0; }
+#slft-{{ sf }} .sl-feb-input::placeholder { color: #bbb; }
+#slft-{{ sf }} .sl-feb-btn { padding: 12px 18px; background: var(--black); color: var(--white); border: none; font-family: var(--font-body); font-size: 13px; font-weight: 600; cursor: pointer; letter-spacing: 0.03em; white-space: nowrap; transition: background 0.15s; }
+#slft-{{ sf }} .sl-feb-btn:hover { background: #222; }
+#slft-{{ sf }} .sl-feb-disclaimer { font-size: 10px; color: rgba(0,0,0,0.32); }
+#slft-{{ sf }} .sl-footer-nav-col { padding: 48px 36px; border-right: 1px solid rgba(0,0,0,0.1); }
+#slft-{{ sf }} .sl-footer-nav-col:last-child { border-right: none; }
+#slft-{{ sf }} .sl-footer-nav-col h4 { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(0,0,0,0.4); margin-bottom: 18px; }
+#slft-{{ sf }} .sl-footer-nav-col ul { list-style: none; }
+#slft-{{ sf }} .sl-footer-nav-col li { margin-bottom: 11px; }
+#slft-{{ sf }} .sl-footer-nav-col a { font-size: 13px; color: rgba(0,0,0,0.68); text-decoration: none; transition: color 0.12s; }
+#slft-{{ sf }} .sl-footer-nav-col a:hover { color: var(--black); }
+#slft-{{ sf }} .sl-footer-social-row { display: flex; gap: 12px; margin-top: 28px; }
+#slft-{{ sf }} .sl-social-icon { width: 32px; height: 32px; border: 1px solid rgba(0,0,0,0.18); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(0,0,0,0.5); text-decoration: none; font-size: 10px; font-weight: 700; transition: all 0.14s; }
+#slft-{{ sf }} .sl-social-icon:hover { border-color: var(--black); color: var(--black); }
+#slft-{{ sf }} .sl-footer-logo-band { background: var(--black); overflow: hidden; padding: 16px 0 0; line-height: 1; }
+#slft-{{ sf }} .sl-footer-logo-giant { font-family: var(--font-display); font-size: clamp(72px, 18vw, 220px); letter-spacing: -0.01em; line-height: 0.88; color: var(--white); white-space: nowrap; padding: 0 18px; display: block; }
+#slft-{{ sf }} .sl-footer-logo-img { height: auto; display: block; max-width: 100%; }
+#slft-{{ sf }} .sl-footer-bar { background: var(--black); display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; flex-wrap: wrap; gap: 8px; border-top: 1px solid rgba(255,255,255,0.06); }
+#slft-{{ sf }} .sl-footer-bar-copy { font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.03em; }
+#slft-{{ sf }} .sl-footer-bar-links { display: flex; gap: 16px; flex-wrap: wrap; }
+#slft-{{ sf }} .sl-footer-bar-links a { font-size: 10px; color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.15s; }
+#slft-{{ sf }} .sl-footer-bar-links a:hover { color: rgba(255,255,255,0.65); }
+
+@media (max-width: 768px) {
+  #slft-{{ sf }} .sl-footer-top-grid { grid-template-columns: 1fr; }
+  #slft-{{ sf }} .sl-footer-email-col, #slft-{{ sf }} .sl-footer-nav-col { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 32px 20px; }
+  #slft-{{ sf }} .sl-footer-nav-col:last-child { border-bottom: none; }
+  #slft-{{ sf }} .sl-footer-bar { padding: 14px 20px; flex-direction: column; align-items: flex-start; }
+}
+</style>
+
+<div id="slft-{{ sf }}">
+
+  <!-- MARQUEE -->
+  <div class="sl-marquee-bottom">
+    <div class="sl-marquee-track">
+      <span class="sl-marquee-item">{{ section.settings.marquee_text | default: 'Porque la piel clara cambia todo' }} <span class="sl-marquee-dot">·</span></span>
+      <span class="sl-marquee-item">{{ section.settings.marquee_text | default: 'Porque la piel clara cambia todo' }} <span class="sl-marquee-dot">·</span></span>
+      <span class="sl-marquee-item">{{ section.settings.marquee_text | default: 'Porque la piel clara cambia todo' }} <span class="sl-marquee-dot">·</span></span>
+      <span class="sl-marquee-item">{{ section.settings.marquee_text | default: 'Porque la piel clara cambia todo' }} <span class="sl-marquee-dot">·</span></span>
+      <span class="sl-marquee-item">{{ section.settings.marquee_text | default: 'Porque la piel clara cambia todo' }} <span class="sl-marquee-dot">·</span></span>
+      <span class="sl-marquee-item">{{ section.settings.marquee_text | default: 'Porque la piel clara cambia todo' }} <span class="sl-marquee-dot">·</span></span>
+      <span class="sl-marquee-item">{{ section.settings.marquee_text | default: 'Porque la piel clara cambia todo' }} <span class="sl-marquee-dot">·</span></span>
+      <span class="sl-marquee-item">{{ section.settings.marquee_text | default: 'Porque la piel clara cambia todo' }} <span class="sl-marquee-dot">·</span></span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="sl-footer">
+    <div class="sl-footer-top-grid">
+      <div class="sl-footer-email-col">
+        <div class="sl-feb-title">{{ section.settings.footer_email_title | default: 'Obtén $15.000 Off' }}<br>{{ section.settings.footer_email_title2 | default: 'Tu Primer Pedido' }}</div>
+        <p class="sl-feb-sub">{{ section.settings.footer_email_sub | default: 'Suscríbete para recibir alertas de nuevos productos y contenido exclusivo de nuestro equipo.' }}</p>
+        <div class="sl-feb-input-wrap">
+          <input class="sl-feb-input" type="email" placeholder="{{ section.settings.footer_email_placeholder | default: 'Tu correo...' }}">
+          <button class="sl-feb-btn" onclick="slftSubscribe_{{ sf }}(this)">{{ section.settings.footer_email_btn | default: 'Enviar' }}</button>
+        </div>
+        <p class="sl-feb-disclaimer">{{ section.settings.footer_email_disclaimer | default: 'Sin spam. Cancela cuando quieras.' }}</p>
+      </div>
+      <div class="sl-footer-nav-col" style="border-right:none">
+        <h4>{{ section.settings.nav_col_title | default: 'Servicio al Cliente' }}</h4>
+        <ul>
+          <li><a href="/account/login">Iniciar Sesión / Gestionar Suscripción</a></li>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'link' -%}
+              <li {{ block.shopify_attributes }}><a href="{{ block.settings.url | default: '#' }}">{{ block.settings.label | default: 'Link' }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+        <div class="sl-footer-social-row">
+          {%- if section.settings.social_instagram != blank -%}
+            <a href="{{ section.settings.social_instagram }}" class="sl-social-icon" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+          {%- else -%}
+            <a href="#" class="sl-social-icon" aria-label="Instagram">IG</a>
+          {%- endif -%}
+          {%- if section.settings.social_facebook != blank -%}
+            <a href="{{ section.settings.social_facebook }}" class="sl-social-icon" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+          {%- else -%}
+            <a href="#" class="sl-social-icon" aria-label="Facebook">FB</a>
+          {%- endif -%}
+          {%- if section.settings.social_tiktok != blank -%}
+            <a href="{{ section.settings.social_tiktok }}" class="sl-social-icon" target="_blank" rel="noopener" aria-label="TikTok">TK</a>
+          {%- else -%}
+            <a href="#" class="sl-social-icon" aria-label="TikTok">TK</a>
+          {%- endif -%}
+          {%- if section.settings.social_pinterest != blank -%}
+            <a href="{{ section.settings.social_pinterest }}" class="sl-social-icon" target="_blank" rel="noopener" aria-label="Pinterest">PT</a>
+          {%- else -%}
+            <a href="#" class="sl-social-icon" aria-label="Pinterest">PT</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+    <div class="sl-footer-logo-band">
+      {%- if section.settings.footer_logo_image != blank -%}
+        <img class="sl-footer-logo-img" src="{{ section.settings.footer_logo_image | image_url: width: 1200 }}" alt="{{ section.settings.brand_name | default: 'SILUNE.' }}" style="width:{{ section.settings.footer_logo_size | default: 200 }}px" loading="lazy">
+      {%- else -%}
+        <span class="sl-footer-logo-giant">{{ section.settings.brand_name | default: 'SILUNE.' }}</span>
+      {%- endif -%}
+    </div>
+    <div class="sl-footer-bar">
+      <span class="sl-footer-bar-copy">{{ section.settings.brand_name | default: 'SILUNE.' }} © {{ 'now' | date: '%Y' }}</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  window['slftSubscribe_{{ sf }}'] = function(btn) {
+    var input = btn.previousElementSibling;
+    if (!input || !input.value || !input.value.includes('@')) { input.focus(); return; }
+    var orig = btn.textContent;
+    btn.textContent = '✓'; btn.disabled = true;
+    setTimeout(function() { btn.textContent = orig; btn.disabled = false; input.value = ''; }, 2500);
+  };
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SILUNE Footer",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Marca" },
+    { "type": "text", "id": "brand_name", "label": "Nombre de la marca", "default": "SILUNE." },
+    { "type": "image_picker", "id": "footer_logo_image", "label": "Logo del footer (imagen)" },
+    { "type": "range", "id": "footer_logo_size", "min": 80, "max": 800, "step": 10, "unit": "px", "label": "Ancho del logo footer", "default": 200 },
+
+    { "type": "header", "content": "Marquee" },
+    { "type": "text", "id": "marquee_text", "label": "Texto del marquee (se repite)", "default": "Porque la piel clara cambia todo" },
+
+    { "type": "header", "content": "Footer — Email" },
+    { "type": "text", "id": "footer_email_title",       "label": "Título línea 1",    "default": "Obtén $15.000 Off" },
+    { "type": "text", "id": "footer_email_title2",      "label": "Título línea 2",    "default": "Tu Primer Pedido" },
+    { "type": "text", "id": "footer_email_sub",         "label": "Descripción",       "default": "Suscríbete para recibir alertas de nuevos productos y contenido exclusivo de nuestro equipo." },
+    { "type": "text", "id": "footer_email_placeholder", "label": "Placeholder input", "default": "Tu correo..." },
+    { "type": "text", "id": "footer_email_btn",         "label": "Texto botón",       "default": "Enviar" },
+    { "type": "text", "id": "footer_email_disclaimer",  "label": "Disclaimer",        "default": "Sin spam. Cancela cuando quieras." },
+
+    { "type": "text", "id": "nav_col_title", "label": "Título columna de links", "default": "Servicio al Cliente" },
+
+    { "type": "header", "content": "Footer — Redes Sociales" },
+    { "type": "url", "id": "social_instagram", "label": "Instagram URL" },
+    { "type": "url", "id": "social_facebook",  "label": "Facebook URL" },
+    { "type": "url", "id": "social_tiktok",    "label": "TikTok URL" },
+    { "type": "url", "id": "social_pinterest", "label": "Pinterest URL" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "Nuevo link" },
+        { "type": "url",  "id": "url",   "label": "URL" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "SILUNE Footer",
+      "blocks": [
+        { "type": "link", "settings": { "label": "Rastrear mi Pedido" } },
+        { "type": "link", "settings": { "label": "Centro de Ayuda" } },
+        { "type": "link", "settings": { "label": "Contáctanos" } },
+        { "type": "link", "settings": { "label": "Nuestros Estándares" } },
+        { "type": "link", "settings": { "label": "Profesionales" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

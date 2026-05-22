@@ -4207,6 +4207,12 @@ product-recommendations:has([data-has-recommendations='false']) {
   clip-path: circle(100% at 50% 50%);
 }
 
+/* Lumé Product Page — botones redondeados */
+.btn-cart,
+.btn-now {
+  border-radius: 8px !important;
+}
+
 @keyframes atc-slide {
   to {
     opacity: var(--atc-opacity, 1);

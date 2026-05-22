@@ -1,0 +1,273 @@
+{%- assign ltv = section.id -%}
+{%- assign ltv_vids = section.blocks | where: "type", "video_item" -%}
+
+<style>
+#lmtv-{{ ltv }} { background: {{ section.settings.bg_color }}; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; overflow: hidden; }
+#lmtv-{{ ltv }} *, #lmtv-{{ ltv }} *::before, #lmtv-{{ ltv }} *::after { box-sizing: border-box; }
+
+/* HEADER */
+#lmtv-{{ ltv }} .ltv-head { padding: 1.1rem 1.2rem 0.6rem; }
+#lmtv-{{ ltv }} .ltv-title { color: {{ section.settings.text_color }}; font-size: 1rem; font-weight: 700; margin: 0 0 0.15rem; letter-spacing: -0.01em; }
+#lmtv-{{ ltv }} .ltv-subtitle { color: {{ section.settings.text_color }}; opacity: 0.5; font-size: 0.7rem; margin: 0; font-weight: 400; }
+
+/* CAROUSEL WRAPPER */
+#lmtv-{{ ltv }} .ltv-wrap { position: relative; touch-action: pan-y; overflow: hidden; }
+#lmtv-{{ ltv }} .ltv-track { display: flex; transition: transform 0.38s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
+#lmtv-{{ ltv }} .ltv-item { flex: 0 0 {{ section.settings.card_width }}%; padding: 0 {{ section.settings.card_gap }}px; }
+
+/* VIDEO CARD */
+#lmtv-{{ ltv }} .ltv-card { position: relative; border-radius: {{ section.settings.card_radius }}px; overflow: hidden; background: #111; cursor: pointer; }
+#lmtv-{{ ltv }} .ltv-aspect { position: relative; padding-bottom: 177.78%; }
+#lmtv-{{ ltv }} .ltv-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+#lmtv-{{ ltv }} .ltv-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* OVERLAY */
+#lmtv-{{ ltv }} .ltv-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.08) 55%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 0.9rem; pointer-events: none; }
+#lmtv-{{ ltv }} .ltv-user { color: rgba(255,255,255,0.75); font-size: 0.65rem; font-weight: 600; margin: 0 0 0.2rem; letter-spacing: 0.03em; }
+#lmtv-{{ ltv }} .ltv-caption { color: #fff; font-size: 0.75rem; line-height: 1.4; margin: 0; font-weight: 400; }
+
+/* PLAY ICON */
+#lmtv-{{ ltv }} .ltv-play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(255,255,255,0.9); opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+#lmtv-{{ ltv }} .ltv-item.paused .ltv-play-icon { opacity: 1; }
+
+/* MUTE BTN */
+#lmtv-{{ ltv }} .ltv-mute { position: absolute; top: 0.7rem; right: 0.7rem; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; z-index: 10; pointer-events: all; transition: background 0.2s; }
+#lmtv-{{ ltv }} .ltv-mute:active { background: rgba(0,0,0,0.75); }
+
+/* PROGRESS */
+#lmtv-{{ ltv }} .ltv-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 2.5px; background: rgba(255,255,255,0.2); }
+#lmtv-{{ ltv }} .ltv-bar { height: 100%; background: rgba(255,255,255,0.85); width: 0%; }
+
+/* DOTS */
+#lmtv-{{ ltv }} .ltv-dots { display: flex; justify-content: center; align-items: center; gap: 6px; padding: 0.75rem 0 0.5rem; }
+#lmtv-{{ ltv }} .ltv-dot { width: 6px; height: 6px; border-radius: 50%; background: {{ section.settings.text_color }}; opacity: 0.25; cursor: pointer; transition: opacity 0.2s, transform 0.2s; border: none; padding: 0; }
+#lmtv-{{ ltv }} .ltv-dot.on { opacity: 1; transform: scale(1.3); }
+
+/* ARROWS (desktop) */
+#lmtv-{{ ltv }} .ltv-arr { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); border: none; border-radius: 50%; width: 34px; height: 34px; display: none; align-items: center; justify-content: center; cursor: pointer; color: #fff; z-index: 10; transition: background 0.2s; }
+#lmtv-{{ ltv }} .ltv-arr:hover { background: rgba(0,0,0,0.7); }
+#lmtv-{{ ltv }} .ltv-arr-prev { left: 6px; }
+#lmtv-{{ ltv }} .ltv-arr-next { right: 6px; }
+@media(min-width:600px){ #lmtv-{{ ltv }} .ltv-arr { display: flex; } }
+</style>
+
+<div id="lmtv-{{ ltv }}">
+  {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+    <div class="ltv-head">
+      {%- if section.settings.title != blank -%}<p class="ltv-title">{{ section.settings.title }}</p>{%- endif -%}
+      {%- if section.settings.subtitle != blank -%}<p class="ltv-subtitle">{{ section.settings.subtitle }}</p>{%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if ltv_vids.size > 0 -%}
+    <div class="ltv-wrap" id="ltv-wrap-{{ ltv }}">
+      <div class="ltv-track" id="ltv-track-{{ ltv }}">
+        {%- for block in ltv_vids -%}
+          <div class="ltv-item" id="ltv-item-{{ ltv }}-{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <div class="ltv-card" data-idx="{{ forloop.index0 }}">
+              <div class="ltv-aspect">
+                {%- if block.settings.video != blank -%}
+                  <video class="ltv-video" playsinline muted loop
+                    {%- if block.settings.thumbnail != blank %} poster="{{ block.settings.thumbnail | image_url: width: 540 }}"{% endif %}>
+                    {%- for src in block.settings.video.sources -%}
+                      <source src="{{ src.url }}" type="{{ src.mime_type }}">
+                    {%- endfor -%}
+                  </video>
+                {%- elsif block.settings.video_url != blank -%}
+                  <video class="ltv-video" playsinline muted loop
+                    src="{{ block.settings.video_url }}"
+                    {%- if block.settings.thumbnail != blank %} poster="{{ block.settings.thumbnail | image_url: width: 540 }}"{% endif %}>
+                  </video>
+                {%- elsif block.settings.thumbnail != blank -%}
+                  <img class="ltv-thumb" src="{{ block.settings.thumbnail | image_url: width: 540 }}" alt="{{ block.settings.caption }}" loading="lazy">
+                {%- endif -%}
+
+                <div class="ltv-overlay">
+                  {%- if block.settings.username != blank -%}<p class="ltv-user">{{ block.settings.username }}</p>{%- endif -%}
+                  {%- if block.settings.caption != blank -%}<p class="ltv-caption">{{ block.settings.caption }}</p>{%- endif -%}
+                </div>
+
+                <div class="ltv-play-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+
+                <button class="ltv-mute" id="ltv-mute-{{ ltv }}-{{ forloop.index0 }}" aria-label="Silencio">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                </button>
+
+                <div class="ltv-progress"><div class="ltv-bar" id="ltv-bar-{{ ltv }}-{{ forloop.index0 }}"></div></div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <button class="ltv-arr ltv-arr-prev" id="ltv-prev-{{ ltv }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="ltv-arr ltv-arr-next" id="ltv-next-{{ ltv }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+    <div class="ltv-dots" id="ltv-dots-{{ ltv }}">
+      {%- for block in ltv_vids -%}
+        <button class="ltv-dot{% if forloop.first %} on{% endif %}" data-idx="{{ forloop.index0 }}" aria-label="Video {{ forloop.index }}"></button>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p style="padding:1.5rem;color:rgba(255,255,255,0.4);font-size:0.8rem;">Agrega bloques "Video" desde el editor del tema.</p>
+  {%- endif -%}
+</div>
+
+<script>
+(function(){
+  var W = document.getElementById('lmtv-{{ ltv }}');
+  if(!W) return;
+  var track = document.getElementById('ltv-track-{{ ltv }}');
+  var dots  = W.querySelectorAll('.ltv-dot');
+  var items = W.querySelectorAll('.ltv-item');
+  var total = items.length;
+  if(!total) return;
+
+  var cur = 0, muted = true, sx = 0, rafMap = {};
+
+  /* GOTO */
+  function go(n){
+    n = ((n % total) + total) % total;
+    pauseAll();
+    cur = n;
+    var pct = 100 / {{ section.settings.card_width | times: 1.0 }} * 100;
+    track.style.transform = 'translateX(-' + (cur * {{ section.settings.card_width }}) + '%)';
+    dots.forEach(function(d,i){ d.classList.toggle('on', i===cur); });
+    playItem(cur);
+  }
+
+  /* PLAY / PAUSE */
+  function playItem(idx){
+    var item = items[idx];
+    if(!item) return;
+    var vid = item.querySelector('video');
+    if(!vid) return;
+    vid.muted = muted;
+    vid.play().catch(function(){});
+    item.classList.remove('paused');
+    startProgress(idx, vid);
+  }
+  function pauseAll(){
+    items.forEach(function(item, idx){
+      var vid = item.querySelector('video');
+      if(vid){ vid.pause(); stopProgress(idx); }
+      item.classList.add('paused');
+    });
+  }
+  function stopProgress(idx){
+    if(rafMap[idx]){ cancelAnimationFrame(rafMap[idx]); delete rafMap[idx]; }
+  }
+  function startProgress(idx, vid){
+    stopProgress(idx);
+    var bar = document.getElementById('ltv-bar-{{ ltv }}-'+idx);
+    if(!bar||!vid.duration) return;
+    function tick(){
+      if(vid.paused||vid.ended) return;
+      bar.style.width = (vid.currentTime/vid.duration*100)+'%';
+      rafMap[idx] = requestAnimationFrame(tick);
+    }
+    vid.addEventListener('loadedmetadata', function(){ rafMap[idx]=requestAnimationFrame(tick); }, {once:true});
+    if(vid.readyState>=1) rafMap[idx]=requestAnimationFrame(tick);
+  }
+
+  /* TAP TO PLAY/PAUSE */
+  items.forEach(function(item, idx){
+    item.querySelector('.ltv-card').addEventListener('click', function(e){
+      if(e.target.closest('.ltv-mute')) return;
+      var vid = item.querySelector('video');
+      if(!vid) return;
+      if(vid.paused){ vid.play(); item.classList.remove('paused'); startProgress(idx,vid); }
+      else { vid.pause(); item.classList.add('paused'); stopProgress(idx); }
+    });
+  });
+
+  /* MUTE BUTTONS */
+  W.querySelectorAll('.ltv-mute').forEach(function(btn, idx){
+    btn.addEventListener('click', function(){
+      muted = !muted;
+      items.forEach(function(item){
+        var vid = item.querySelector('video');
+        if(vid) vid.muted = muted;
+      });
+      var muteIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+      var unmuteIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>';
+      W.querySelectorAll('.ltv-mute').forEach(function(b){ b.innerHTML = muted ? muteIcon : unmuteIcon; });
+    });
+  });
+
+  /* DOTS */
+  dots.forEach(function(d){ d.addEventListener('click', function(){ go(parseInt(d.dataset.idx)); }); });
+
+  /* ARROWS */
+  var prev = document.getElementById('ltv-prev-{{ ltv }}');
+  var next = document.getElementById('ltv-next-{{ ltv }}');
+  if(prev) prev.addEventListener('click', function(){ go(cur-1); });
+  if(next) next.addEventListener('click', function(){ go(cur+1); });
+
+  /* SWIPE */
+  track.addEventListener('touchstart', function(e){ sx=e.touches[0].clientX; },{passive:true});
+  track.addEventListener('touchend',   function(e){ var dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40) go(dx<0?cur+1:cur-1); },{passive:true});
+
+  /* AUTOPLAY FIRST */
+  go(0);
+
+  /* INTERSECTION (pause when off screen) */
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var vid = e.target.querySelector('video');
+        if(!vid) return;
+        if(e.isIntersecting){ if(e.target===items[cur]) vid.play().catch(function(){}); }
+        else { vid.pause(); }
+      });
+    },{threshold:0.4});
+    items.forEach(function(item){ io.observe(item); });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Lumé · Videos TikTok",
+  "tag": "section",
+  "settings": [
+    { "type": "text",   "id": "title",      "label": "Título",    "default": "Lo que dicen en redes" },
+    { "type": "text",   "id": "subtitle",   "label": "Subtítulo", "default": "Videos reales de clientas" },
+    { "type": "color",  "id": "bg_color",   "label": "Fondo",     "default": "#0A0A0A" },
+    { "type": "color",  "id": "text_color", "label": "Texto",     "default": "#FFFFFF" },
+    { "type": "range",  "id": "card_width", "label": "Ancho de cada tarjeta (%)", "min": 50, "max": 100, "step": 5, "default": 75 },
+    { "type": "range",  "id": "card_gap",   "label": "Espacio entre tarjetas (px)", "min": 0, "max": 20, "step": 2, "default": 6 },
+    { "type": "range",  "id": "card_radius","label": "Redondeo de tarjeta (px)", "min": 0, "max": 32, "step": 2, "default": 12 }
+  ],
+  "blocks": [
+    {
+      "type": "video_item",
+      "name": "🎬 Video",
+      "settings": [
+        { "type": "video",        "id": "video",      "label": "Video (subir archivo MP4)" },
+        { "type": "url",          "id": "video_url",  "label": "URL del video (alternativa)" },
+        { "type": "image_picker", "id": "thumbnail",  "label": "Miniatura / poster" },
+        { "type": "text",         "id": "username",   "label": "Usuario / nombre",   "default": "@lumeskincare" },
+        { "type": "textarea",     "id": "caption",    "label": "Caption",            "default": "Resultados reales con Lumé 🌿" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lumé · Videos TikTok",
+      "blocks": [
+        { "type": "video_item", "settings": { "username": "@clienta1", "caption": "Mi piel nunca se había visto así ✨" } },
+        { "type": "video_item", "settings": { "username": "@clienta2", "caption": "3 minutos y la diferencia es real 🌿" } },
+        { "type": "video_item", "settings": { "username": "@clienta3", "caption": "Lo uso todas las mañanas 💛" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

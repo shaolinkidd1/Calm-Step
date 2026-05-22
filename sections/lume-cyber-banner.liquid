@@ -1,0 +1,142 @@
+{%- assign cb = section.id -%}
+
+<style>
+#lmcb-{{ cb }} {
+  background: {{ section.settings.bg_color }};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  height: 68px;
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+}
+#lmcb-{{ cb }} *, #lmcb-{{ cb }} *::before, #lmcb-{{ cb }} *::after { box-sizing: border-box; }
+#lmcb-{{ cb }} .lmcb-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+#lmcb-{{ cb }} .lmcb-title {
+  font-size: 1.22rem;
+  font-weight: 900;
+  color: {{ section.settings.text_color }};
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 0;
+}
+#lmcb-{{ cb }} .lmcb-sub {
+  font-size: 0.6rem;
+  color: {{ section.settings.text_color }};
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  margin: 0;
+  opacity: 0.92;
+}
+#lmcb-{{ cb }} .lmcb-right {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+#lmcb-{{ cb }} .lmcb-box {
+  background: {{ section.settings.box_color }};
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0;
+  width: 46px;
+}
+#lmcb-{{ cb }} .lmcb-num {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: {{ section.settings.box_text_color }};
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  display: block;
+}
+#lmcb-{{ cb }} .lmcb-label {
+  font-size: 0.44rem;
+  color: {{ section.settings.box_text_color }};
+  letter-spacing: 0.03em;
+  margin-top: 2px;
+  font-weight: 500;
+  display: block;
+  text-transform: lowercase;
+}
+</style>
+
+<div id="lmcb-{{ cb }}">
+  <div class="lmcb-left">
+    <p class="lmcb-title">{{ section.settings.title }}</p>
+    <p class="lmcb-sub">{{ section.settings.subtitle }}</p>
+  </div>
+  <div class="lmcb-right">
+    <div class="lmcb-box">
+      <span class="lmcb-num" id="lmcb-hh-{{ cb }}">00</span>
+      <span class="lmcb-label">horas</span>
+    </div>
+    <div class="lmcb-box">
+      <span class="lmcb-num" id="lmcb-mm-{{ cb }}">00</span>
+      <span class="lmcb-label">minutos</span>
+    </div>
+    <div class="lmcb-box">
+      <span class="lmcb-num" id="lmcb-ss-{{ cb }}">00</span>
+      <span class="lmcb-label">segundos</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var hEl=document.getElementById('lmcb-hh-{{ cb }}');
+  var mEl=document.getElementById('lmcb-mm-{{ cb }}');
+  var sEl=document.getElementById('lmcb-ss-{{ cb }}');
+  if(!hEl||!mEl||!sEl) return;
+  var end=new Date('{{ section.settings.end_date }}T{{ section.settings.end_time }}:00').getTime();
+  if(isNaN(end)) return;
+  function p2(n){ return String(n).padStart(2,'0'); }
+  function tick(){
+    var d=Math.max(0,end-Date.now());
+    var totalHours=Math.floor(d/3600000);
+    hEl.textContent=p2(totalHours);
+    mEl.textContent=p2(Math.floor((d%3600000)/60000));
+    sEl.textContent=p2(Math.floor((d%60000)/1000));
+    if(d>0) setTimeout(tick,1000);
+  }
+  tick();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Lumé Cyber Banner",
+  "tag": "section",
+  "settings": [
+    { "type": "text",   "id": "title",         "label": "Título principal",             "default": "¡CYBER LUMÉ!" },
+    { "type": "text",   "id": "subtitle",      "label": "Subtítulo",                    "default": "Hasta 72% OFF | Últimas Unidades" },
+    { "type": "text",   "id": "end_date",      "label": "Fecha de término (AAAA-MM-DD)","default": "2026-05-31", "info": "Formato: 2026-12-31" },
+    { "type": "text",   "id": "end_time",      "label": "Hora de término (HH:MM, 24h)", "default": "23:59",      "info": "Ejemplo: 23:59 — hora del navegador del visitante" },
+    { "type": "header", "content": "🎨 Colores" },
+    { "type": "color",  "id": "bg_color",       "label": "Fondo del banner",    "default": "#000000" },
+    { "type": "color",  "id": "text_color",     "label": "Texto (título y sub)", "default": "#ffffff" },
+    { "type": "color",  "id": "box_color",      "label": "Fondo de los bloques del contador", "default": "#ffffff" },
+    { "type": "color",  "id": "box_text_color", "label": "Números y etiquetas del contador",  "default": "#000000" }
+  ],
+  "presets": [
+    { "name": "Lumé Cyber Banner" }
+  ]
+}
+{% endschema %}

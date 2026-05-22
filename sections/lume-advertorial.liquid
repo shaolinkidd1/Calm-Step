@@ -1,0 +1,786 @@
+{%- assign la = section.id -%}
+{%- assign lm_tests = section.blocks | where: "type", "testimonial" -%}
+{%- assign lm_steps = section.blocks | where: "type", "step" -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+#lmadv-{{ la }},#lmadv-{{ la }} *,#lmadv-{{ la }} *::before,#lmadv-{{ la }} *::after{box-sizing:border-box;margin:0;padding:0;}
+#lmadv-{{ la }}{
+  --bg:#fdfbf9;--bg-warm:#f7f3ee;--bg-dark:#1a1714;
+  --ink:#181614;--ink-soft:#3a3530;--muted:#8a8078;
+  --gold:#b8965a;--gold-lt:#d9bf8c;--gold-faint:#f0e6d0;
+  --beige:#e8dfd3;--beige-mid:#d4c8b8;--white:#ffffff;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Mulish',system-ui,sans-serif;
+  --shadow-sm:0 2px 12px rgba(0,0,0,0.06);
+  --shadow-md:0 8px 32px rgba(0,0,0,0.10);
+  --shadow-lg:0 20px 60px rgba(0,0,0,0.14);
+  --r:3px;
+  font-family:var(--sans);background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+#lmadv-{{ la }} img{display:block;width:100%;}
+
+/* ANN */
+#lmadv-{{ la }} .adv-ann{background:var(--ink);color:var(--gold-lt);text-align:center;padding:0.55rem 1rem;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;}
+
+/* MASTHEAD */
+#lmadv-{{ la }} .adv-masthead{display:flex;align-items:center;justify-content:center;padding:1.1rem 1.25rem;border-bottom:1px solid var(--beige);background:var(--bg);gap:0.75rem;}
+#lmadv-{{ la }} .adv-mtag{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+#lmadv-{{ la }} .adv-msep{color:var(--beige-mid);font-size:0.8rem;}
+#lmadv-{{ la }} .adv-mlogo img{height:{{ section.settings.logo_height }}px;width:auto;object-fit:contain;display:block;}
+
+/* CONTAINER */
+#lmadv-{{ la }} .adv-container{max-width:680px;margin:0 auto;padding:0 1.25rem;}
+
+/* HERO */
+#lmadv-{{ la }} .adv-hero{padding:3.5rem 0 0;text-align:center;position:relative;overflow:hidden;}
+#lmadv-{{ la }} .adv-hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(184,150,90,0.08) 0%,transparent 70%);pointer-events:none;}
+#lmadv-{{ la }} .adv-eyebrow{font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+#lmadv-{{ la }} .adv-eyebrow::before,#lmadv-{{ la }} .adv-eyebrow::after{content:'';width:28px;height:1px;background:var(--gold);opacity:0.4;}
+#lmadv-{{ la }} .adv-hero h1{font-family:var(--serif);font-size:clamp(1.85rem,5.5vw,2.6rem);font-weight:700;line-height:1.18;color:var(--ink);max-width:580px;margin:0 auto 1.5rem;padding:0 0.5rem;}
+#lmadv-{{ la }} .adv-hero h1 em{font-style:italic;color:var(--gold);}
+#lmadv-{{ la }} .adv-hero-sub{font-size:0.95rem;line-height:1.75;color:var(--ink-soft);max-width:480px;margin:0 auto 2rem;font-weight:300;padding:0 0.5rem;}
+#lmadv-{{ la }} .adv-hero-sub strong{font-weight:600;color:var(--ink);}
+
+/* BUTTONS */
+#lmadv-{{ la }} .adv-btn{display:inline-block;background:var(--ink);color:var(--gold-lt);padding:1rem 2.5rem;font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:background 0.25s,transform 0.18s;font-family:var(--sans);border-radius:var(--r);}
+#lmadv-{{ la }} .adv-btn:hover{background:var(--ink-soft);transform:translateY(-1px);}
+#lmadv-{{ la }} .adv-btn.gold{background:var(--gold);color:var(--ink);}
+#lmadv-{{ la }} .adv-btn.gold:hover{background:var(--gold-lt);}
+#lmadv-{{ la }} .adv-btn.full{width:100%;text-align:center;display:block;padding:1.1rem;font-size:0.8rem;}
+
+/* HERO TRUST */
+#lmadv-{{ la }} .adv-trust{display:flex;align-items:center;justify-content:center;gap:1.25rem;padding:1.25rem 1.25rem 0;flex-wrap:wrap;}
+#lmadv-{{ la }} .trust-item{display:flex;align-items:center;gap:0.4rem;font-size:0.68rem;color:var(--muted);}
+#lmadv-{{ la }} .trust-item svg{color:var(--gold);flex-shrink:0;}
+
+/* HERO IMG */
+#lmadv-{{ la }} .adv-hero-img{margin:2.5rem auto 0;position:relative;max-width:480px;}
+#lmadv-{{ la }} .adv-hero-img img{width:100%;height:380px;object-fit:cover;display:block;}
+#lmadv-{{ la }} .adv-img-ph{width:100%;height:380px;background:linear-gradient(160deg,var(--bg-warm),var(--beige));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.75rem;}
+#lmadv-{{ la }} .adv-img-ph p{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);text-align:center;line-height:2;}
+#lmadv-{{ la }} .adv-hero-badge{position:absolute;bottom:1.25rem;right:1.25rem;background:var(--white);border:1px solid var(--beige);padding:0.65rem 0.9rem;box-shadow:var(--shadow-md);text-align:center;}
+#lmadv-{{ la }} .hib-num{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--ink);line-height:1;}
+#lmadv-{{ la }} .hib-txt{font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.15rem;}
+
+/* DIVIDER */
+#lmadv-{{ la }} .adv-divider{display:flex;align-items:center;gap:0.75rem;padding:2.5rem 1.25rem;max-width:680px;margin:0 auto;}
+#lmadv-{{ la }} .adv-divider-line{flex:1;height:1px;background:var(--beige);}
+#lmadv-{{ la }} .adv-divider-gem{width:8px;height:8px;border:1px solid var(--gold);transform:rotate(45deg);flex-shrink:0;}
+
+/* REASON */
+#lmadv-{{ la }} .adv-reason{padding:0 0 3.5rem;}
+#lmadv-{{ la }} .adv-reason-inner{max-width:680px;margin:0 auto;padding:0 1.25rem;}
+#lmadv-{{ la }} .adv-reason-split{display:block;}
+@media(min-width:600px){
+  #lmadv-{{ la }} .adv-reason-split{display:grid;grid-template-columns:5fr 7fr;gap:2rem;align-items:start;}
+  #lmadv-{{ la }} .adv-reason-photo{margin-bottom:0;}
+  #lmadv-{{ la }} .adv-reason-photo img,#lmadv-{{ la }} .adv-reason-photo .rph{height:420px;}
+}
+#lmadv-{{ la }} .adv-reason-photo{position:relative;margin-bottom:1.5rem;overflow:hidden;}
+#lmadv-{{ la }} .adv-reason-photo img{width:100%;height:360px;object-fit:cover;object-position:center top;display:block;}
+#lmadv-{{ la }} .adv-reason-photo .rph{width:100%;height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.75rem;}
+#lmadv-{{ la }} .adv-photo-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(20,18,15,0.78) 0%,transparent 100%);padding:2.5rem 1.1rem 0.85rem;}
+#lmadv-{{ la }} .cap-name{font-size:0.75rem;font-weight:700;color:var(--white);letter-spacing:0.06em;display:block;margin-bottom:0.15rem;}
+#lmadv-{{ la }} .cap-meta{font-size:0.62rem;color:rgba(255,255,255,0.6);font-weight:300;letter-spacing:0.1em;}
+#lmadv-{{ la }} .adv-reason-num{font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.55rem;display:flex;align-items:center;gap:0.5rem;}
+#lmadv-{{ la }} .adv-reason-num::after{content:'';height:1px;background:var(--gold-faint);width:28px;flex-shrink:0;}
+#lmadv-{{ la }} .adv-reason h2{font-family:var(--serif);font-size:clamp(1.45rem,4.5vw,1.95rem);font-weight:700;line-height:1.2;color:var(--ink);margin-bottom:1rem;}
+#lmadv-{{ la }} .adv-reason h2 em{font-style:italic;color:var(--gold);}
+#lmadv-{{ la }} .adv-reason p{font-size:0.88rem;line-height:1.85;color:var(--ink-soft);font-weight:300;margin-bottom:0.9rem;}
+#lmadv-{{ la }} .adv-reason p strong{font-weight:600;color:var(--ink);}
+#lmadv-{{ la }} .adv-reason p:last-child{margin-bottom:0;}
+
+/* REASON IMG (sin caption) */
+#lmadv-{{ la }} .adv-reason-img{margin:1.5rem 0;overflow:hidden;}
+#lmadv-{{ la }} .adv-reason-img img{width:100%;height:280px;object-fit:cover;object-position:top;}
+#lmadv-{{ la }} .adv-reason-img .rph{width:100%;height:260px;background:linear-gradient(135deg,var(--bg-warm),var(--beige));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem;}
+
+/* BEFORE/AFTER */
+#lmadv-{{ la }} .adv-ba{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:1.5rem 0;overflow:hidden;position:relative;}
+#lmadv-{{ la }} .adv-ba-side{position:relative;}
+#lmadv-{{ la }} .adv-ba-side .rph{height:230px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;}
+#lmadv-{{ la }} .adv-ba-side img{height:230px;width:100%;object-fit:cover;object-position:top;}
+#lmadv-{{ la }} .adv-ba-label{position:absolute;top:0.6rem;left:0.6rem;background:var(--white);color:var(--ink);font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:0.18rem 0.45rem;}
+#lmadv-{{ la }} .adv-ba-sep{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--white);transform:translateX(-50%);z-index:3;pointer-events:none;}
+
+/* CHECK LIST */
+#lmadv-{{ la }} .adv-checks{display:flex;flex-direction:column;gap:0.65rem;margin:1.25rem 0;}
+#lmadv-{{ la }} .adv-check{display:flex;align-items:flex-start;gap:0.75rem;font-size:0.88rem;color:var(--ink-soft);font-weight:300;line-height:1.5;}
+#lmadv-{{ la }} .adv-check-ico{width:18px;height:18px;background:var(--gold-faint);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;color:var(--gold);}
+
+/* QUOTE CARD */
+#lmadv-{{ la }} .adv-quote{background:var(--bg-warm);border-left:2px solid var(--gold);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 var(--r) var(--r) 0;}
+#lmadv-{{ la }} .adv-quote-text{font-family:var(--serif);font-size:1.05rem;font-style:italic;line-height:1.6;color:var(--ink);margin-bottom:0.5rem;}
+#lmadv-{{ la }} .adv-quote-author{font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+
+/* COMPARE TABLE */
+#lmadv-{{ la }} .adv-compare{margin:1.75rem 0;border:1px solid var(--beige);border-radius:var(--r);overflow:hidden;}
+#lmadv-{{ la }} .adv-compare-head{display:grid;grid-template-columns:1fr 1fr;background:var(--ink);}
+#lmadv-{{ la }} .adv-ch-cell{padding:0.75rem 1rem;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;color:var(--gold-lt);text-align:center;}
+#lmadv-{{ la }} .adv-ch-cell:first-child{border-right:1px solid rgba(255,255,255,0.08);}
+#lmadv-{{ la }} .adv-cr{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--beige);}
+#lmadv-{{ la }} .adv-cr:last-child{border-bottom:none;}
+#lmadv-{{ la }} .adv-cr.hl{background:var(--gold-faint);}
+#lmadv-{{ la }} .adv-cr-cell{padding:0.85rem 1rem;font-size:0.85rem;text-align:center;color:var(--ink-soft);font-weight:300;}
+#lmadv-{{ la }} .adv-cr-cell:first-child{border-right:1px solid var(--beige);color:var(--ink);font-weight:400;}
+#lmadv-{{ la }} .adv-cr.hl .adv-cr-cell{font-weight:600;color:var(--ink);}
+#lmadv-{{ la }} .adv-cr.hl .adv-cr-cell:last-child{color:var(--gold);}
+
+/* OFFER */
+#lmadv-{{ la }} .adv-offer-section{background:var(--bg-warm);padding:3.5rem 0;position:relative;overflow:hidden;}
+#lmadv-{{ la }} .adv-offer-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(184,150,90,0.07) 0%,transparent 65%);pointer-events:none;}
+#lmadv-{{ la }} .adv-offer-box{background:var(--white);border:1px solid var(--beige);border-top:3px solid var(--gold);padding:2.25rem 1.75rem;box-shadow:var(--shadow-lg);position:relative;border-radius:var(--r);}
+#lmadv-{{ la }} .adv-offer-eyebrow{text-align:center;font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.75rem;}
+#lmadv-{{ la }} .adv-offer-title{font-family:var(--serif);font-size:clamp(1.5rem,5vw,2.1rem);font-weight:700;text-align:center;color:var(--ink);line-height:1.2;margin-bottom:0.5rem;}
+#lmadv-{{ la }} .adv-offer-sub{text-align:center;font-size:0.82rem;color:var(--muted);font-weight:300;margin-bottom:1.75rem;}
+#lmadv-{{ la }} .adv-timer{display:flex;align-items:center;justify-content:center;gap:0.4rem;margin-bottom:1.75rem;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+#lmadv-{{ la }} .adv-tblocks{display:flex;gap:0.3rem;align-items:center;}
+#lmadv-{{ la }} .adv-tblock{background:var(--ink);color:var(--gold-lt);padding:0.35rem 0.55rem;font-size:1.1rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1;border-radius:2px;min-width:36px;text-align:center;font-family:var(--serif);}
+#lmadv-{{ la }} .adv-tsep{color:var(--ink);font-size:1rem;font-weight:700;}
+#lmadv-{{ la }} .adv-offer-includes{display:flex;flex-direction:column;gap:0.7rem;margin-bottom:1.75rem;padding:1.25rem;background:var(--bg-warm);border-radius:var(--r);}
+#lmadv-{{ la }} .adv-oi-row{display:flex;align-items:center;gap:0.75rem;font-size:0.85rem;color:var(--ink-soft);}
+#lmadv-{{ la }} .adv-oi-ico{color:var(--gold);flex-shrink:0;}
+#lmadv-{{ la }} .adv-price-wrap{text-align:center;margin-bottom:1.5rem;}
+#lmadv-{{ la }} .adv-price-old{font-size:0.7rem;color:var(--muted);text-decoration:line-through;margin-bottom:0.25rem;}
+#lmadv-{{ la }} .adv-price{font-family:var(--serif);font-size:2.8rem;font-weight:700;color:var(--ink);line-height:1;}
+#lmadv-{{ la }} .adv-price-note{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:0.25rem;}
+#lmadv-{{ la }} .adv-stock{display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:1rem;font-size:0.7rem;color:#c0392b;font-weight:500;letter-spacing:0.06em;}
+#lmadv-{{ la }} .adv-stock-dot{width:7px;height:7px;background:#c0392b;border-radius:50%;animation:lmadv-pulse-{{ la }} 1.5s infinite;}
+@keyframes lmadv-pulse-{{ la }}{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.8);}}
+#lmadv-{{ la }} .adv-offer-img{margin-bottom:1.5rem;border-radius:var(--r);overflow:hidden;}
+#lmadv-{{ la }} .adv-offer-img img{width:100%;height:220px;object-fit:cover;}
+#lmadv-{{ la }} .adv-offer-img .rph{height:220px;background:var(--bg-warm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem;}
+
+/* TESTIMONIALS */
+#lmadv-{{ la }} .adv-tests-section{padding:4rem 0;background:var(--bg);}
+#lmadv-{{ la }} .adv-section-head{text-align:center;margin-bottom:2.5rem;padding:0 1.25rem;}
+#lmadv-{{ la }} .adv-s-eyebrow{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.75rem;}
+#lmadv-{{ la }} .adv-s-title{font-family:var(--serif);font-size:clamp(1.4rem,4.5vw,1.9rem);font-weight:700;color:var(--ink);line-height:1.25;}
+#lmadv-{{ la }} .adv-s-sub{font-size:0.82rem;color:var(--muted);font-weight:300;margin-top:0.5rem;}
+#lmadv-{{ la }} .adv-rc-bar{display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:2rem;font-size:0.72rem;color:var(--muted);}
+#lmadv-{{ la }} .adv-rc-stars{color:var(--gold);font-size:0.85rem;}
+#lmadv-{{ la }} .adv-tests-grid{display:flex;flex-direction:column;gap:1.25rem;padding:0 1.25rem;max-width:680px;margin:0 auto;}
+@media(min-width:600px){
+  #lmadv-{{ la }} .adv-tests-grid{display:grid;grid-template-columns:1fr 1fr;}
+  #lmadv-{{ la }} .adv-tests-grid .adv-tcard:first-child{grid-column:1/-1;}
+}
+#lmadv-{{ la }} .adv-tcard{background:var(--white);border:1px solid var(--beige);padding:1.5rem;box-shadow:var(--shadow-sm);border-radius:var(--r);transition:box-shadow 0.25s;}
+#lmadv-{{ la }} .adv-tcard:hover{box-shadow:var(--shadow-md);}
+#lmadv-{{ la }} .adv-tc-top{display:flex;align-items:center;gap:0.85rem;margin-bottom:0.9rem;}
+#lmadv-{{ la }} .adv-tc-avatar{width:42px;height:42px;border-radius:50%;background:var(--beige);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;font-weight:700;color:#7a6035;flex-shrink:0;}
+#lmadv-{{ la }} .adv-tc-info{flex:1;}
+#lmadv-{{ la }} .adv-tc-name{font-size:0.82rem;font-weight:600;color:var(--ink);}
+#lmadv-{{ la }} .adv-tc-meta{font-size:0.65rem;color:var(--muted);margin-top:0.1rem;}
+#lmadv-{{ la }} .adv-tc-stars{color:var(--gold);font-size:0.75rem;margin-left:auto;letter-spacing:0.05em;}
+#lmadv-{{ la }} .adv-tc-text{font-family:var(--serif);font-size:1rem;font-style:italic;line-height:1.6;color:var(--ink);margin-bottom:0.75rem;}
+#lmadv-{{ la }} .adv-tc-result{display:inline-flex;align-items:center;gap:0.35rem;background:var(--gold-faint);color:var(--gold);font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.6rem;border-radius:1px;}
+#lmadv-{{ la }} .adv-tc-verified{display:flex;align-items:center;gap:0.3rem;font-size:0.6rem;color:#3d7a50;margin-top:0.6rem;}
+
+/* HOW TO USE */
+#lmadv-{{ la }} .adv-howto{background:var(--bg-dark);padding:4rem 0;color:var(--white);}
+#lmadv-{{ la }} .adv-howto .adv-s-title{color:var(--gold-lt);}
+#lmadv-{{ la }} .adv-howto .adv-s-eyebrow{color:var(--gold);}
+#lmadv-{{ la }} .adv-howto .adv-s-sub{color:rgba(255,255,255,0.4);}
+#lmadv-{{ la }} .adv-steps{display:flex;flex-direction:column;gap:0;max-width:680px;margin:0 auto;padding:0 1.25rem;}
+#lmadv-{{ la }} .adv-step{display:flex;gap:1.25rem;align-items:flex-start;padding:1.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+#lmadv-{{ la }} .adv-step:last-child{border-bottom:none;}
+#lmadv-{{ la }} .adv-step-n{font-family:var(--serif);font-size:2.5rem;font-weight:700;color:var(--gold);line-height:1;opacity:0.4;min-width:2.5rem;flex-shrink:0;}
+#lmadv-{{ la }} .adv-step-ico{width:44px;height:44px;background:rgba(184,150,90,0.12);border:1px solid rgba(184,150,90,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#lmadv-{{ la }} .adv-step-body{flex:1;}
+#lmadv-{{ la }} .adv-step-title{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--gold-lt);margin-bottom:0.35rem;}
+#lmadv-{{ la }} .adv-step-desc{font-size:0.82rem;line-height:1.7;color:rgba(255,255,255,0.5);font-weight:300;}
+#lmadv-{{ la }} .adv-howto-dur{text-align:center;margin-top:2rem;padding:1rem 1.25rem;}
+#lmadv-{{ la }} .adv-dur-inner{display:inline-flex;align-items:center;gap:0.6rem;border:1px solid rgba(184,150,90,0.3);padding:0.65rem 1.25rem;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);font-weight:500;}
+
+/* FINAL CTA */
+#lmadv-{{ la }} .adv-final{background:var(--bg);padding:5rem 1.25rem;text-align:center;position:relative;overflow:hidden;}
+#lmadv-{{ la }} .adv-final::before{content:'';position:absolute;bottom:-100px;left:50%;transform:translateX(-50%);width:600px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(184,150,90,0.07),transparent 70%);pointer-events:none;}
+#lmadv-{{ la }} .adv-final .adv-s-title{font-size:clamp(1.6rem,5vw,2.4rem);margin-bottom:1rem;max-width:500px;margin-left:auto;margin-right:auto;}
+#lmadv-{{ la }} .adv-final .adv-s-sub{max-width:400px;margin:0 auto 2.5rem;line-height:1.7;}
+#lmadv-{{ la }} .adv-final-price{font-family:var(--serif);font-size:3rem;font-weight:700;color:var(--ink);line-height:1;margin-bottom:0.5rem;}
+#lmadv-{{ la }} .adv-final-note{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem;}
+#lmadv-{{ la }} .adv-btn-final{display:block;width:100%;max-width:400px;margin:0 auto;background:var(--ink);color:var(--gold-lt);padding:1.15rem;font-size:0.78rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;border:none;cursor:pointer;font-family:var(--sans);border-radius:var(--r);transition:background 0.25s,transform 0.18s;text-decoration:none;}
+#lmadv-{{ la }} .adv-btn-final:hover{background:var(--ink-soft);transform:translateY(-2px);}
+#lmadv-{{ la }} .adv-final-trust{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;}
+#lmadv-{{ la }} .adv-ft-item{display:flex;align-items:center;gap:0.35rem;font-size:0.65rem;color:var(--muted);}
+#lmadv-{{ la }} .adv-ft-item svg{color:var(--gold);}
+
+/* FOOTER */
+#lmadv-{{ la }} .adv-footer{background:var(--ink);padding:2.5rem 1.25rem 2rem;text-align:center;border-top:3px solid var(--gold);}
+#lmadv-{{ la }} .adv-footer-logo img{height:{{ section.settings.footer_logo_height }}px;object-fit:contain;display:block;margin:0 auto 0.75rem;}
+#lmadv-{{ la }} .adv-footer-tag{font-size:0.7rem;color:rgba(255,255,255,0.85);font-weight:300;line-height:1.7;margin-bottom:1.5rem;}
+#lmadv-{{ la }} .adv-disclaimer{font-size:0.6rem;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.7;max-width:500px;margin:0 auto 1rem;}
+#lmadv-{{ la }} .adv-legal{display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap;}
+#lmadv-{{ la }} .adv-legal a{font-size:0.6rem;color:rgba(255,255,255,0.7);text-decoration:none;}
+
+/* REVEAL */
+#lmadv-{{ la }} .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s ease,transform 0.65s ease;}
+#lmadv-{{ la }} .reveal.visible{opacity:1;transform:translateY(0);}
+#lmadv-{{ la }} .reveal-d1{transition-delay:0.1s;}
+#lmadv-{{ la }} .reveal-d2{transition-delay:0.2s;}
+#lmadv-{{ la }} .reveal-d3{transition-delay:0.3s;}
+
+/* STICKY CART */
+#lmadv-sc-{{ la }}{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;border-top:1px solid #e8dfd3;padding:0.85rem 1.25rem;display:flex;align-items:center;gap:1rem;box-shadow:0 -8px 32px rgba(0,0,0,0.1);transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);}
+#lmadv-sc-{{ la }}.show{transform:translateY(0);}
+#lmadv-sc-{{ la }} .sc-info{flex:1;}
+#lmadv-sc-{{ la }} .sc-name{font-size:0.8rem;font-weight:600;color:#181614;font-family:'Mulish',sans-serif;}
+#lmadv-sc-{{ la }} .sc-price{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#181614;line-height:1;}
+#lmadv-sc-{{ la }} .sc-btn{background:#b8965a;color:#181614;border:none;padding:0.85rem 1.5rem;font-size:0.7rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;font-family:'Mulish',sans-serif;white-space:nowrap;border-radius:3px;transition:background 0.2s;text-decoration:none;display:inline-block;}
+#lmadv-sc-{{ la }} .sc-btn:hover{background:#d9bf8c;}
+</style>
+
+<div id="lmadv-{{ la }}">
+
+  <!-- ANN BAR -->
+  <div class="adv-ann">{{ section.settings.ann_text }}</div>
+
+  <!-- MASTHEAD -->
+  <div class="adv-masthead">
+    <span class="adv-mtag">Belleza · Skincare</span>
+    <span class="adv-msep">|</span>
+    <div class="adv-mlogo">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}">
+      {%- else -%}
+        <span style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:500;color:#181614;letter-spacing:0.1em;">Lumé</span>
+      {%- endif -%}
+    </div>
+    <span class="adv-msep">|</span>
+    <span class="adv-mtag">Artículo editorial</span>
+  </div>
+
+  <!-- HERO -->
+  <section class="adv-hero">
+    <div class="adv-container">
+      <div class="adv-eyebrow reveal">Lumé · Cepillo Facial Linfático</div>
+      <h1 class="reveal reveal-d1">{{ section.settings.hero_title }}</h1>
+      <p class="adv-hero-sub reveal reveal-d2">{{ section.settings.hero_subtitle }}</p>
+      <div class="reveal reveal-d3">
+        <a href="{{ section.settings.product_url }}" class="adv-btn">{{ section.settings.hero_btn_text }}</a>
+      </div>
+      <div class="adv-trust reveal">
+        <div class="trust-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Garantía 30 días
+        </div>
+        <div class="trust-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          Envío gratis Chile
+        </div>
+        <div class="trust-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          +5.000 clientas
+        </div>
+      </div>
+    </div>
+    <div class="adv-hero-img reveal">
+      {%- if section.settings.hero_img != blank -%}
+        <img src="{{ section.settings.hero_img | image_url: width: 960 }}" alt="Lumé">
+      {%- else -%}
+        <div class="adv-img-ph">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#C4BAB0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <p>Foto producto principal<br>680 × 420 px</p>
+        </div>
+      {%- endif -%}
+      <div class="adv-hero-badge">
+        <div class="hib-num">{{ section.settings.hero_badge_num }}</div>
+        <div class="hib-txt">{{ section.settings.hero_badge_txt }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIVIDER -->
+  <div class="adv-divider"><div class="adv-divider-line"></div><div class="adv-divider-gem"></div><div class="adv-divider-line"></div></div>
+
+  <!-- RAZÓN 1 -->
+  <section class="adv-reason">
+    <div class="adv-reason-inner">
+      <div class="adv-reason-split">
+        <div class="adv-reason-photo reveal">
+          {%- if section.settings.reason1_img != blank -%}
+            <img src="{{ section.settings.reason1_img | image_url: width: 540 }}" alt="{{ section.settings.reason1_name }}">
+          {%- else -%}
+            <div class="rph" style="background:linear-gradient(160deg,#ede5d8,#cfc3b2);">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#A89880" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#A89880;text-align:center;line-height:2;">Mujer 50–59 años<br>piel madura sensible<br>480 × 420 px</p>
+            </div>
+          {%- endif -%}
+          <div class="adv-photo-cap">
+            <span class="cap-name">{{ section.settings.reason1_name }}</span>
+            <span class="cap-meta">{{ section.settings.reason1_meta }}</span>
+          </div>
+        </div>
+        <div>
+          <div class="adv-reason-num reveal">Razón N°1</div>
+          <h2 class="reveal">Diseñado Para Piel Madura y Sensible, <em>No Contra Ella</em></h2>
+          <p class="reveal">Aquí está lo que nadie te dice: la mayoría de las herramientas faciales fueron diseñadas para piel de 25 años. Las piedras gua sha son frías y rígidas. Los rollers ejercen presión irregular. Los aparatos eléctricos generan calor que irrita. <strong>Este cepillo hace lo contrario.</strong></p>
+          <div class="adv-checks reveal">
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span>Cerdas veganas probadas específicamente en piel sensible y madura</span></div>
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span>Sin rasguños, sin moretones, sin enrojecimiento — ni el primer día</span></div>
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span>Apto para piel con rosácea, cuperosis o piel delgada post-menopausia</span></div>
+          </div>
+          <div class="adv-quote reveal">
+            <p class="adv-quote-text">"Si te dijeron que presionaras más fuerte y terminaste con la piel irritada — esto es la alternativa que trabaja con tu piel, no contra ella."</p>
+            <span class="adv-quote-author">Lumé · Diseñado para piel madura real</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="adv-divider"><div class="adv-divider-line"></div><div class="adv-divider-gem"></div><div class="adv-divider-line"></div></div>
+
+  <!-- RAZÓN 2 -->
+  <section class="adv-reason">
+    <div class="adv-reason-inner">
+      <div class="adv-reason-split">
+        <div>
+          <div class="adv-ba reveal" style="margin-top:0;">
+            <div class="adv-ba-side">
+              {%- if section.settings.reason2_ba_before != blank -%}
+                <img src="{{ section.settings.reason2_ba_before | image_url: width: 360 }}" alt="Antes">
+              {%- else -%}
+                <div class="rph" style="height:230px;background:#ddd6cb;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A89880" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              {%- endif -%}
+              <div class="adv-ba-label">Antes</div>
+            </div>
+            <div class="adv-ba-side">
+              {%- if section.settings.reason2_ba_after != blank -%}
+                <img src="{{ section.settings.reason2_ba_after | image_url: width: 360 }}" alt="Después">
+              {%- else -%}
+                <div class="rph" style="height:230px;background:#e8e0d4;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A89880" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              {%- endif -%}
+              <div class="adv-ba-label">Después</div>
+            </div>
+            <div class="adv-ba-sep"></div>
+          </div>
+          <p style="font-size:0.6rem;text-align:center;color:#8a8078;margin-top:0.5rem;letter-spacing:0.06em;">Patricia, 52 años · resultado tras 7 días</p>
+        </div>
+        <div>
+          <div class="adv-reason-num reveal">Razón N°2</div>
+          <h2 class="reveal">Resultados En Minutos, <em>No En Semanas</em></h2>
+          <p class="reveal">Seamos honestas: ya tuviste suficiente paciencia. Esperaste semanas para que los sérums "quizás" funcionaran. Te comprometiste con retos de 30 días que se diluyeron. <strong>Esta vez es diferente.</strong></p>
+          <div class="adv-checks reveal">
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Reduce hinchazón matinal</strong> — activa el drenaje desde el primer movimiento</span></div>
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Mandíbula más definida</strong> — el fluido que la aplana empieza a moverse</span></div>
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span><strong>Párpados menos pesados</strong> — en el mismo tiempo que te cepillas los dientes</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="adv-divider"><div class="adv-divider-line"></div><div class="adv-divider-gem"></div><div class="adv-divider-line"></div></div>
+
+  <!-- RAZÓN 3 -->
+  <section class="adv-reason">
+    <div class="adv-reason-inner">
+      <div class="adv-reason-split">
+        <div class="adv-reason-photo reveal">
+          {%- if section.settings.reason3_img != blank -%}
+            <img src="{{ section.settings.reason3_img | image_url: width: 540 }}" alt="{{ section.settings.reason3_name }}">
+          {%- else -%}
+            <div class="rph" style="background:linear-gradient(160deg,#e8e0d4,#cfc3b2);">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#A89880" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#A89880;text-align:center;line-height:2;">Mujer usando Lumé en seco<br>480 × 420 px</p>
+            </div>
+          {%- endif -%}
+          <div class="adv-photo-cap">
+            <span class="cap-name">{{ section.settings.reason3_name }}</span>
+            <span class="cap-meta">{{ section.settings.reason3_meta }}</span>
+          </div>
+        </div>
+        <div>
+          <div class="adv-reason-num reveal">Razón N°3</div>
+          <h2 class="reveal">Se Usa En Seco. <em>Sin Aceites. Sin Desorden.</em></h2>
+          <p class="reveal">¿Recuerdas el gua sha con aceite por toda la mano, la mesada, la ropa? ¿La frase "lo haré cuando tenga tiempo" que nunca llegó? <strong>Lumé elimina ese problema por completo.</strong></p>
+          <div class="adv-checks reveal">
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span>Piel limpia y seca — cero preparación, cero limpieza posterior</span></div>
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span>Úsalo mientras te lavas los dientes o antes de salir — ya está</span></div>
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span>La razón por la que lo usas todos los días en vez de abandonarlo</span></div>
+          </div>
+          <div class="adv-quote reveal">
+            <p class="adv-quote-text">"Lo uso día a día en mi rutina facial. Se deflacta instantáneamente en el cuello."</p>
+            <span class="adv-quote-author">Natalia M. · 51 años · clienta verificada</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="adv-divider"><div class="adv-divider-line"></div><div class="adv-divider-gem"></div><div class="adv-divider-line"></div></div>
+
+  <!-- RAZÓN 4 -->
+  <section class="adv-reason">
+    <div class="adv-reason-inner">
+      <div class="adv-reason-num reveal">Razón N°4</div>
+      <h2 class="reveal">Reemplaza Tratamientos <em>Que Cuestan Una Fortuna</em></h2>
+      <div class="adv-reason-img reveal">
+        {%- if section.settings.reason4_img != blank -%}
+          <img src="{{ section.settings.reason4_img | image_url: width: 720 }}" alt="Comparativa">
+        {%- else -%}
+          <div class="rph" style="background:linear-gradient(120deg,#e8e0d4,#d4c8b8);">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#A89880" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#A89880;text-align:center;line-height:2;">Comparativa clínica vs casa con Lumé<br>680 × 260 px</p>
+          </div>
+        {%- endif -%}
+      </div>
+      <p class="reveal">Las mismas terapeutas que cobran $80.000 por hora por drenaje linfático están recomendando este cepillo a sus clientas. Porque saben que <strong>lo necesitas más de una vez al mes.</strong></p>
+      <div class="adv-compare reveal">
+        <div class="adv-compare-head">
+          <div class="adv-ch-cell">Tratamiento</div>
+          <div class="adv-ch-cell">Precio</div>
+        </div>
+        <div class="adv-cr"><div class="adv-cr-cell">Drenaje facial profesional</div><div class="adv-cr-cell">$50.000+ por sesión</div></div>
+        <div class="adv-cr"><div class="adv-cr-cell">Masaje facial clínica</div><div class="adv-cr-cell">$40.000+ por sesión</div></div>
+        <div class="adv-cr"><div class="adv-cr-cell">Bótox mandíbula</div><div class="adv-cr-cell">$300.000+ cada 6 meses</div></div>
+        <div class="adv-cr hl"><div class="adv-cr-cell">✦ Lumé — uso diario, para siempre</div><div class="adv-cr-cell">Un solo pago · {{ section.settings.offer_price }}</div></div>
+      </div>
+      <p class="reveal">No estás comprando una herramienta. Estás recuperando tu autonomía. Sin turnos. Sin elegir entre verte bien y pagar tus cuentas.</p>
+    </div>
+  </section>
+
+  <div class="adv-divider"><div class="adv-divider-line"></div><div class="adv-divider-gem"></div><div class="adv-divider-line"></div></div>
+
+  <!-- RAZÓN 5 -->
+  <section class="adv-reason">
+    <div class="adv-reason-inner">
+      <div class="adv-reason-split">
+        <div class="adv-reason-photo reveal">
+          {%- if section.settings.reason5_img != blank -%}
+            <img src="{{ section.settings.reason5_img | image_url: width: 540 }}" alt="{{ section.settings.reason5_name }}">
+          {%- else -%}
+            <div class="rph" style="background:linear-gradient(160deg,#e2d8cc,#c8bcac);">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#A89880" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#A89880;text-align:center;line-height:2;">Mujer 55–62 años<br>expresión confiada · 480 × 420 px</p>
+            </div>
+          {%- endif -%}
+          <div class="adv-photo-cap">
+            <span class="cap-name">{{ section.settings.reason5_name }}</span>
+            <span class="cap-meta">{{ section.settings.reason5_meta }}</span>
+          </div>
+        </div>
+        <div>
+          <div class="adv-reason-num reveal">Razón N°5</div>
+          <h2 class="reveal">Libera Tensión Facial y <em>Devuelve Tu Definición</em></h2>
+          <p class="reveal">Esto no es sobre verte 20 años más joven. No es sobre intervenciones ni procedimientos. Es sobre algo más real.</p>
+          <div class="adv-quote reveal" style="border-color:var(--gold);background:linear-gradient(135deg,var(--bg-warm),var(--gold-faint));">
+            <p class="adv-quote-text" style="font-size:1.1rem;">"No es verte distinta. Es verte tú otra vez. Descansada, fresca, presente. La cara que sientes que tienes por dentro."</p>
+            <span class="adv-quote-author">El principio detrás de Lumé</span>
+          </div>
+          <div class="adv-checks reveal">
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span>Mandíbula, pómulos, párpados — vuelven a tener definición</span></div>
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span>Te ves alerta, presente y radiante sin que nadie sepa tu secreto</span></div>
+            <div class="adv-check"><div class="adv-check-ico"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span>La primera persona que lo nota eres tú — al espejo, esa misma mañana</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFERTA -->
+  <section class="adv-offer-section" id="lmadv-oferta-{{ la }}">
+    <div class="adv-container">
+      <div class="adv-offer-box reveal">
+        <p class="adv-offer-eyebrow">✦ Oferta especial Lumé ✦</p>
+        <h2 class="adv-offer-title">Solo Disponible Por Tiempo Limitado</h2>
+        <p class="adv-offer-sub">Esta oferta de lanzamiento no estará disponible por mucho tiempo.</p>
+        <div class="adv-timer">
+          <span>Oferta termina en:</span>
+          <div class="adv-tblocks">
+            <div class="adv-tblock" id="lmadv-th-{{ la }}">00</div>
+            <span class="adv-tsep">:</span>
+            <div class="adv-tblock" id="lmadv-tm-{{ la }}">00</div>
+            <span class="adv-tsep">:</span>
+            <div class="adv-tblock" id="lmadv-ts-{{ la }}">00</div>
+          </div>
+        </div>
+        <div class="adv-offer-img">
+          {%- if section.settings.offer_img != blank -%}
+            <img src="{{ section.settings.offer_img | image_url: width: 720 }}" alt="Pack Lumé">
+          {%- else -%}
+            <div class="rph">
+              <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#C4BAB0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#A89880;text-align:center;line-height:2;">Foto pack completo: cepillo + estuche + ebook<br>640 × 220 px</p>
+            </div>
+          {%- endif -%}
+        </div>
+        <div class="adv-offer-includes">
+          {%- if section.settings.include1 != blank -%}<div class="adv-oi-row"><svg class="adv-oi-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>{{ section.settings.include1 }}</span></div>{%- endif -%}
+          {%- if section.settings.include2 != blank -%}<div class="adv-oi-row"><svg class="adv-oi-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>{{ section.settings.include2 }}</span></div>{%- endif -%}
+          {%- if section.settings.include3 != blank -%}<div class="adv-oi-row"><svg class="adv-oi-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>{{ section.settings.include3 }}</span></div>{%- endif -%}
+          {%- if section.settings.include4 != blank -%}<div class="adv-oi-row"><svg class="adv-oi-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>{{ section.settings.include4 }}</span></div>{%- endif -%}
+          {%- if section.settings.include5 != blank -%}<div class="adv-oi-row"><svg class="adv-oi-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>{{ section.settings.include5 }}</span></div>{%- endif -%}
+        </div>
+        <div class="adv-price-wrap">
+          <div class="adv-price-old">Precio normal: {{ section.settings.offer_price_old }}</div>
+          <div class="adv-price">{{ section.settings.offer_price }}</div>
+          <div class="adv-price-note">Precio de lanzamiento · Pago único</div>
+        </div>
+        <a href="{{ section.settings.product_url }}" class="adv-btn gold full">{{ section.settings.offer_cta_text }}</a>
+        <div class="adv-stock">
+          <div class="adv-stock-dot"></div>
+          Quedan pocas unidades disponibles hoy
+        </div>
+        <div class="adv-trust" style="margin-top:1.25rem;">
+          <div class="trust-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Pago seguro</div>
+          <div class="trust-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Devolución 30 días</div>
+          <div class="trust-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Envío gratis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="adv-tests-section">
+    <div class="adv-section-head">
+      <p class="adv-s-eyebrow">Lo que están diciendo</p>
+      <h2 class="adv-s-title">Transformaciones Reales<br>De Mujeres Reales</h2>
+      <p class="adv-s-sub">No modelos. No actores. Clientas de verdad.</p>
+    </div>
+    <div class="adv-rc-bar">
+      <span class="adv-rc-stars">★★★★★</span>
+      <span>4.9 · 5.000+ reseñas verificadas</span>
+    </div>
+    <div class="adv-tests-grid">
+      {%- if lm_tests.size > 0 -%}
+        {%- for block in lm_tests -%}
+          {%- assign star_n = block.settings.stars | plus: 0 -%}
+          <div class="adv-tcard reveal{% if forloop.index > 1 %} reveal-d{{ forloop.index | modulo: 3 | plus: 1 }}{% endif %}" {{ block.shopify_attributes }}>
+            <div class="adv-tc-top">
+              <div class="adv-tc-avatar">{{ block.settings.name | slice: 0 }}</div>
+              <div class="adv-tc-info">
+                <div class="adv-tc-name">{{ block.settings.name }}</div>
+                <div class="adv-tc-meta">{{ block.settings.meta }}</div>
+              </div>
+              <div class="adv-tc-stars">{%- for i in (1..5) -%}{%- if i <= star_n -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}</div>
+            </div>
+            <p class="adv-tc-text">"{{ block.settings.text }}"</p>
+            {%- if block.settings.result != blank -%}
+              <span class="adv-tc-result"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>{{ block.settings.result }}</span>
+            {%- endif -%}
+            <div class="adv-tc-verified"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Compra verificada</div>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <p style="padding:1rem;font-size:0.8rem;color:#8a8078;">Agrega bloques "Testimonio" desde el editor.</p>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <!-- HOW TO USE -->
+  <section class="adv-howto">
+    <div class="adv-section-head">
+      <p class="adv-s-eyebrow">Técnica Lumé</p>
+      <h2 class="adv-s-title">Cómo Usar Lumé</h2>
+      <p class="adv-s-sub">3 movimientos. 5 minutos. Resultado inmediato.</p>
+    </div>
+    <div class="adv-steps">
+      {%- if lm_steps.size > 0 -%}
+        {%- for block in lm_steps -%}
+          <div class="adv-step reveal" {{ block.shopify_attributes }}>
+            <div class="adv-step-n">{{ block.settings.number }}</div>
+            <div class="adv-step-ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,90,0.8)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+            </div>
+            <div class="adv-step-body">
+              <p class="adv-step-title">{{ block.settings.title }}</p>
+              <p class="adv-step-desc">{{ block.settings.desc }}</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <p style="padding:1rem;font-size:0.8rem;color:rgba(255,255,255,0.3);">Agrega bloques "Paso" desde el editor.</p>
+      {%- endif -%}
+    </div>
+    <div class="adv-howto-dur">
+      <div class="adv-dur-inner">⏱ Tiempo total: 3–5 minutos al día</div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="adv-final">
+    <div class="adv-container">
+      <h2 class="adv-s-title" style="font-family:'Playfair Display',serif;">¿Lista Para Verse Como Te Sientes Por Dentro?</h2>
+      <p class="adv-s-sub" style="max-width:400px;margin:0.5rem auto 2.5rem;line-height:1.7;">Miles de mujeres ya lo descubrieron. Ahora es tu turno.</p>
+      <div class="adv-final-price">{{ section.settings.offer_price }}</div>
+      <div class="adv-final-note">Pago único · Envío gratis</div>
+      <a href="{{ section.settings.product_url }}" class="adv-btn-final">OBTENER LUMÉ AHORA →</a>
+      <div class="adv-final-trust">
+        <div class="adv-ft-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Garantía 30 días</div>
+        <div class="adv-ft-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Envío gratis</div>
+        <div class="adv-ft-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>+5.000 clientas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="adv-footer">
+    <div class="adv-footer-logo">
+      {%- if section.settings.footer_logo != blank -%}
+        <img src="{{ section.settings.footer_logo | image_url: width: 400 }}" alt="{{ shop.name }}">
+      {%- elsif section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name }}">
+      {%- endif -%}
+    </div>
+    <p class="adv-footer-tag">{{ section.settings.footer_tagline }}</p>
+    <p class="adv-disclaimer">Este artículo es de carácter editorial. Los resultados individuales pueden variar. Lumé no reemplaza el consejo médico profesional.</p>
+    <div class="adv-legal">
+      {%- if section.settings.footer_privacy_url != blank -%}<a href="{{ section.settings.footer_privacy_url }}">Política de privacidad</a>{%- endif -%}
+      {%- if section.settings.footer_terms_url != blank -%}<a href="{{ section.settings.footer_terms_url }}">Términos y condiciones</a>{%- endif -%}
+    </div>
+  </footer>
+
+</div><!-- /lmadv -->
+
+<!-- STICKY CART (fuera del div scoped) -->
+<div id="lmadv-sc-{{ la }}">
+  <div class="sc-info">
+    <div class="sc-name">Lumé Facial Brush</div>
+    <div class="sc-price">{{ section.settings.offer_price }}</div>
+  </div>
+  <a href="{{ section.settings.product_url }}" class="sc-btn">{{ section.settings.sticky_btn_text }}</a>
+</div>
+
+<script>
+(function(){
+  /* TIMER */
+  var th=document.getElementById('lmadv-th-{{ la }}');
+  var tm=document.getElementById('lmadv-tm-{{ la }}');
+  var ts=document.getElementById('lmadv-ts-{{ la }}');
+  if(th&&tm&&ts){
+    var end=Date.now()+{{ section.settings.timer_minutes }}*60000;
+    function p2(n){return String(n).padStart(2,'0');}
+    function tick(){
+      var d=Math.max(0,end-Date.now());
+      th.textContent=p2(Math.floor(d/3600000));
+      tm.textContent=p2(Math.floor((d%3600000)/60000));
+      ts.textContent=p2(Math.floor((d%60000)/1000));
+      if(d>0) setTimeout(tick,1000);
+    }
+    tick();
+  }
+
+  /* REVEAL */
+  var W=document.getElementById('lmadv-{{ la }}');
+  if(W&&'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+      });
+    },{threshold:0.12});
+    W.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  } else if(W) {
+    W.querySelectorAll('.reveal').forEach(function(el){el.classList.add('visible');});
+  }
+
+  /* STICKY CART */
+  var sc=document.getElementById('lmadv-sc-{{ la }}');
+  var hero=W?W.querySelector('.adv-hero'):null;
+  if(sc&&hero){
+    function chkSc(){sc.classList.toggle('show',hero.getBoundingClientRect().bottom<0);}
+    window.addEventListener('scroll',chkSc,{passive:true});
+    chkSc();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Lumé Advertorial",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "⚙️ General" },
+    { "type": "url",          "id": "product_url",   "label": "URL del producto (botones CTA)" },
+    { "type": "image_picker", "id": "logo",           "label": "Logo (masthead y footer)" },
+    { "type": "range",        "id": "logo_height",   "label": "Altura del logo", "min": 16, "max": 120, "step": 2, "default": 30, "unit": "px" },
+    { "type": "text",         "id": "ann_text",       "label": "Barra de anuncio superior", "default": "Envío gratis a todo Chile · Solo disponible en lume.cl · No vendemos en Amazon" },
+    { "type": "number",       "id": "timer_minutes",  "label": "Minutos del contador de oferta", "default": 1440 },
+
+    { "type": "header", "content": "🦸 Hero" },
+    { "type": "text",         "id": "hero_title",     "label": "Título (completo)", "default": "5 Razones Por Las Que Mujeres Con Piel Madura Están Eligiendo Lumé Sobre Todo Lo Demás" },
+    { "type": "textarea",     "id": "hero_subtitle",  "label": "Subtítulo", "default": "No se trata de promesas vacías. Lumé fue creado para mujeres reales que quieren verse más descansadas, definidas y radiantes en solo 5 minutos al día." },
+    { "type": "text",         "id": "hero_btn_text",  "label": "Texto botón hero", "default": "Quiero Mi Lumé →" },
+    { "type": "image_picker", "id": "hero_img",       "label": "Imagen hero (680 × 420 px)" },
+    { "type": "text",         "id": "hero_badge_num", "label": "Badge — número", "default": "5 min" },
+    { "type": "text",         "id": "hero_badge_txt", "label": "Badge — texto",  "default": "Al día es suficiente" },
+
+    { "type": "header", "content": "🖼️ Fotos de las 5 Razones" },
+    { "type": "image_picker", "id": "reason1_img",  "label": "Razón 1 — Foto mujer (480 × 420 px)" },
+    { "type": "text",         "id": "reason1_name", "label": "Razón 1 — Nombre", "default": "María Teresa, 54 años" },
+    { "type": "text",         "id": "reason1_meta", "label": "Razón 1 — Ciudad / contexto", "default": "Santiago · usuaria Lumé desde enero 2025" },
+    { "type": "image_picker", "id": "reason2_ba_before", "label": "Razón 2 — Foto ANTES" },
+    { "type": "image_picker", "id": "reason2_ba_after",  "label": "Razón 2 — Foto DESPUÉS" },
+    { "type": "image_picker", "id": "reason3_img",  "label": "Razón 3 — Foto mujer (480 × 420 px)" },
+    { "type": "text",         "id": "reason3_name", "label": "Razón 3 — Nombre", "default": "Claudia, 48 años" },
+    { "type": "text",         "id": "reason3_meta", "label": "Razón 3 — Ciudad / contexto", "default": "Viña del Mar · \"Lo uso antes del trabajo\"" },
+    { "type": "image_picker", "id": "reason4_img",  "label": "Razón 4 — Foto comparativa (680 × 260 px)" },
+    { "type": "image_picker", "id": "reason5_img",  "label": "Razón 5 — Foto mujer (480 × 420 px)" },
+    { "type": "text",         "id": "reason5_name", "label": "Razón 5 — Nombre", "default": "Rosa Elena, 58 años" },
+    { "type": "text",         "id": "reason5_meta", "label": "Razón 5 — Ciudad / contexto", "default": "Concepción · \"Me veo yo otra vez\"" },
+
+    { "type": "header", "content": "💰 Oferta" },
+    { "type": "text", "id": "include1", "label": "Incluye — línea 1", "default": "Lumé Facial Brush — Cepillo de madera premium" },
+    { "type": "text", "id": "include2", "label": "Incluye — línea 2", "default": "📖 Ebook de drenaje linfático facial — GRATIS" },
+    { "type": "text", "id": "include3", "label": "Incluye — línea 3", "default": "🎁 Estuche de viaje premium — GRATIS" },
+    { "type": "text", "id": "include4", "label": "Incluye — línea 4", "default": "🚚 Envío gratis a todo Chile" },
+    { "type": "text", "id": "include5", "label": "Incluye — línea 5", "default": "🛡️ Garantía de satisfacción 30 días" },
+
+    { "type": "text",         "id": "offer_price",     "label": "Precio oferta",   "default": "$29.990" },
+    { "type": "text",         "id": "offer_price_old", "label": "Precio anterior", "default": "$49.990" },
+    { "type": "image_picker", "id": "offer_img",       "label": "Foto pack oferta (640 × 220 px)" },
+    { "type": "text",         "id": "offer_cta_text",  "label": "Texto botón oferta", "default": "OBTENER OFERTA HOY →" },
+    { "type": "text",         "id": "sticky_btn_text", "label": "Texto botón sticky cart", "default": "COMPRAR AHORA" },
+
+    { "type": "header", "content": "🦶 Footer" },
+    { "type": "image_picker", "id": "footer_logo",        "label": "Logo footer (deja vacío para usar el logo principal)" },
+    { "type": "range",        "id": "footer_logo_height", "label": "Altura del logo footer", "min": 16, "max": 120, "step": 2, "default": 32, "unit": "px" },
+    { "type": "text", "id": "footer_tagline",     "label": "Tagline footer", "default": "Drenaje linfático facial en casa. Sin rituales complejos. Sin excusas para abandonarlo." },
+    { "type": "url",  "id": "footer_privacy_url", "label": "URL Política de privacidad" },
+    { "type": "url",  "id": "footer_terms_url",   "label": "URL Términos y condiciones" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "⭐ Testimonio",
+      "settings": [
+        { "type": "text",     "id": "name",   "label": "Nombre",         "default": "Patricia M." },
+        { "type": "text",     "id": "meta",   "label": "Edad y ciudad",  "default": "52 años · Providencia, Santiago" },
+        { "type": "select",   "id": "stars",  "label": "Estrellas",
+          "options": [{"value":"5","label":"★★★★★"},{"value":"4","label":"★★★★☆"},{"value":"3","label":"★★★☆☆"}],
+          "default": "5" },
+        { "type": "textarea", "id": "text",   "label": "Texto de la reseña", "default": "Excelente producto, lo recomiendo." },
+        { "type": "text",     "id": "result", "label": "Etiqueta resultado (opcional)" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "👣 Paso cómo usar",
+      "settings": [
+        { "type": "text",     "id": "number", "label": "Número",      "default": "01" },
+        { "type": "text",     "id": "title",  "label": "Título",      "default": "Clavícula — Abre el drenaje" },
+        { "type": "textarea", "id": "desc",   "label": "Descripción", "default": "Comienza presionando suavemente la clavícula para abrir los ganglios linfáticos del cuello." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lumé Advertorial",
+      "blocks": [
+        { "type": "testimonial", "settings": { "name": "Patricia M.", "meta": "52 años · Providencia, Santiago", "text": "En 3 días ya veía menos inflamación. Mi marido me preguntó si había dormido mejor. No, solo usé Lumé. Ahora no salgo de casa sin usarlo.", "result": "Menos inflamación en 3 días" } },
+        { "type": "testimonial", "settings": { "name": "Carolina V.", "meta": "47 años · Las Condes, Santiago", "text": "Mi mandíbula se ve más marcada. Llevaba años pensando que era 'envejecimiento'. No lo era — era líquido acumulado que Lumé simplemente mueve.", "result": "Mandíbula más definida" } },
+        { "type": "testimonial", "settings": { "name": "Alejandra R.", "meta": "55 años · Vitacura, Santiago", "text": "Ahora lo uso todas las mañanas. Tenía el gua sha en el cajón hace dos años. Con Lumé es la primera vez que algo en este rubro me dura más de una semana.", "result": "Rutina diaria sostenible" } },
+        { "type": "step", "settings": { "number": "01", "title": "Clavícula — Abre el drenaje", "desc": "Comienza presionando suavemente la clavícula para abrir los ganglios linfáticos del cuello. Este paso prepara el camino para el drenaje." } },
+        { "type": "step", "settings": { "number": "02", "title": "Cuello y Mandíbula — Drena hacia abajo", "desc": "Desde la mandíbula hacia el cuello, con movimientos descendentes suaves. 5–6 pasadas por lado. Sientes la liberación de tensión inmediatamente." } },
+        { "type": "step", "settings": { "number": "03", "title": "Bajo los Ojos — Zona palpebral", "desc": "Movimientos muy suaves desde el lagrimal hacia la sien. Reduce el puffiness bajo los párpados desde el primer uso." } },
+        { "type": "step", "settings": { "number": "04", "title": "Pómulos y Frente — Completa el drenaje", "desc": "Movimientos ascendentes desde la mandíbula hacia los pómulos y de centro de frente hacia las sienes. 2–3 minutos son suficientes." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

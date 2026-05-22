@@ -1,0 +1,280 @@
+{%- assign si = section.id -%}
+
+<style>
+#slingr-{{ si }} {
+  border-top: 1px solid #e8e4df;
+  padding: 50px 0;
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  background: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+#slingr-{{ si }} *, #slingr-{{ si }} *::before, #slingr-{{ si }} *::after { box-sizing: border-box; }
+
+#slingr-{{ si }} .sli-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  margin-bottom: 30px;
+}
+#slingr-{{ si }} .sli-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  flex: 1;
+  margin: 0;
+}
+#slingr-{{ si }} .sli-nav {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e8e4df;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #fff;
+  font-size: 20px;
+  line-height: 1;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+#slingr-{{ si }} .sli-nav:hover { background: #f5f3f0; border-color: #ccc; }
+
+#slingr-{{ si }} .sli-track-wrap {
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+#slingr-{{ si }} .sli-track {
+  display: flex;
+  align-items: stretch;
+  transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  border-top: 1px solid #e8e4df;
+}
+
+/* Cards — widths set via JS for reliable carousel */
+#slingr-{{ si }} .sli-card {
+  flex: 0 0 auto;
+  border-right: 1px solid #e8e4df;
+  display: flex;
+  flex-direction: column;
+}
+#slingr-{{ si }} .sli-card:last-child { border-right: none; }
+
+#slingr-{{ si }} .sli-card-img {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #f5f3f0;
+  flex-shrink: 0;
+}
+#slingr-{{ si }} .sli-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+#slingr-{{ si }} .sli-card-ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+/* Text body — expands to fill remaining card height */
+#slingr-{{ si }} .sli-card-body {
+  padding: 20px 24px 28px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #e8e4df;
+}
+#slingr-{{ si }} .sli-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+#slingr-{{ si }} .sli-card-desc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.65;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  #slingr-{{ si }} .sli-header { padding: 0 20px; }
+  #slingr-{{ si }} .sli-card-body { padding: 16px 18px 24px; }
+}
+</style>
+
+<div id="slingr-{{ si }}">
+  <div class="sli-header">
+    <button class="sli-nav" id="sli-prev-{{ si }}" aria-label="Anterior">&#8249;</button>
+    <p class="sli-title">{{ section.settings.section_title | default: 'Ingredientes Clave' }}</p>
+    <button class="sli-nav" id="sli-next-{{ si }}" aria-label="Siguiente">&#8250;</button>
+  </div>
+
+  <div class="sli-track-wrap" id="sli-wrap-{{ si }}">
+    <div class="sli-track" id="sli-track-{{ si }}">
+      {%- assign ph_colors = 'linear-gradient(135deg,#8BC34A,#558B2F)|linear-gradient(135deg,#4CAF50,#2E7D32)|linear-gradient(135deg,#FFC107,#FF8F00)|linear-gradient(135deg,#FF9800,#E65100)|linear-gradient(135deg,#8BC34A,#33691E)|linear-gradient(135deg,#9C27B0,#4A148C)|linear-gradient(135deg,#00BCD4,#006064)' | split: '|' -%}
+      {%- assign ph_emojis = '🥬|🥦|🥑|🫚|🌿|💜|✨' | split: '|' -%}
+      {%- for block in section.blocks -%}
+        {%- assign ph_idx = forloop.index0 | modulo: 7 -%}
+        <div class="sli-card" {{ block.shopify_attributes }}>
+          <div class="sli-card-img">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', style: 'width:100%;height:100%;object-fit:cover;display:block;' }}
+            {%- else -%}
+              <div class="sli-card-ph" style="background:{{ ph_colors[ph_idx] }}">{{ ph_emojis[ph_idx] }}</div>
+            {%- endif -%}
+          </div>
+          <div class="sli-card-body">
+            <p class="sli-card-name">{{ block.settings.name | default: 'Ingrediente' }}</p>
+            <p class="sli-card-desc">{{ block.settings.desc }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var si = '{{ si }}';
+  var wrap  = document.getElementById('sli-wrap-' + si);
+  var track = document.getElementById('sli-track-' + si);
+  var btnPrev = document.getElementById('sli-prev-' + si);
+  var btnNext = document.getElementById('sli-next-' + si);
+  if (!wrap || !track) return;
+
+  var cards = Array.prototype.slice.call(track.querySelectorAll('.sli-card'));
+  var total = cards.length;
+  var idx = 0;
+
+  function perView() { return window.innerWidth <= 768 ? 1 : 3; }
+
+  function setup() {
+    var w = Math.floor(wrap.offsetWidth / perView());
+    cards.forEach(function(c) { c.style.width = w + 'px'; });
+    go(idx); // re-apply position after resize
+  }
+
+  function go(newIdx) {
+    var max = Math.max(0, total - perView());
+    if (newIdx < 0) newIdx = max;
+    if (newIdx > max) newIdx = 0;
+    idx = newIdx;
+    var w = cards[0] ? cards[0].offsetWidth : 0;
+    track.style.transform = 'translateX(-' + (idx * w) + 'px)';
+  }
+
+  btnPrev.addEventListener('click', function() { go(idx - 1); });
+  btnNext.addEventListener('click', function() { go(idx + 1); });
+
+  // Touch swipe
+  var txStart = null;
+  wrap.addEventListener('touchstart', function(e) { txStart = e.touches[0].clientX; }, { passive: true });
+  wrap.addEventListener('touchend', function(e) {
+    if (txStart === null) return;
+    var dx = e.changedTouches[0].clientX - txStart;
+    txStart = null;
+    if (Math.abs(dx) < 30) return;
+    go(idx + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  // Recalculate on resize
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(setup, 120);
+  });
+
+  setup();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SILUNE Ingredientes",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "section_title", "label": "Título de sección", "default": "Ingredientes Clave" }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingrediente",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Imagen" },
+        { "type": "text", "id": "name", "label": "Nombre", "default": "Nombre del ingrediente" },
+        { "type": "textarea", "id": "desc", "label": "Descripción" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "SILUNE Ingredientes",
+      "blocks": [
+        {
+          "type": "ingredient",
+          "settings": {
+            "name": "Vitamina A Biodisponible",
+            "desc": "Vitamina clínicamente validada para el acné que funciona como alternativa saludable a tratamientos agresivos con receta.*"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "name": "DIM (Diindolilmetano)",
+            "desc": "Compuesto de origen vegetal que ayuda a combatir el acné en su raíz actuando sobre las fluctuaciones hormonales.*"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "name": "Vitamina B5",
+            "desc": "Vitamina que hidrata profundamente y apoya la reparación de la barrera cutánea para una piel más suave y equilibrada.*"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "name": "Cúrcuma",
+            "desc": "Especia antiinflamatoria que combate el daño oxidativo, reduce la inflamación sistémica y ayuda a iluminar el tono de la piel.*"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "name": "Raíz de Diente de León",
+            "desc": "Hierba que apoya la función detoxificante natural del hígado, favoreciendo la eliminación de hormonas en exceso.*"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "name": "5-HTP",
+            "desc": "Aminoácido de origen natural que ayuda a equilibrar la respuesta del cuerpo al estrés diario y al cortisol.*"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "name": "Glutatión",
+            "desc": "El antioxidante maestro del cuerpo. Ayuda a iluminar el tono de la piel y mejora las manchas oscuras post-acné.*"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
